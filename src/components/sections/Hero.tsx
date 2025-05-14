@@ -7,8 +7,10 @@ import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBook } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
+import { useTheme } from 'next-themes';
 
 const Hero = () => {
+  const { theme } = useTheme();
   // State untuk posisi mouse (untuk efek parallax)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -115,11 +117,11 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden bg-gradient-to-b from-primary via-primary-light to-primary min-h-screen flex items-center"
+      className="relative overflow-hidden min-h-screen flex items-center bg-gradient-to-b from-[#ffffff] via-[#f0f4f8] to-[#dce3eb] dark:from-[#164B69] dark:via-[#2D3748] dark:to-[#2D3748]"
     >
       {/* Background gradients - Animated */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-primary opacity-80" />
+        <div className="absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-primary/80 backdrop-brightness-110" />
 
         {/* Animated gradient light */}
         <motion.div
@@ -156,7 +158,7 @@ const Hero = () => {
         particles.map(particle => (
           <motion.div
             key={particle.id}
-            className="absolute rounded-full bg-white"
+            className="absolute rounded-full bg-gray-400 dark:bg-white drop-shadow-md dark:drop-shadow"
             style={{
               width: particle.size,
               height: particle.size,
@@ -171,12 +173,12 @@ const Hero = () => {
         ))}
 
       {/* Pattern overlay */}
-      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-5" />
+      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-10 dark:opacity-10" />
 
       {/* Main content container */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 flex flex-col lg:flex-row items-center justify-between gap-12 py-20">
         {/* Text content */}
-        <div className="flex-1 text-white">
+        <div className="flex-1 text-gray-900 dark:text-white">
           {/* Badge */}
           <motion.div
             className="inline-flex items-center px-4 py-1.5 rounded-full 
@@ -202,14 +204,19 @@ const Hero = () => {
             animate="visible"
           >
             Portal Kolaborasi <br />
-            <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            {/* Teks untuk light mode */}
+            <span className="block dark:hidden bg-gradient-to-r from-gray-900 to-blue-700 bg-clip-text text-transparent drop-shadow-md">
+              MBKM x BAST ANRI
+            </span>
+            {/* Teks untuk dark mode */}
+            <span className="hidden dark:block bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent drop-shadow-lg">
               MBKM x BAST ANRI
             </span>
           </motion.h1>
 
           {/* Subheading */}
           <motion.p
-            className="text-lg md:text-xl text-blue-100 mb-8 max-w-xl"
+            className="text-lg md:text-xl text-gray-700 dark:text-blue-100 mb-8 max-w-xl"
             custom={2}
             variants={textVariants}
             initial="hidden"
@@ -239,7 +246,7 @@ const Hero = () => {
             </motion.button>
 
             <motion.button
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 font-medium text-lg transition-all shadow-lg hover:bg-white/20"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-gray-800 dark:bg-white/5 dark:text-white border border-gray-200 dark:border-white/20 font-medium text-lg transition-all shadow-lg hover:bg-gray-100 dark:hover:bg-white/20"
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
@@ -264,12 +271,12 @@ const Hero = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10"
+                className="text-center p-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10"
               >
-                <p className="text-2xl md:text-3xl font-bold text-white mb-1">
+                <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {statsInView && <CountUp end={stat.value} duration={2.5} suffix="+" />}
                 </p>
-                <p className="text-sm text-blue-100">{stat.label}</p>
+                <p className="text-sm text-blue-800 dark:text-blue-100">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -340,42 +347,22 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white/70"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <p className="text-sm mb-2 font-medium">Scroll untuk Eksplorasi</p>
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          />
-        </svg>
-      </motion.div>
-
       {/* Wave decoration at bottom */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
         <svg
-          className="relative block w-full h-16"
+          className="relative block w-full h-16 drop-shadow-[0_-3px_6px_rgba(0,0,0,0.1)]"
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
           <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.44,118.92,140.97,111.31,221.93,94.67c93.18-19.18,143.24-43.43,199.39-56.61Z"
-            className="fill-white dark:fill-gray-900"
-          ></path>
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,
+         250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
+         214.34,3V120H0V95.8C59.44,118.92,140.97,111.31,221.93,94.67c93.18-19.18,
+         143.24-43.43,199.39-56.61Z"
+            className="fill-[#f9f9fc] dark:fill-gray-900"
+          />
         </svg>
       </div>
     </section>
