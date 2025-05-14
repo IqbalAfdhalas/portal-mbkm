@@ -1,0 +1,53 @@
+/* src/styles/globals.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-800 dark:bg-dark dark:text-gray-100;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+
+  p,
+  span,
+  li,
+  input,
+  textarea,
+  button {
+    @apply font-body;
+  }
+}
+
+@layer components {
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-2 font-heading;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-10 font-body;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary to-primary-light;
+  }
+
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light;
+  }
+}
