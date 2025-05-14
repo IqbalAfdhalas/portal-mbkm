@@ -197,14 +197,19 @@ const Hero = () => {
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 drop-shadow-sm"
+            className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6"
             custom={1}
             variants={textVariants}
             initial="hidden"
             animate="visible"
           >
             Portal Kolaborasi <br />
-            <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            {/* Teks untuk light mode */}
+            <span className="block dark:hidden bg-gradient-to-r from-gray-900 to-blue-700 bg-clip-text text-transparent drop-shadow-md">
+              MBKM x BAST ANRI
+            </span>
+            {/* Teks untuk dark mode */}
+            <span className="hidden dark:block bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent drop-shadow-lg">
               MBKM x BAST ANRI
             </span>
           </motion.h1>
@@ -342,42 +347,22 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-gray-500 dark:text-white/70"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <p className="text-sm mb-2 font-medium">Scroll untuk Eksplorasi</p>
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-          />
-        </svg>
-      </motion.div>
-
       {/* Wave decoration at bottom */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
         <svg
-          className="relative block w-full h-16"
+          className="relative block w-full h-16 drop-shadow-[0_-3px_6px_rgba(0,0,0,0.1)]"
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
           <path
-            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.44,118.92,140.97,111.31,221.93,94.67c93.18-19.18,143.24-43.43,199.39-56.61Z"
-            className="fill-white dark:fill-gray-900"
-          ></path>
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,
+         250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
+         214.34,3V120H0V95.8C59.44,118.92,140.97,111.31,221.93,94.67c93.18-19.18,
+         143.24-43.43,199.39-56.61Z"
+            className="fill-[#f9f9fc] dark:fill-gray-900"
+          />
         </svg>
       </div>
     </section>
