@@ -7,8 +7,10 @@ import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBook } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
+import { useTheme } from 'next-themes';
 
 const Hero = () => {
+  const { theme } = useTheme();
   // State untuk posisi mouse (untuk efek parallax)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -115,11 +117,11 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden bg-gradient-to-b from-primary via-primary-light to-primary min-h-screen flex items-center"
+      className="relative overflow-hidden min-h-screen flex items-center bg-gradient-to-b from-[#ffffff] via-[#f0f4f8] to-[#dce3eb] dark:from-[#164B69] dark:via-[#2D3748] dark:to-[#2D3748]"
     >
       {/* Background gradients - Animated */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-primary opacity-80" />
+        <div className="absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-primary/80 backdrop-brightness-110" />
 
         {/* Animated gradient light */}
         <motion.div
@@ -156,7 +158,7 @@ const Hero = () => {
         particles.map(particle => (
           <motion.div
             key={particle.id}
-            className="absolute rounded-full bg-white"
+            className="absolute rounded-full bg-gray-400 dark:bg-white drop-shadow-md dark:drop-shadow"
             style={{
               width: particle.size,
               height: particle.size,
@@ -171,12 +173,12 @@ const Hero = () => {
         ))}
 
       {/* Pattern overlay */}
-      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-5" />
+      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-10 dark:opacity-10" />
 
       {/* Main content container */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 flex flex-col lg:flex-row items-center justify-between gap-12 py-20">
         {/* Text content */}
-        <div className="flex-1 text-white">
+        <div className="flex-1 text-gray-900 dark:text-white">
           {/* Badge */}
           <motion.div
             className="inline-flex items-center px-4 py-1.5 rounded-full 
@@ -195,7 +197,7 @@ const Hero = () => {
           </motion.div>
 
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6"
+            className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 drop-shadow-sm"
             custom={1}
             variants={textVariants}
             initial="hidden"
@@ -209,7 +211,7 @@ const Hero = () => {
 
           {/* Subheading */}
           <motion.p
-            className="text-lg md:text-xl text-blue-100 mb-8 max-w-xl"
+            className="text-lg md:text-xl text-gray-700 dark:text-blue-100 mb-8 max-w-xl"
             custom={2}
             variants={textVariants}
             initial="hidden"
@@ -239,7 +241,7 @@ const Hero = () => {
             </motion.button>
 
             <motion.button
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20 font-medium text-lg transition-all shadow-lg hover:bg-white/20"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-gray-800 dark:bg-white/5 dark:text-white border border-gray-200 dark:border-white/20 font-medium text-lg transition-all shadow-lg hover:bg-gray-100 dark:hover:bg-white/20"
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
@@ -264,12 +266,12 @@ const Hero = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10"
+                className="text-center p-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10"
               >
-                <p className="text-2xl md:text-3xl font-bold text-white mb-1">
+                <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {statsInView && <CountUp end={stat.value} duration={2.5} suffix="+" />}
                 </p>
-                <p className="text-sm text-blue-100">{stat.label}</p>
+                <p className="text-sm text-blue-800 dark:text-blue-100">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -342,7 +344,7 @@ const Hero = () => {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white/70"
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-gray-500 dark:text-white/70"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
       >
