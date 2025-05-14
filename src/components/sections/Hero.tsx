@@ -22,7 +22,7 @@ export default function Hero() {
       secondaryCtaText="Tentang MBKM"
       secondaryCtaLink="#tentang"
       poster={{
-        src: '/images/posters/mbkm-hero.jpg', // Ganti path jika perlu
+        src: '/public/images/hero-illustration.png', // Ganti path jika perlu
         alt: 'Poster utama MBKM',
       }}
     />
