@@ -40,9 +40,9 @@
 
 ### Homepage Sections
 
-- [ ] Hero Section dengan CTA
-- [ ] About Section dengan overview
-- [ ] Program Section preview
+- [-] Hero Section dengan CTA
+- [-] About Section dengan overview
+- [-] Program Section preview
 - [ ] Statistics Section basic
 - [ ] Contact Form basic
 
