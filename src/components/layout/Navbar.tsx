@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
 // src/components/layout/Navbar.tsx
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import ThemeToggle from "@/components/ui/ThemeToggle";
-import { useScrollspy } from "@/hooks/useScrollspy";
-import { navigation } from "@/constants/navigation";
-import LoginButton from "@/components/ui/LoginButton";
-import { useAuth } from "@/hooks/useAuth";
-import UserDropdown from "@/components/layout/UserDropdown";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useScrollspy } from '@/hooks/useScrollspy';
+import { navigation } from '@/constants/navigation';
+import LoginButton from '@/components/ui/LoginButton';
+import { useAuth } from '@/hooks/useAuth';
+import UserDropdown from '@/components/layout/UserDropdown';
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -20,8 +20,8 @@ const Navbar = () => {
 
   // Menggunakan scrollspy untuk mendeteksi section aktif
   const activeSection = useScrollspy(
-    navigation.map((item) => item.id),
-    { threshold: 0.5 },
+    navigation.map(item => item.id),
+    { threshold: 0.5 }
   );
 
   // Effect untuk mendeteksi scroll
@@ -30,8 +30,8 @@ const Navbar = () => {
       setScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Toggle mobile menu
@@ -43,8 +43,8 @@ const Navbar = () => {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md shadow-sm py-3"
-          : "bg-transparent py-5"
+          ? 'bg-white/80 dark:bg-dark-surface/80 backdrop-blur-md shadow-sm py-3'
+          : 'bg-transparent py-5'
       }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -63,10 +63,10 @@ const Navbar = () => {
             {/* Logo image - Support for transparent PNG */}
             <div className="relative w-8 h-8 mr-2">
               <Image
-                src="/logo.png"
+                src="/images/logo_mbkm_white.png"
                 alt="MBKM BAST ANRI Logo"
                 fill
-                style={{ objectFit: "contain" }}
+                style={{ objectFit: 'contain' }}
                 priority
               />
             </div>
@@ -81,14 +81,14 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          {navigation.map((item) => (
+          {navigation.map(item => (
             <Link
               key={item.id}
               href={`/#${item.id}`}
               className={`text-sm font-medium transition-colors relative px-2 py-1 ${
                 activeSection === item.id
-                  ? "text-primary-light dark:text-blue-400"
-                  : "text-gray-700 hover:text-primary-light dark:text-gray-300 dark:hover:text-blue-400"
+                  ? 'text-primary-light dark:text-blue-400'
+                  : 'text-gray-700 hover:text-primary-light dark:text-gray-300 dark:hover:text-blue-400'
               }`}
               onMouseEnter={() => setHoveredItem(item.id)}
               onMouseLeave={() => setHoveredItem(null)}
@@ -100,7 +100,7 @@ const Navbar = () => {
                 <motion.span
                   className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-primary-light dark:bg-blue-400"
                   layoutId="activeSection"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
 
@@ -126,7 +126,7 @@ const Navbar = () => {
                         animate={{ scale: 1 }}
                         transition={{
                           delay: i * 0.08,
-                          type: "spring",
+                          type: 'spring',
                           stiffness: 400,
                           damping: 10,
                         }}
@@ -142,11 +142,7 @@ const Navbar = () => {
         {/* Right side actions */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          {user ? (
-            <UserDropdown user={user} />
-          ) : (
-            <LoginButton className="hidden md:block" />
-          )}
+          {user ? <UserDropdown user={user} /> : <LoginButton className="hidden md:block" />}
 
           {/* Mobile menu button */}
           <button
@@ -154,12 +150,7 @@ const Navbar = () => {
             onClick={toggleMobileMenu}
           >
             {mobileMenuOpen ? (
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -168,12 +159,7 @@ const Navbar = () => {
                 />
               </svg>
             ) : (
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -191,18 +177,18 @@ const Navbar = () => {
         <motion.div
           className="md:hidden bg-white/95 dark:bg-dark-surface/95 backdrop-blur-md shadow-lg"
           initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
+          animate={{ opacity: 1, height: 'auto' }}
           transition={{ duration: 0.3 }}
         >
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <Link
                 key={item.id}
                 href={`/#${item.id}`}
                 className={`text-sm font-medium py-2 ${
                   activeSection === item.id
-                    ? "text-primary-light dark:text-blue-400"
-                    : "text-gray-700 dark:text-gray-300"
+                    ? 'text-primary-light dark:text-blue-400'
+                    : 'text-gray-700 dark:text-gray-300'
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
