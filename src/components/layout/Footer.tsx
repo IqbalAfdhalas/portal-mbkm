@@ -1,9 +1,9 @@
 // src/components/layout/Footer.tsx
-import Link from "next/link";
-import { navigation } from "@/constants/navigation";
-import { social } from "@/constants/social";
-import { SiFirebase } from "react-icons/si";
-import { FaHeart } from "react-icons/fa";
+import Link from 'next/link';
+import { navigation } from '@/constants/navigation';
+import { social } from '@/constants/social';
+import { SiFirebase } from 'react-icons/si';
+import { FaHeart } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -16,18 +16,14 @@ const Footer = () => {
           {/* Logo & About */}
           <div>
             <Link href="/" className="inline-block mb-4">
-              <img
-                src="/images/logo-white.svg"
-                alt="MBKM BAST ANRI"
-                className="h-12 w-auto"
-              />
+              <img src="/images/logo_mbkm_white.png" alt="MBKM BAST ANRI" className="h-12 w-auto" />
             </Link>
             <p className="text-gray-300 text-sm mb-4 font-body">
-              Program Merdeka Belajar Kampus Merdeka (MBKM) Badan Arsip dan
-              Standardisasi Nasional Republik Indonesia.
+              Program Merdeka Belajar Kampus Merdeka (MBKM) Badan Arsip dan Standardisasi Nasional
+              Republik Indonesia.
             </p>
             <div className="flex space-x-4">
-              {social.map((item) => (
+              {social.map(item => (
                 <a
                   key={item.name}
                   href={item.href}
@@ -44,11 +40,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-medium mb-4 font-heading">
-              Menu Utama
-            </h3>
+            <h3 className="text-lg font-medium mb-4 font-heading">Menu Utama</h3>
             <ul className="space-y-2">
-              {navigation.slice(0, 5).map((item) => (
+              {navigation.slice(0, 5).map(item => (
                 <li key={item.id}>
                   <Link
                     href={`/#${item.id}`}
@@ -65,7 +59,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-medium mb-4 font-heading">Informasi</h3>
             <ul className="space-y-2">
-              {navigation.slice(5).map((item) => (
+              {navigation.slice(5).map(item => (
                 <li key={item.id}>
                   <Link
                     href={`/#${item.id}`}
@@ -152,7 +146,7 @@ const Footer = () => {
               © {currentYear} Portal MBKM BAST ANRI. All rights reserved.
             </p>
             <p className="text-gray-400 text-sm font-body mt-2 md:mt-0 flex items-center justify-center">
-              Built with <FaHeart className="text-secondary mx-1" /> and{" "}
+              Built with <FaHeart className="text-secondary mx-1" /> and{' '}
               <SiFirebase className="text-secondary mx-1" />
             </p>
           </div>
