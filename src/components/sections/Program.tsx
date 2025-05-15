@@ -191,7 +191,7 @@ const ProgramPreview = () => {
                       </div>
                       <div className="text-center">
                         <Link
-                          href={`/program/${slugify(program.title, { lower: true })}`}
+                          href={`/sections-program/${slugify(program.title, { lower: true })}`}
                           className="inline-block px-6 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white font-medium transition-colors duration-300"
                         >
                           Lihat Detail
