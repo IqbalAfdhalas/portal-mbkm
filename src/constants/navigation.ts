@@ -1,7 +1,7 @@
-// src/constants/navigation.ts
+//src/constants/navigation.ts
 export const navigation = [
-  { id: 'home', name: 'Home', href: '/#home' },
-  { id: 'about', name: 'About', href: '/#about' },
+  { id: 'hero', name: 'Home', href: '/#hero' },
+  { id: 'tentang', name: 'Tentang MBKM', href: '/#tentang' },
   { id: 'program', name: 'Program', href: '/#program' },
   { id: 'stats', name: 'Statistik', href: '/#stats' },
   { id: 'directory', name: 'Direktori', href: '/#directory' },
