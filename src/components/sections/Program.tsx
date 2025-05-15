@@ -7,11 +7,6 @@ import Image from 'next/image';
 import slugify from 'slugify';
 
 const ProgramPreview = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [width, setWidth] = useState(0);
-  const carousel = useRef<HTMLDivElement>(null);
-  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
-
   const basePrograms = [
     {
       title: 'Aktivitas Unit',
@@ -90,8 +85,17 @@ const ProgramPreview = () => {
     },
   ];
 
-  const programs = [...basePrograms, ...basePrograms];
+  const programs = [...basePrograms, ...basePrograms, ...basePrograms];
   const originalLength = basePrograms.length;
+  const initialIndex = originalLength;
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [width, setWidth] = useState(0);
+  const carousel = useRef<HTMLDivElement>(null);
+  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const AUTO_SCROLL_INTERVAL = 5000; // 5 detik untuk scrolling otomatis
+  const PAUSE_DURATION = 5000; // detik durasi pause setelah klik manual
 
   const getVisibleCount = () => {
     if (typeof window !== 'undefined') {
@@ -112,45 +116,82 @@ const ProgramPreview = () => {
         setWidth(cardWidth);
       }
     };
-
     updateWidth();
     startAutoScroll();
     window.addEventListener('resize', updateWidth);
-
     return () => {
       window.removeEventListener('resize', updateWidth);
-      if (autoScrollRef.current) {
-        clearInterval(autoScrollRef.current);
-      }
+      if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+      if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
     };
   }, []);
 
   useEffect(() => {
-    if (currentIndex >= programs.length - visibleCards) {
-      const timeout = setTimeout(() => {
+    if (!carousel.current) return;
+    const totalLength = programs.length;
+    const maxIndex = totalLength - visibleCards;
+    const buffer = 2;
+
+    carousel.current.style.transition = 'transform 0.5s ease';
+    carousel.current.style.transform = `translateX(-${currentIndex * width}px)`;
+
+    if (currentIndex <= buffer || currentIndex >= maxIndex - buffer) {
+      setTimeout(() => {
         if (carousel.current) {
           carousel.current.style.transition = 'none';
-          setCurrentIndex(0);
-          carousel.current.style.transform = `translateX(0px)`;
+          setCurrentIndex(initialIndex);
+          carousel.current.style.transform = `translateX(-${initialIndex * width}px)`;
         }
-      }, 300);
-      return () => clearTimeout(timeout);
-    } else {
-      if (carousel.current) {
-        carousel.current.style.transition = 'transform 0.5s ease';
-        carousel.current.style.transform = `translateX(-${currentIndex * width}px)`;
-      }
+      }, 500);
     }
   }, [currentIndex, width]);
 
+  // Memulai auto scroll
   const startAutoScroll = () => {
+    if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+
+    if (!isPaused) {
+      autoScrollRef.current = setInterval(() => {
+        setCurrentIndex(prev => prev + 1);
+      }, AUTO_SCROLL_INTERVAL);
+    }
+  };
+
+  // Efek untuk mengelola status auto scroll berdasarkan isPaused
+  useEffect(() => {
+    if (isPaused) {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current);
+        autoScrollRef.current = null;
+      }
+    } else {
+      startAutoScroll();
+    }
+  }, [isPaused]);
+
+  // Menangani klik tombol navigasi
+  const handleNavClick = (direction: 'prev' | 'next') => {
+    // Menghentikan auto scroll yang sedang berjalan
     if (autoScrollRef.current) {
       clearInterval(autoScrollRef.current);
+      autoScrollRef.current = null;
     }
 
-    autoScrollRef.current = setInterval(() => {
-      setCurrentIndex(prevIndex => prevIndex + 1);
-    }, 5000);
+    // Mengatur status pause menjadi true
+    setIsPaused(true);
+
+    // Perbarui index carousel berdasarkan arah
+    setCurrentIndex(prev => (direction === 'prev' ? prev - 1 : prev + 1));
+
+    // Reset timer pause sebelumnya jika ada
+    if (pauseTimerRef.current) {
+      clearTimeout(pauseTimerRef.current);
+    }
+
+    // Mengatur timer baru untuk melanjutkan auto scroll setelah PAUSE_DURATION
+    pauseTimerRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, PAUSE_DURATION);
   };
 
   return (
@@ -170,13 +211,9 @@ const ProgramPreview = () => {
         </div>
 
         <div className="relative">
-          {/* Tombol kiri */}
           <button
-            onClick={() => {
-              setCurrentIndex(prevIndex => (prevIndex <= 0 ? programs.length - 1 : prevIndex - 1));
-              startAutoScroll();
-            }}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 dark:bg-gray-800/70 rounded-full shadow-md p-2 hover:bg-white dark:hover:bg-gray-800 transition-colors duration-300 focus:outline-none"
+            onClick={() => handleNavClick('prev')}
+            className="absolute -left-8 lg:-left-12 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full p-3 shadow-lg hover:scale-110 hover:bg-primary hover:text-white transition-all duration-300"
             aria-label="Previous program"
           >
             <svg
@@ -194,7 +231,6 @@ const ProgramPreview = () => {
             </svg>
           </button>
 
-          {/* Carousel */}
           <div className="overflow-hidden">
             <div ref={carousel} className="flex" style={{ willChange: 'transform' }}>
               {programs.map((program, index) => (
@@ -266,13 +302,9 @@ const ProgramPreview = () => {
             </div>
           </div>
 
-          {/* Tombol kanan */}
           <button
-            onClick={() => {
-              setCurrentIndex(prevIndex => prevIndex + 1);
-              startAutoScroll();
-            }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/70 dark:bg-gray-800/70 rounded-full shadow-md p-2 hover:bg-white dark:hover:bg-gray-800 transition-colors duration-300 focus:outline-none"
+            onClick={() => handleNavClick('next')}
+            className="absolute -right-8 lg:-right-12 top-1/2 -translate-y-1/2 z-20 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full p-3 shadow-lg hover:scale-110 hover:bg-primary hover:text-white transition-all duration-300"
             aria-label="Next program"
           >
             <svg
