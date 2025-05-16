@@ -266,8 +266,8 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             {[
-              { label: 'Kemitraan Kampus', value: 120 },
-              { label: 'Mahasiswa Magang', value: 5000 },
+              { label: 'Kemitraan Kampus', value: 10 },
+              { label: 'Mahasiswa Magang', value: 200 },
               { label: 'Kegiatan MBKM', value: 25 },
             ].map((stat, index) => (
               <div
