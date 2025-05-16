@@ -1,458 +1,650 @@
+// src/app/sections-program/aktivitas-unit/page.tsx
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css/navigation';
 
-// Unit data dengan penambahan Unit Tata Usaha
-const units = [
-  {
-    id: 'akuisisi',
-    title: 'Unit Akuisisi Arsip',
-    description: 'Unit yang bertanggung jawab untuk melakukan pengumpulan dan penyeleksian arsip dari berbagai sumber untuk kemudian dikelola di dalam sistem kearsipan BAST ANRI.',
-    activities: [
-      'Survei dan identifikasi arsip yang akan diakuisisi',
-      'Penilaian dan seleksi arsip berdasarkan nilai gunanya',
-      'Pendokumentasian proses serah terima arsip',
-      'Pembuatan berita acara serah terima arsip',
-      'Transportasi arsip ke BAST ANRI dengan protokol keamanan',
-      'Pemeriksaan kelengkapan arsip yang diterima'
-    ],
-    skills: [
-      'Kemampuan analitis dalam menilai arsip',
-      'Pemahaman prosedur administrasi',
-      'Kemampuan komunikasi dengan penyerah arsip',
-      'Pengetahuan dasar tentang preservation',
-      'Kemampuan penggunaan sistem manajemen arsip'
-    ],
-    image: '/images/program-aktivitas.jpg',
-    icon: '/images/icons/activity.svg',
-    color: 'from-yellow-500/20 to-yellow-600/20',
-    borderColor: 'border-yellow-500',
-  },
-  {
-    id: 'pengolahan',
-    title: 'Unit Pengolahan Arsip',
-    description: 'Unit yang bertugas untuk mengorganisasikan, mengklasifikasikan, dan memberikan deskripsi pada arsip sehingga mudah ditemukan kembali ketika dibutuhkan.',
-    activities: [
-      'Pemilahan dan pengelompokan arsip berdasarkan skema klasifikasi',
-      'Pendeskripsian arsip sesuai standar kearsipan',
-      'Pembuatan inventaris, daftar, dan guide arsip',
-      'Pemberian nomor identifikasi unik pada setiap arsip',
-      'Indeksasi arsip untuk kemudahan pencarian',
-      'Digitalisasi arsip untuk preservasi dan akses'
-    ],
-    skills: [
-      'Ketelitian dalam pengklasifikasian',
-      'Pemahaman metadata dan standar deskripsi arsip',
-      'Kemampuan penggunaan perangkat lunak pengolahan arsip',
-      'Pengetahuan tentang sejarah dan konteks arsip',
-      'Keterampilan digitalisasi dokumen'
-    ],
-    image: '/images/program-aktivitas.jpg',
-    icon: '/images/icons/activity.svg',
-    color: 'from-blue-500/20 to-blue-600/20',
-    borderColor: 'border-blue-500',
-  },
-  {
-    id: 'preservasi',
-    title: 'Unit Preservasi Arsip',
-    description: 'Unit yang fokus pada pelestarian fisik dan konten arsip untuk menjamin ketersediaan informasi dalam jangka panjang dan pencegahan kerusakan arsip.',
-    activities: [
-      'Pengaturan suhu dan kelembaban ruang penyimpanan',
-      'Pembersihan dan perawatan berkala arsip',
-      'Restorasi arsip rusak atau rentan',
-      'Penilaian kondisi dan risiko kerusakan arsip',
-      'Implementasi strategi preservasi digital',
-      'Migrasi format arsip untuk keberlanjutan akses'
-    ],
-    skills: [
-      'Pengetahuan tentang bahan dan teknologi preservasi',
-      'Kemampuan identifikasi risiko kerusakan',
-      'Teknik konservasi dan restorasi dokumen',
-      'Pemahaman preservasi digital dan migrasi data',
-      'Keterampilan penggunaan alat preservasi'
-    ],
-    image: '/images/program-aktivitas.jpg',
-    icon: '/images/icons/activity.svg',
-    color: 'from-green-500/20 to-green-600/20',
-    borderColor: 'border-green-500',
-  },
-  {
-    id: 'pelayanan',
-    title: 'Unit Pelayanan Arsip',
-    description: 'Unit yang memberikan layanan akses arsip kepada pengguna, baik dari kalangan peneliti, mahasiswa, maupun masyarakat umum yang membutuhkan informasi dari arsip.',
-    activities: [
-      'Layanan penelusuran arsip bagi pengguna',
-      'Penyediaan sarana akses arsip (fisik dan digital)',
-      'Pendampingan peneliti dalam menggunakan arsip',
-      'Peminjaman dan pengembalian arsip',
-      'Penyelenggaraan pameran dan edukasi kearsipan',
-      'Pengumpulan feedback pengguna untuk evaluasi layanan'
-    ],
-    skills: [
-      'Kemampuan komunikasi dan pelayanan prima',
-      'Pengetahuan tentang koleksi arsip secara komprehensif',
-      'Keterampilan penelusuran cepat arsip',
-      'Literasi digital untuk akses arsip elektronik',
-      'Kemampuan presentasi dan edukasi publik'
-    ],
-    image: '/images/program-aktivitas.jpg',
-    icon: '/images/icons/activity.svg',
-    color: 'from-purple-500/20 to-purple-600/20',
-    borderColor: 'border-purple-500',
-  },
-  {
-    id: 'tata-usaha',
-    title: 'Unit Tata Usaha',
-    description: 'Unit yang mengelola administrasi, dokumentasi dan pengelolaan surat-menyurat serta mendukung operasional harian BAST ANRI untuk memastikan kelancaran fungsi organisasi.',
-    activities: [
-      'Pengelolaan surat masuk dan keluar',
-      'Administrasi keuangan dan anggaran',
-      'Pengelolaan inventaris barang milik negara',
-      'Administrasi kepegawaian dan pengelolaan SDM',
-      'Penyusunan laporan kegiatan dan kinerja unit',
-      'Koordinasi kegiatan antar unit dalam BAST ANRI'
-    ],
-    skills: [
-      'Keterampilan administrasi dan tata naskah dinas',
-      'Manajemen waktu dan prioritas pekerjaan',
-      'Pemahaman sistem penganggaran dan keuangan',
-      'Kemampuan penggunaan aplikasi perkantoran',
-      'Koordinasi dan komunikasi antar unit'
-    ],
-    image: '/images/program-aktivitas.jpg',
-    icon: '/images/icons/activity.svg',
-    color: 'from-red-500/20 to-red-600/20',
-    borderColor: 'border-red-500',
-  }
-];
+const AktivitasUnitDetail = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const handleImageClick = (src: string) => setPreviewImage(src);
+  const closeModal = () => setPreviewImage(null);
 
-// Data link program aktivitas
-  
-const programLinks = [
-  {
-    title: 'Kunjungan ke dalam BAST ANRI',
-    url: '/sections-program/kunjungan-ke-dalam-bast-anri',
-    icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'
-  },
-  {
-    title: 'Kunjungan ke luar BAST ANRI',
-    url: '/sections-program/kunjungan-ke-luar-bast-anri',
-    icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7'
-  },
-  {
-    title: 'Daily Activity',
-    url: '/sections-program/daily-activity',
-    icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
-  },
-  {
-    title: 'Pameran',
-    url: '/sections-program/pameran-arsip',
-    icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
-  }
-
-];
-
-const AktivitasUnitPage = () => {
-  const [activeUnit, setActiveUnit] = useState(units[0]);
-  const scrollContainerRef = useRef(null);
-
-  // Auto scroll effect
   useEffect(() => {
-  const scrollContainer = scrollContainerRef.current;
-  if (!scrollContainer) return;
+    setIsLoaded(true);
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+  }, []);
 
-  const scrollSpeed = 0.5; // pixels per millisecond
-  let animationFrameId: number;
-  let lastTimestamp: number | null = null;
-  let isPaused = false;
-
-  const autoScroll = (timestamp: number) => {
-    if (!lastTimestamp) lastTimestamp = timestamp;
-    const deltaTime = timestamp - lastTimestamp;
-    lastTimestamp = timestamp;
-
-    if (!isPaused && scrollContainer) {
-      scrollContainer.scrollLeft += scrollSpeed * deltaTime;
-
-      if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth - 10) {
-        scrollContainer.scrollLeft = 0;
-      }
-    }
-
-    animationFrameId = requestAnimationFrame(autoScroll);
+  const program = {
+    title: 'Aktivitas Unit',
+    subtitle: 'Ikut Serunya Aktivitas Unit di BAST ANRI!',
+    description:
+      'Lewat program ini, kamu akan ikut langsung dalam aktivitas harian di unit-unit kerja BAST ANRI. Bukan cuma duduk dan mengamati, tapi benar-benar terlibat seperti bagian dari tim! Setiap unit punya tugas dan pengalaman yang beda-beda — cocok banget buat kamu yang pengen belajar dari praktik nyata.',
+    icon: '/images/icons/activity.svg',
+    banner: '/images/program-aktivitas.jpg',
+    color: 'yellow-500',
+    units: [
+      {
+        name: 'Unit Akuisisi Arsip',
+        icon: '/images/logo_mbkm_white.png',
+        description:
+          'Belajar gimana arsip pertama kali diterima — mulai dari seleksi, penerimaan, sampai pencatatan dokumen yang masuk.',
+        activities: [
+          'Menyeleksi arsip yang diterima dari berbagai instansi',
+          'Pencatatan metadata arsip yang baru masuk',
+          'Koordinasi dengan pihak eksternal untuk pengambilan arsip',
+          'Verifikasi kelengkapan dokumen yang diterima',
+        ],
+        image: '/images/Preservasi_unit.jpg',
+      },
+      {
+        name: 'Unit Pengolahan Arsip',
+        icon: '/images/logo_mbkm_white.png',
+        description:
+          'Di sini kamu akan bantu menyusun dan mengklasifikasikan arsip biar lebih rapi dan gampang ditemukan.',
+        activities: [
+          'Pengklasifikasian arsip berdasarkan kategori dan tahun',
+          'Pembuatan sistem pengindeksan untuk arsip baru',
+          'Pemberian kode dan label pada arsip fisik',
+          'Input data arsip ke sistem database',
+        ],
+        image: '/images/logo_mbkm_white.png',
+      },
+      {
+        name: 'Unit Preservasi Arsip',
+        icon: '/images/logo_mbkm_white.png',
+        description:
+          'Tugasnya menjaga arsip tetap awet. Kamu bisa lihat dan ikut langsung proses penyimpanan, pelindungan, bahkan perbaikan arsip.',
+        activities: [
+          'Pemeriksaan kondisi fisik arsip secara berkala',
+          'Restorasi dokumen yang rusak/pudar',
+          'Pemindaian (scanning) arsip untuk backup digital',
+          'Pengaturan suhu dan kelembaban ruang penyimpanan',
+        ],
+        image: '/images/logo_mbkm_white.png',
+      },
+      {
+        name: 'Unit Pelayanan Arsip',
+        icon: '/images/logo_mbkm_white.png',
+        description:
+          'Di bagian ini kamu akan berinteraksi dengan pengguna arsip, bantu pencarian data, dan ikut dalam layanan informasi publik.',
+        activities: [
+          'Melayani permintaan pencarian arsip dari pengunjung',
+          'Memberikan panduan penggunaan katalog arsip',
+          'Membantu proses peminjaman arsip untuk penelitian',
+          'Pencatatan statistik kunjungan dan penggunaan arsip',
+        ],
+        image: '/images/logo_mbkm_white.png',
+      },
+      {
+        name: 'Unit Tata Usaha',
+        icon: '/images/logo_mbkm_white.png',
+        description:
+          'Belajar tentang pengelolaan administrasi internal. Mulai dari surat-menyurat, penjadwalan, hingga pengarsipan internal BAST ANRI.',
+        activities: [
+          'Pengelolaan surat masuk dan keluar',
+          'Penjadwalan kegiatan dan rapat internal',
+          'Pembuatan laporan kegiatan harian/mingguan',
+          'Koordinasi antar unit untuk kelancaran operasional',
+        ],
+        image: '/images/logo_mbkm_white.png',
+      },
+    ],
+    benefits: [
+      {
+        title: 'Pengalaman Praktis',
+        description: 'Mendapatkan pengalaman hands-on di lingkungan kerja profesional kearsipan',
+      },
+      {
+        title: 'Pemahaman Mendalam',
+        description: 'Memahami siklus lengkap pengelolaan arsip dari penerimaan hingga pelayanan',
+      },
+      {
+        title: 'Networking',
+        description: 'Membangun koneksi dengan para profesional di bidang kearsipan',
+      },
+      {
+        title: 'Skill Teknis',
+        description: 'Memperoleh keterampilan teknis dalam pengelolaan dan preservasi arsip',
+      },
+      {
+        title: 'Perspektif Sejarah',
+        description: 'Mendapatkan perspektif unik tentang sejarah melalui dokumen asli',
+      },
+    ],
+    gallery: [
+      {
+        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
+        caption: 'Mahasiswa sedang mendigitalisasi arsip',
+      },
+      {
+        src: '/images/hero-illustration.png',
+        caption: 'Rapat evaluasi kegiatan unit',
+      },
+      {
+        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
+        caption: 'Proses pemindaian dokumen',
+      },
+      {
+        src: '/images/hero-illustration.png',
+        caption: 'Suasana kerja di ruang pengolahan',
+      },
+    ],
   };
 
-  animationFrameId = requestAnimationFrame(autoScroll);
-
-  const handleMouseEnter = () => {
-    isPaused = true;
-  };
-
-  const handleMouseLeave = () => {
-    isPaused = false;
-    lastTimestamp = null;
-  };
-
-  scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-  scrollContainer.addEventListener('mouseleave', handleMouseLeave);
-
-  return () => {
-    cancelAnimationFrame(animationFrameId);
-    scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
-  };
-}, []);
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.2 
-      } 
-    }
-  };
-
-  const itemVariants = {
+  const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5 }
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   return (
-    <>
-      {/* Hero Banner - Desain Direvisi */}
-      <section className="relative bg-gradient-to-r from-primary/90 to-primary-light/90 text-white">
-        <div className="absolute inset-0 z-0 opacity-25">
-          <Image 
-            src="/images/program-aktivitas.jpg" 
-            alt="Aktivitas Unit Background" 
-            fill 
-            className="object-cover"
-            priority
-          />
-        </div>
-        
-        <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <Link href="/#program" className="inline-flex items-center text-blue-200 hover:text-white mb-6 transition-colors">
-              <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Kembali ke Program
-            </Link>
-            
-            <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Unit Kerja BAST ANRI
-            </h1>
-            
-            <p className="text-lg text-blue-100 max-w-3xl mb-6">
-              Balai Arsip Statis dan Tsunami ANRI memiliki berbagai unit kerja dengan fungsi spesifik dalam pengelolaan arsip. Setiap unit memiliki fokus dan keahlian tersendiri dalam melestarikan dan mengelola arsip nasional.
-            </p>
-            
-            <div className="flex flex-wrap gap-3">
-              {units.map((unit) => (
-                <button
-                  key={unit.id}
-                  onClick={() => setActiveUnit(unit)}
-                  className={`px-4 py-2 rounded-full font-medium transition-all ${
-                    activeUnit.id === unit.id
-                    ? 'bg-white text-primary shadow-md'
-                    : 'bg-white/20 hover:bg-white/30 text-white'
-                  }`}
-                >
-                  {unit.title}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Unit Detail - Desain Direvisi */}
-      <section className="py-12 bg-white dark:bg-dark-default">
-        <div className="container mx-auto px-4">
-          <motion.div
-            key={activeUnit.id}
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-          >
-            {/* Left Column - Unit Description */}
-            <motion.div variants={itemVariants} className="lg:col-span-2">
-              <div className={`w-full mb-6 rounded-xl overflow-hidden relative h-60`}>
-                <Image 
-                  src={activeUnit.image} 
-                  alt={activeUnit.title} 
-                  fill 
-                  className="object-cover"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-tr ${activeUnit.color} opacity-70`}></div>
-                <div className="absolute inset-0 flex items-center p-8">
-                  <div className="flex items-center">
-                    <div className={`w-16 h-16 rounded-full flex items-center justify-center mr-4 bg-white/90 shadow-lg`}>
-                      <Image src={activeUnit.icon} alt={activeUnit.title} width={32} height={32} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl md:text-3xl font-heading font-bold text-white">{activeUnit.title}</h2>
-                      <div className={`h-1 w-20 bg-white mt-2`}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">{activeUnit.description}</p>
-              
-              <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">Aktivitas Unit</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-                {activeUnit.activities.map((activity, index) => (
-                  <motion.div 
-                    key={index}
-                    variants={itemVariants}
-                    className={`bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border-l-4 ${activeUnit.borderColor}`}
-                  >
-                    <p className="text-gray-700 dark:text-gray-300">{activity}</p>
-                  </motion.div>
-                ))}
-              </div>
-              
-              <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">Keterampilan yang Akan Dipelajari</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {activeUnit.skills.map((skill, index) => (
-                  <motion.div 
-                    key={index}
-                    variants={itemVariants}
-                    className="flex items-center bg-gray-50 dark:bg-gray-800 p-4 rounded-lg"
-                  >
-                    <svg className={`w-5 h-5 mr-3 ${activeUnit.borderColor.replace('border-', 'text-')}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-gray-700 dark:text-gray-300">{skill}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-            
-            {/* Right Column - Timeline */}
-            <motion.div variants={itemVariants} className="lg:col-span-1">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 sticky top-24">
-                <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">Tahapan Kerja</h3>
-                
-                <div className="relative pl-8 space-y-6 before:absolute before:top-2 before:bottom-0 before:left-[10px] before:w-[2px] before:bg-gray-200 dark:before:bg-gray-700">
-                  {[
-                    {
-                      title: 'Persiapan',
-                      description: 'Mempersiapkan berbagai kebutuhan dan perencanaan untuk aktivitas unit sesuai dengan SOP yang telah ditetapkan.',
-                      icon: 'M12 6v6m0 0v6m0-6h6m-6 0H6'
-                    },
-                    {
-                      title: 'Implementasi',
-                      description: 'Melaksanakan tugas dan aktivitas utama unit dengan mengikuti prosedur standar dan best practice kearsipan.',
-                      icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
-                    },
-                    {
-                      title: 'Evaluasi',
-                      description: 'Melakukan penilaian terhadap hasil kerja untuk memastikan kualitas dan kesesuaian dengan standar yang ditetapkan.',
-                      icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-                    },
-                    {
-                      title: 'Pelaporan',
-                      description: 'Menyusun dan menyampaikan laporan kegiatan sebagai bentuk akuntabilitas dan dokumentasi aktivitas.',
-                      icon: 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
-                    },
-                    {
-                      title: 'Pengembangan',
-                      description: 'Mengidentifikasi area perbaikan dan melakukan inovasi untuk peningkatan kualitas layanan kearsipan.',
-                      icon: 'M13 10V3L4 14h7v7l9-11h-7z'
-                    }
-                  ].map((step, index) => (
-                    <div key={index} className="relative">
-                      <div className={`absolute -left-8 w-6 h-6 rounded-full ${activeUnit.borderColor.replace('border-', 'bg-')} flex items-center justify-center shadow-md`}>
-                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={step.icon} />
-                        </svg>
-                      </div>
-                      <h4 className="font-heading font-bold text-gray-800 dark:text-white mb-2">{step.title}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{step.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Program Links Scrollable Section */}
-      <section className="py-12 bg-gray-50 dark:bg-dark-surface">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-primary dark:text-white mb-4">
-              Program MBKM BAST ANRI
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Berikut adalah program MBKM yang tersedia di Balai Arsip Statis dan Tsunami ANRI
-            </p>
-          </div>
-          
-          <div className="relative max-w-6xl mx-auto">
-            {/* Scrollable container for program links */}
-            <div 
-              ref={scrollContainerRef}
-              className="flex overflow-x-auto gap-4 py-4 px-2 hide-scrollbar"
-              style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-24 pb-12">
+      {/* Banner Section */}
+      <div className="relative h-[30vh] md:h-[40vh] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/70 to-primary/90 mix-blend-multiply" />
+        <Image
+          src={program.banner}
+          alt={program.title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 flex items-center">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial="hidden"
+              animate={isLoaded ? 'visible' : 'hidden'}
+              variants={fadeInUp}
+              className="flex items-center mb-4"
             >
-              {programLinks.map((link, index) => (
-                <Link 
-                  key={index} 
-                  href={link.url}
-                  className="flex-shrink-0 min-w-[260px] bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-100 dark:border-gray-700"
-                >
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center mr-4">
-                      <svg className="w-6 h-6 text-primary dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
+              <div className="bg-white dark:bg-gray-800 rounded-full p-3 mr-4 shadow-lg">
+                <Image
+                  src={program.icon}
+                  alt={program.title}
+                  width={32}
+                  height={32}
+                  className="h-8 w-8"
+                />
+              </div>
+              <nav className="flex text-sm text-white/80">
+                <Link href="/" className="hover:text-white">
+                  Beranda
+                </Link>
+                <span className="mx-2">/</span>
+                <Link href="/#program" className="hover:text-white">
+                  Program
+                </Link>
+                <span className="mx-2">/</span>
+                <span className="text-white font-medium">{program.title}</span>
+              </nav>
+            </motion.div>
+
+            <motion.h1
+              initial="hidden"
+              animate={isLoaded ? 'visible' : 'hidden'}
+              variants={fadeInUp}
+              className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-2 md:mb-4"
+            >
+              {program.title}
+            </motion.h1>
+
+            <motion.p
+              initial="hidden"
+              animate={isLoaded ? 'visible' : 'hidden'}
+              variants={fadeInUp}
+              className="text-xl md:text-2xl text-white/90 font-medium italic max-w-3xl"
+            >
+              {program.subtitle}
+            </motion.p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Left Content - Description */}
+          <div className="lg:col-span-2">
+            <motion.div
+              initial="hidden"
+              animate={isLoaded ? 'visible' : 'hidden'}
+              variants={fadeInUp}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
+            >
+              <h2 className="text-2xl font-heading font-bold text-primary dark:text-yellow-400 mb-4">
+                Deskripsi Program
+              </h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                {program.description}
+              </p>
+
+              <div className="h-1 w-20 bg-yellow-500 rounded-full mb-6"></div>
+
+              <h3 className="text-xl font-heading font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                Manfaat Program
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {program.benefits.map((benefit, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-100 dark:border-yellow-800/30"
+                  >
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center mt-0.5">
+                      <svg
+                        className="w-4 h-4 text-yellow-600 dark:text-yellow-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-gray-800 dark:text-white">{link.title}</h3>
-                      <div className="flex items-center mt-1 text-primary dark:text-blue-400 text-sm">
-                        <span>Lihat Program</span>
-                        <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </div>
+                    <div>
+                      <h4 className="font-medium text-gray-800 dark:text-gray-200">
+                        {benefit.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {benefit.description}
+                      </p>
                     </div>
                   </div>
-                </Link>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate={isLoaded ? 'visible' : 'hidden'}
+              variants={staggerContainer}
+              className="space-y-6"
+            >
+              {program.units.map((unit, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-${program.color}`}
+                >
+                  <div className="flex flex-col md:flex-row md:items-center mb-6">
+                    <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                      <div
+                        className={`w-16 h-16 rounded-full bg-${program.color}/20 flex items-center justify-center shadow-lg p-4`}
+                      >
+                        <Image
+                          src={unit.icon || program.icon}
+                          alt={unit.name}
+                          width={32}
+                          height={32}
+                          className="h-8 w-8"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-heading font-bold text-primary dark:text-white">
+                        {unit.name}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 italic">{unit.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="w-full rounded-lg overflow-hidden mb-6">
+                    <Image
+                      src={unit.image}
+                      alt={unit.name}
+                      width={800}
+                      height={450}
+                      className="w-full h-auto object-contain rounded-lg"
+                    />
+                  </div>
+
+                  <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">
+                    Aktivitas yang Dilakukan:
+                  </h4>
+
+                  <div className="space-y-2">
+                    {unit.activities.map((activity, idx) => (
+                      <div key={idx} className="flex items-start space-x-3">
+                        <div
+                          className={`flex-shrink-0 w-6 h-6 rounded-full bg-${program.color}/20 flex items-center justify-center mt-0.5`}
+                        >
+                          <svg
+                            className={`w-3 h-3 text-${program.color}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-gray-700 dark:text-gray-300">{activity}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
               ))}
+            </motion.div>
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-24">
+              <motion.div
+                initial="hidden"
+                animate={isLoaded ? 'visible' : 'hidden'}
+                variants={fadeInUp}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6"
+              >
+                <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">
+                  Program Lainnya
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    {
+                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      icon: '/images/icons/visit-in.svg',
+                      color: 'indigo-500',
+                      slug: 'kunjungan-ke-dalam-bast-anri',
+                    },
+                    {
+                      title: 'Kunjungan ke Luar BAST ANRI',
+                      icon: '/images/icons/visit-out.svg',
+                      color: 'red-500',
+                      slug: 'kunjungan-ke-luar-bast-anri',
+                    },
+                    {
+                      title: 'Daily Activity',
+                      icon: '/images/icons/daily.svg',
+                      color: 'pink-500',
+                      slug: 'daily-activity',
+                    },
+                    {
+                      title: 'Pameran Arsip',
+                      icon: '/images/icons/exhibition.svg',
+                      color: 'orange-500',
+                      slug: 'pameran-arsip',
+                    },
+                  ].map((otherProgram, index) => (
+                    <Link
+                      key={index}
+                      href={`/sections-program/${otherProgram.slug}`}
+                      className={`flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-${otherProgram.color} hover:bg-${otherProgram.color}/5 transition-all duration-300 group`}
+                    >
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-${otherProgram.color}/20 flex items-center justify-center mr-3`}
+                      >
+                        <Image
+                          src={otherProgram.icon}
+                          alt={otherProgram.title}
+                          width={20}
+                          height={20}
+                          className="h-5 w-5"
+                        />
+                      </div>
+                      <div className="flex-grow">
+                        <h4 className="text-gray-800 dark:text-gray-200 font-medium group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">
+                          {otherProgram.title}
+                        </h4>
+                      </div>
+                      <svg
+                        className={`w-5 h-5 text-gray-400 group-hover:text-${otherProgram.color} transform group-hover:translate-x-1 transition-all`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                animate={isLoaded ? 'visible' : 'hidden'}
+                variants={fadeInUp}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6"
+              >
+                <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">
+                  Lokasi BAST ANRI
+                </h3>
+                <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden mb-4">
+                  {/* Placeholder untuk peta - dalam produksi mungkin menggunakan Google Maps atau sejenisnya */}
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
+                      Peta lokasi BAST ANRI
+                    </p>
+                  </div>
+                </div>
+                <address className="not-italic text-gray-700 dark:text-gray-300 text-sm space-y-2">
+                  <div className="flex items-start">
+                    <svg
+                      className="w-5 h-5 text-yellow-500 mr-2 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <span>
+                      Jl. Ampera Raya No.7, Cilandak Timur, Jakarta Selatan, DKI Jakarta 12560
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-yellow-500 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      />
+                    </svg>
+                    <span>(021) 7805851</span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 text-yellow-500 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span>info@bast.anri.go.id</span>
+                  </div>
+                </address>
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                animate={isLoaded ? 'visible' : 'hidden'}
+                variants={fadeInUp}
+                className="bg-gradient-to-br from-primary to-primary-light text-white rounded-xl shadow-md p-6"
+              >
+                <h3 className="text-xl font-heading font-bold mb-4">Pertanyaan Lainnya?</h3>
+                <p className="mb-4">
+                  Jika Anda memiliki pertanyaan lebih lanjut tentang program ini, jangan ragu untuk
+                  menghubungi kami.
+                </p>
+                <Link
+                  href="/kontak"
+                  className="inline-block py-2 px-4 bg-white text-primary font-medium rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  Hubungi Kami
+                </Link>
+              </motion.div>
             </div>
           </div>
-          
-          {/* Custom CSS to hide scrollbar */}
-          <style jsx global>{`
-            .hide-scrollbar::-webkit-scrollbar {
-              display: none;
-            }
-            .hide-scrollbar {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-            }
-          `}</style>
         </div>
-      </section>
-    </>
+
+        {/* Gallery Section */}
+        <motion.div
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={fadeInUp}
+          className="mt-12"
+        >
+          <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
+            Galeri Kegiatan
+          </h2>
+          <div className="relative">
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: '.custom-swiper-button-next',
+                prevEl: '.custom-swiper-button-prev',
+              }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="relative"
+            >
+              {program.gallery.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={image.src}
+                        alt={image.caption}
+                        fill
+                        className="object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(image.src)}
+                      />
+                    </div>
+                    <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
+                      {image.caption}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              {/* 🔻 Panah kiri */}
+              <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer text-white hover:text-yellow-400">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </div>
+
+              {/* 🔺 Panah kanan */}
+              <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer text-white hover:text-yellow-400">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </Swiper>
+          </div>
+        </motion.div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={fadeInUp}
+          className="mt-12 text-center"
+        >
+          <Link
+            href="/#program"
+            className="inline-flex items-center py-3 px-6 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Kembali ke Program
+          </Link>
+        </motion.div>
+      </div>
+      {previewImage && (
+        <div
+          onClick={closeModal}
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center cursor-zoom-out transition-opacity duration-300 animate-fade-in"
+        >
+          <div className="relative w-auto max-w-full px-4">
+            <Image
+              src={previewImage}
+              alt="Preview"
+              layout="intrinsic"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="max-h-[80vh] w-auto h-auto object-contain rounded-lg shadow-xl mx-auto"
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default AktivitasUnitPage;
+export default AktivitasUnitDetail;
