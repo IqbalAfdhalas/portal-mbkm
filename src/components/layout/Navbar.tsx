@@ -1,8 +1,6 @@
 'use client';
 
-// src/components/layout/Navbar.tsx
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import ThemeToggle from '@/components/ui/ThemeToggle';
@@ -12,19 +10,28 @@ import LoginButton from '@/components/ui/LoginButton';
 import { useAuth } from '@/hooks/useAuth';
 import UserDropdown from '@/components/layout/UserDropdown';
 
+// Smooth scroll helper
+const NAVBAR_OFFSET = -5;
+
+const scrollToId = (id: string, offset: number = -100) => {
+  const el = document.getElementById(id);
+  if (el) {
+    const y = el.getBoundingClientRect().top + window.pageYOffset + offset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+};
+
 const Navbar = () => {
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  // Menggunakan scrollspy untuk mendeteksi section aktif
   const activeSection = useScrollspy(
     navigation.map(item => item.id),
     { threshold: 0.5 }
   );
 
-  // Effect untuk mendeteksi scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -34,7 +41,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -52,15 +58,12 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <a href="/" className="flex items-center">
           <motion.div
             className="flex items-center"
-            animate={{
-              scale: scrolled ? 0.85 : 1,
-            }}
+            animate={{ scale: scrolled ? 0.85 : 1 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Logo image - Support for transparent PNG */}
             <div className="relative w-8 h-8 mr-2">
               <Image
                 src="/images/logo_mbkm_white.png"
@@ -77,66 +80,64 @@ const Navbar = () => {
               BAST ANRI
             </span>
           </motion.div>
-        </Link>
+        </a>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          {navigation.map(item => (
-            <Link
-              key={item.id}
-              href={`/#${item.id}`}
-              className={`text-sm font-medium transition-colors relative px-2 py-1 ${
-                activeSection === item.id
-                  ? 'text-primary-light dark:text-blue-400'
-                  : 'text-gray-700 hover:text-primary-light dark:text-gray-300 dark:hover:text-blue-400'
-              }`}
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              {item.name}
+          {navigation.map(item => {
+            const showDots = hoveredItem === item.id || activeSection === item.id;
 
-              {/* Active indicator */}
-              {activeSection === item.id && (
-                <motion.span
-                  className="absolute bottom-[-4px] left-0 right-0 h-0.5 bg-primary-light dark:bg-blue-400"
-                  layoutId="activeSection"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                />
-              )}
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={e => {
+                  e.preventDefault();
+                  scrollToId(item.id, NAVBAR_OFFSET);
+                }}
+                className={`text-sm font-medium transition-colors relative px-2 py-1 ${
+                  activeSection === item.id
+                    ? 'text-primary-light dark:text-blue-400'
+                    : 'text-gray-700 hover:text-primary-light dark:text-gray-300 dark:hover:text-blue-400'
+                }`}
+                onMouseEnter={() => setHoveredItem(item.id)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                {item.name}
 
-              {/* Hover effect - More animated dots with smaller size */}
-              {hoveredItem === item.id && activeSection !== item.id && (
-                <motion.div
-                  className="absolute left-0 right-0 bottom-[-5px] flex justify-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
+                {showDots && (
                   <motion.div
-                    className="flex space-x-1"
-                    initial={{ y: -5 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.3 }}
+                    className="absolute left-0 right-0 bottom-[-5px] flex justify-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    {[...Array(5)].map((_, i) => (
-                      <motion.span
-                        key={i}
-                        className="h-1 w-1 rounded-full bg-primary-light dark:bg-blue-400"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{
-                          delay: i * 0.08,
-                          type: 'spring',
-                          stiffness: 400,
-                          damping: 10,
-                        }}
-                      />
-                    ))}
+                    <motion.div
+                      className="flex space-x-1"
+                      initial={{ y: -5 }}
+                      animate={{ y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {[...Array(5)].map((_, i) => (
+                        <motion.span
+                          key={i}
+                          className="h-1 w-1 rounded-full bg-primary-light dark:bg-blue-400"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{
+                            delay: i * 0.08,
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 10,
+                          }}
+                        />
+                      ))}
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              )}
-            </Link>
-          ))}
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Right side actions */}
@@ -182,18 +183,22 @@ const Navbar = () => {
         >
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             {navigation.map(item => (
-              <Link
+              <a
                 key={item.id}
-                href={`/#${item.id}`}
+                href={`#${item.id}`}
+                onClick={e => {
+                  e.preventDefault();
+                  scrollToId(item.id, NAVBAR_OFFSET);
+                  setMobileMenuOpen(false);
+                }}
                 className={`text-sm font-medium py-2 ${
                   activeSection === item.id
                     ? 'text-primary-light dark:text-blue-400'
                     : 'text-gray-700 dark:text-gray-300'
                 }`}
-                onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
-              </Link>
+              </a>
             ))}
             {!user && <LoginButton className="w-full mt-4" />}
           </div>
