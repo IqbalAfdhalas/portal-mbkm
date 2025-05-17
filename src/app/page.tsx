@@ -4,6 +4,7 @@ import About from '@/components/sections/About';
 import Program from '@/components/sections/Program';
 import Stats from '@/components/sections/Stats';
 import Directory from '@/components/sections/Directory';
+import Galery from '@/components/sections/Galery';
 import Contact from '@/components/sections/Contact';
 
 export default function HomePage() {
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Program />
       <Stats />
       <Directory /> 
+      <Galery />  
       <Contact />
     </main>
   );
