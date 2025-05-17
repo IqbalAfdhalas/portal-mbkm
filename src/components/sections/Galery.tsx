@@ -1,17 +1,31 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Play, Share2 } from 'lucide-react';
+import { useState } from 'react';
+import { Share2, Heart, Download, ExternalLink } from 'lucide-react';
+
+// Type definitions for gallery items
+interface GalleryItem {
+  id: string;
+  title: string;
+  category: string;
+  thumbnailUrl: string;
+  type: 'photo' | 'video';
+  publishedAt: string;
+  description?: string;
+  likes?: number;
+}
 
 // Sample gallery data - replace with your actual data source
-const sampleGalleryItems = [
+const galleryData: GalleryItem[] = [
   {
     id: '1',
     title: 'Kegiatan Seminar Nasional MBKM 2025',
     category: 'Seminar',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'photo',
-    publishedAt: '2025-05-01'
+    publishedAt: '2025-05-01',
+    description: 'Seminar nasional membahas perkembangan program MBKM di Indonesia',
+    likes: 42,
   },
   {
     id: '2',
@@ -19,7 +33,9 @@ const sampleGalleryItems = [
     category: 'Workshop',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'video',
-    publishedAt: '2025-04-25'
+    publishedAt: '2025-04-25',
+    description: 'Mahasiswa mempelajari teknik pengembangan web modern',
+    likes: 36,
   },
   {
     id: '3',
@@ -27,7 +43,9 @@ const sampleGalleryItems = [
     category: 'Kegiatan Kampus',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'photo',
-    publishedAt: '2025-04-20'
+    publishedAt: '2025-04-20',
+    description: 'Acara pelepasan mahasiswa magang ke berbagai industri partner',
+    likes: 29,
   },
   {
     id: '4',
@@ -35,7 +53,9 @@ const sampleGalleryItems = [
     category: 'Magang',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'video',
-    publishedAt: '2025-04-15'
+    publishedAt: '2025-04-15',
+    description: 'Kegiatan mahasiswa pertukaran di berbagai kampus mitra',
+    likes: 45,
   },
   {
     id: '5',
@@ -43,7 +63,9 @@ const sampleGalleryItems = [
     category: 'Kegiatan Kampus',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'photo',
-    publishedAt: '2025-04-10'
+    publishedAt: '2025-04-10',
+    description: 'Mahasiswa berkunjung ke perusahaan teknologi terkemuka',
+    likes: 38,
   },
   {
     id: '6',
@@ -51,174 +73,285 @@ const sampleGalleryItems = [
     category: 'Kegiatan Kampus',
     thumbnailUrl: '/api/placeholder/600/400',
     type: 'photo',
-    publishedAt: '2025-04-05'
-  }
+    publishedAt: '2025-04-05',
+    description: 'Perluasan kerjasama dengan mitra industri untuk program MBKM',
+    likes: 27,
+  },
 ];
 
+// Date formatter utility
+const formatDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return new Date(dateString).toLocaleDateString('id-ID', options);
+};
+
 // GalleryItem component
-const GalleryItem = ({ item }) => {
+const GalleryItem = ({
+  item,
+  onItemClick,
+}: {
+  item: GalleryItem;
+  onItemClick: (item: GalleryItem) => void;
+}) => {
   const [isHovered, setIsHovered] = useState(false);
-  
+  const [liked, setLiked] = useState(false);
+
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLiked(!liked);
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Share functionality can be implemented here
+    alert(`Berbagi: ${item.title}`);
+  };
+
   return (
-    <div 
-      className="relative rounded-lg overflow-hidden shadow-md transition-all duration-300 h-full"
-      style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
+    <div
+      className="relative rounded-lg overflow-hidden shadow-lg transition-all duration-300 h-full bg-white dark:bg-gray-800 cursor-pointer group"
+      style={{ transform: isHovered ? 'translateY(-5px)' : 'translateY(0)' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onItemClick(item)}
     >
-      <div className="relative w-full h-48 sm:h-56 md:h-64 bg-gray-200">
-        <img 
-          src={item.thumbnailUrl} 
-          alt={item.title} 
-          className="w-full h-full object-cover"
+      <div className="relative w-full h-52 sm:h-56 md:h-64 bg-gray-200 overflow-hidden">
+        <img
+          src={item.thumbnailUrl}
+          alt={item.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
         {item.type === 'video' && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 bg-blue-600/75 rounded-full flex items-center justify-center">
-              <Play color="white" size={24} />
+            <div className="w-14 h-14 bg-blue-600/75 rounded-full flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
             </div>
           </div>
         )}
-        {isHovered && (
-          <button 
-            className="absolute top-2 right-2 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full shadow-md"
-            onClick={(e) => {
-              e.stopPropagation();
-              // Share functionality can be implemented here
-              alert(`Sharing ${item.title}`);
-            }}
+
+        <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
+            onClick={handleShare}
+            aria-label="Share"
           >
-            <Share2 size={16} className="text-blue-600" />
+            <Share2 size={16} className="text-blue-600 dark:text-blue-400" />
           </button>
-        )}
+          <button
+            className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
+            onClick={handleLike}
+            aria-label="Like"
+          >
+            <Heart
+              size={16}
+              className={liked ? 'text-red-500 fill-red-500' : 'text-gray-600 dark:text-gray-400'}
+            />
+          </button>
+        </div>
       </div>
-      <div className={`absolute bottom-0 left-0 right-0 p-3 text-white transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
-        <div className="text-xs inline-block px-2 py-0.5 rounded bg-blue-600 mb-1">{item.category}</div>
-        <h3 className="font-medium text-sm sm:text-base line-clamp-2">{item.title}</h3>
+
+      <div className="p-4">
+        <div className="flex justify-between items-start mb-2">
+          <span className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
+            {item.category}
+          </span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            {formatDate(item.publishedAt)}
+          </span>
+        </div>
+        <h3 className="font-semibold text-sm sm:text-base text-gray-800 dark:text-white line-clamp-2 mb-2">
+          {item.title}
+        </h3>
+        {item.description && (
+          <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
+            {item.description}
+          </p>
+        )}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+            <Heart size={14} className="mr-1" />
+            <span>{item.likes || 0}</span>
+          </div>
+          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 flex items-center">
+            Detail <ExternalLink size={12} className="ml-1" />
+          </span>
+        </div>
       </div>
     </div>
   );
 };
 
-// Main Gallery Preview component
-export default function GalleryPreview() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(3);
-  const sliderRef = useRef(null);
-  const autoPlayRef = useRef(null);
-  const totalSlides = sampleGalleryItems.length;
-  
-  // Update visible count based on screen size
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setVisibleCount(1);
-      } else if (window.innerWidth < 1024) {
-        setVisibleCount(2);
-      } else {
-        setVisibleCount(3);
-      }
-    };
-    
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+// Modal component for detailed view
+const GalleryModal = ({
+  item,
+  isOpen,
+  onClose,
+}: {
+  item: GalleryItem | null;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  if (!isOpen || !item) return null;
 
-  // Auto slide every 5 seconds
-  useEffect(() => {
-    const play = () => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
-    };
-    
-    autoPlayRef.current = play;
-  }, [totalSlides]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (autoPlayRef.current) {
-        autoPlayRef.current();
-      }
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, []);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  // Close when clicking outside the modal content
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
   };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
-
-  // Create duplicated items array for infinite effect
-  const items = [...sampleGalleryItems, ...sampleGalleryItems];
-  
-  const translateValue = -currentSlide * (100 / visibleCount);
 
   return (
-    <div className="relative w-full py-8 px-4 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold font-heading text-gray-800 dark:text-white">Galeri</h2>
-          <a href="/galeri" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium transition-colors">
-            Lihat Semua
-          </a>
-        </div>
-
-        <div className="relative overflow-hidden" ref={sliderRef}>
-          <div 
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ 
-              transform: `translateX(${translateValue}%)`,
-              width: `${items.length * (100/visibleCount)}%` 
-            }}
-          >
-            {items.map((item, index) => (
-              <div 
-                key={`${item.id}-${index}`} 
-                className="px-2" 
-                style={{ width: `${100/visibleCount}%` }}
-              >
-                <GalleryItem item={item} />
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      onClick={handleBackdropClick}
+    >
+      <div
+        className="bg-white dark:bg-gray-800 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="relative">
+          <div className="relative aspect-video bg-gray-200">
+            <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
+            {item.type === 'video' && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-16 h-16 bg-blue-600/75 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700/75 transition-colors">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </div>
               </div>
-            ))}
+            )}
           </div>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white"
+            aria-label="Close"
+          >
+            ✕
+          </button>
         </div>
 
-        <div className="flex justify-center mt-6 gap-2">
-          <button 
-            onClick={prevSlide} 
-            className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft size={20} className="text-gray-700 dark:text-gray-300" />
-          </button>
-          
-          {/* Dots for each slide (limited to original items) */}
-          <div className="flex items-center gap-1 mx-2">
-            {sampleGalleryItems.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  idx === currentSlide % totalSlides ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
+              {item.category}
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {formatDate(item.publishedAt)}
+            </span>
           </div>
-          
-          <button 
-            onClick={nextSlide} 
-            className="p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Next slide"
-          >
-            <ChevronRight size={20} className="text-gray-700 dark:text-gray-300" />
-          </button>
+
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{item.title}</h2>
+
+          {item.description && (
+            <p className="text-gray-600 dark:text-gray-300 mb-6">{item.description}</p>
+          )}
+
+          <div className="flex items-center justify-between border-t dark:border-gray-700 pt-4">
+            <div className="flex items-center gap-4">
+              <button className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Heart size={18} />
+                <span>Suka ({item.likes})</span>
+              </button>
+              <button className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Share2 size={18} />
+                <span>Bagikan</span>
+              </button>
+            </div>
+
+            <button className="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-medium hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+              <Download size={18} />
+              <span>Unduh</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
+  );
+};
+
+// Main Gallery component
+export default function Gallery() {
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Sort items by likes to get the most popular ones
+  const popularItems = [...galleryData].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 4);
+
+  // Handle item click to open modal
+  const handleItemClick = (item: GalleryItem) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <section id="Galery" className="relative w-full py-12 px-4 bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto">
+        <div className="text-center mb-12">
+          <span className="text-sm font-medium text-secondary uppercase tracking-wider">
+            Program Unggulan
+          </span>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
+            Galeri MBKM di BAST ANRI
+          </h2>
+          <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300 text-sm">
+            Berikut dokumentasi kegiatan MBKM yang telah dilaksanakan oleh mahasiswa di lingkungan
+            BAST ANRI.
+          </p>
+        </div>
+
+        {/* Grid layout with 2x2 items */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {popularItems.map(item => (
+            <GalleryItem key={item.id} item={item} onItemClick={handleItemClick} />
+          ))}
+        </div>
+
+        {/* Lihat Semua button moved to the bottom */}
+        <div className="flex justify-center mt-10">
+          <a
+            href="/galeri"
+            className="px-6 py-3 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-300 text-sm font-medium flex items-center"
+          >
+            Lihat Semua
+            <ExternalLink size={16} className="ml-2" />
+          </a>
+        </div>
+      </div>
+
+      {/* Modal for item details */}
+      <GalleryModal item={selectedItem} isOpen={isModalOpen} onClose={handleCloseModal} />
+    </section>
   );
 }
