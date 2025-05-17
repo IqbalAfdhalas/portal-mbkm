@@ -225,7 +225,7 @@ const Hero = () => {
             initial="hidden"
             animate="visible"
           >
-            Portal Kolaborasi <br />
+            KOLABORAKSI <br />
             {/* Teks untuk light mode */}
             <span className="block dark:hidden bg-gradient-to-r from-gray-900 to-blue-700 bg-clip-text text-transparent drop-shadow-md">
               MBKM x BAST ANRI
@@ -244,10 +244,12 @@ const Hero = () => {
             initial="hidden"
             animate="visible"
           >
-            Portal kolaboratif antara MBKM dan Balai Arsip Statis dan Tsunami ANRI, membuka peluang
-            mahasiswa untuk belajar dan berkontribusi dalam pelestarian arsip statis dan pengetahuan
-            kebencanaan.
+            Laman kolaboratif antara Merdeka Belajar Kampus Merdeka dan Balai Arsip Statis dan
+            Tsunami Arsip Nasional Republik Indonesia membuka peluang bagi mahasiswa untuk belajar
+            dan berkontribusi dalam pelestarian arsip statis serta pengetahuan kebencanaan.
           </motion.p>
+
+          
 
           {/* CTA Buttons */}
           <motion.div
