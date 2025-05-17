@@ -9,6 +9,7 @@ import { FaGraduationCap, FaBook } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import { useTheme } from 'next-themes';
+import { FaChevronDown } from 'react-icons/fa';
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -114,6 +115,26 @@ const Hero = () => {
 
     return count;
   };
+
+  const glowSize = 'w-[180%] h-[75%]';
+  const glowOpacity = 'opacity-100 dark:opacity-100';
+
+  const glowGradients = [
+    'radial-gradient(ellipse at center, #ec4899aa, #a855f7aa, transparent)', // pink-fuchsia
+    'radial-gradient(ellipse at center, #22d3eeaa, #3b82f6aa, transparent)', // cyan-blue
+    'radial-gradient(ellipse at center, #facc15aa, #f97316aa, transparent)', // amber-orange
+    'radial-gradient(ellipse at center, #a3e635aa, #34d399aa, transparent)', // lime-green
+    'radial-gradient(ellipse at center, #8b5cf6aa, #6366f1aa, transparent)', // purple-indigo
+  ];
+
+  const [glowIndex, setGlowIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGlowIndex(prev => (prev + 1) % glowGradients.length);
+    }, 3000); // Ganti warna tiap 3 detik
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -295,18 +316,31 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           <div className="relative w-full aspect-square">
-            {/* Placeholder for image - replace with your actual image */}
-            <div
-              className="absolute inset-0 bg-gradient-to-br from-blue-400/30 to-secondary/30 rounded-full blur-3xl"
-              style={{
-                transform: `translate(${mousePosition.x * 10}px, ${mousePosition.y * 10}px)`,
-              }}
-            />
             <div className="relative w-full max-w-sm mx-auto transform translate-y-16 -translate-x-4 transition-transform duration-500 hover:scale-105">
+              {/* 💡 GLOW MASUK SINI */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                <motion.div
+                  className={`${glowSize} blur-[100px] opacity-100 brightness-150 saturate-200 mix-blend-screen`}
+                  style={{
+                    background: glowGradients[glowIndex],
+                    transform: `translate(${mousePosition.x * 3}px, ${mousePosition.y * 3}px)`,
+                  }}
+                  animate={{
+                    scale: [1, 1.07, 1],
+                    opacity: [0.6, 1, 0.6],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                />
+              </div>
+
               {/* Shadow melayang */}
               <div className="absolute inset-0 -bottom-4 blur-2xl bg-black/20 rounded-2xl z-0"></div>
 
-              {/* Gambar poster dengan efek depth */}
+              {/* Gambar poster */}
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
                 <Image
                   src="/images/hero-illustration.png"
@@ -362,10 +396,34 @@ const Hero = () => {
          250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,
          214.34,3V120H0V95.8C59.44,118.92,140.97,111.31,221.93,94.67c93.18-19.18,
          143.24-43.43,199.39-56.61Z"
-            className="fill-[#f9f9fc] dark:fill-gray-900"
+            className="fill-[#f9f9fc] dark:fill-[#2D3748]"
           />
         </svg>
       </div>
+      {/* Scroll Down Arrows */}
+      <motion.div
+        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-0 text-gray-600 dark:text-white z-20"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        {[0, 1, 2].map(i => (
+          <motion.div
+            key={i}
+            animate={{
+              opacity: [0.3, 1, 0.3],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.3, // ini bikin giliran nyala
+            }}
+          >
+            <FaChevronDown className="text-xl" />
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 };

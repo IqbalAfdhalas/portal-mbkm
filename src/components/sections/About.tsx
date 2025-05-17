@@ -30,7 +30,10 @@ const About = () => {
   ];
 
   return (
-    <section id="tentang" className="py-20 bg-gray-50 dark:bg-dark-surface">
+    <section
+      id="tentang"
+      className="py-20 bg-gray-50 dark:bg-gradient-to-b dark:from-[#2D3748] dark:to-[#1A202C]"
+    >
       <div className="container mx-auto max-w-screen-xl px-4">
         <motion.div
           className="text-center mb-16"
@@ -60,7 +63,7 @@ const About = () => {
           >
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image
-                src="/images/mbkm-about.jpg"
+                src="/images/Pelayanan_Unit.jpg"
                 alt="Kegiatan mahasiswa dalam program MBKM"
                 fill
                 className="object-cover"

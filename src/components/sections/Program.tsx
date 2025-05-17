@@ -191,7 +191,10 @@ const ProgramPreview = () => {
   };
 
   return (
-    <section id="program" className="py-20 min-h-[100vh] bg-gray-50 dark:bg-dark-surface">
+    <section
+      id="program"
+      className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
+    >
       <div className="container mx-auto max-w-screen-xl px-4">
         <div className="text-center mb-12">
           <span className="text-sm font-medium text-secondary uppercase tracking-wider">
