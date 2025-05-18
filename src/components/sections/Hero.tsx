@@ -244,8 +244,8 @@ const Hero = () => {
             initial="hidden"
             animate="visible"
           >
-            Laman kolaboratif antara Merdeka Belajar Kampus Merdeka dan Balai Arsip Statis dan
-            Tsunami Arsip Nasional Republik Indonesia membuka peluang bagi mahasiswa untuk belajar
+            Laman kolaboratif antara Mahasiswa Merdeka Belajar Kampus Merdeka (MBKM) & Balai Arsip Statis
+            Tsunami Arsip Nasional Republik Indonesia (BAST ANRI) membuka peluang bagi mahasiswa untuk belajar
             dan berkontribusi dalam pelestarian arsip statis serta pengetahuan kebencanaan.
           </motion.p>
 
