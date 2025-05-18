@@ -1,0 +1,464 @@
+'use client';
+
+import Image from 'next/image';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Accordion } from './Accordion';
+import { collaborationData, rawFeatures } from '@/data/about/collaboration';
+import { ExternalLink, Handshake, Building, Users, FileText, Award } from 'lucide-react';
+import { useTheme } from 'next-themes';
+
+export const CollaborationContent = () => {
+  const [activeSection, setActiveSection] = useState('overview');
+  const { theme } = useTheme();
+  const colorVariants = [
+    'bg-gradient-to-br from-pink-500 to-red-500',
+    'bg-gradient-to-br from-orange-400 to-yellow-400',
+    'bg-gradient-to-br from-green-500 to-teal-400',
+    'bg-gradient-to-br from-blue-500 to-cyan-500',
+    'bg-gradient-to-br from-purple-500 to-indigo-500',
+    'bg-gradient-to-br from-rose-500 to-pink-400',
+    'bg-gradient-to-br from-yellow-400 to-lime-400',
+  ];
+
+  // Generate features dengan warna acak berdasarkan index
+  const getRandomColor = () => colorVariants[Math.floor(Math.random() * colorVariants.length)];
+
+  const features = rawFeatures.map(item => ({
+    ...item,
+    bgColor: getRandomColor(),
+  }));
+
+  // Theme-based styling aligned with MBKMContent styling
+  const themeStyles = {
+    light: {
+      card: 'bg-white/90 border border-blue-100 shadow-lg shadow-blue-100/20',
+      accent: 'bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-400',
+      badge: 'bg-blue-100 text-blue-800',
+      buttonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white',
+      buttonSecondary: 'bg-blue-100 hover:bg-blue-200 text-blue-800',
+      divider: 'border-blue-100',
+      icon: 'text-blue-600',
+      featureCard: 'bg-white/95',
+      text: 'text-gray-700',
+      headingText: 'text-gray-800',
+      statsCard: 'bg-blue-50/80',
+    },
+    dark: {
+      card: 'bg-gray-800/95 border border-gray-700 shadow-lg shadow-blue-900/20',
+      accent: 'bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900',
+      badge: 'bg-gray-700 text-blue-300',
+      buttonPrimary: 'bg-blue-700 hover:bg-blue-800 text-white',
+      buttonSecondary: 'bg-gray-800 hover:bg-gray-700 text-blue-300',
+      divider: 'border-gray-700',
+      icon: 'text-blue-400',
+      featureCard: 'bg-gray-800/80',
+      text: 'text-gray-300',
+      headingText: 'text-gray-100',
+      statsCard: 'bg-gray-800/60',
+    },
+  };
+
+  const currentTheme = theme === 'dark' ? themeStyles.dark : themeStyles.light;
+
+  // Navigation items for the collaboration sections
+  const navItems = [
+    { id: 'overview', label: 'Ringkasan', icon: FileText },
+    { id: 'partners', label: 'Mitra Kerja Sama', icon: Building },
+    { id: 'programs', label: 'Program', icon: Award },
+    { id: 'testimonials', label: 'Testimoni', icon: Users },
+    { id: 'contact', label: 'Kontak', icon: Handshake },
+  ];
+
+  return (
+    <div className="space-y-8">
+      {/* Dynamic Header Section */}
+      <div className={`rounded-xl overflow-hidden ${currentTheme.card} backdrop-blur-sm`}>
+        <div className={`${currentTheme.accent} p-8 text-white`}>
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            <div className="md:w-2/3">
+              <motion.h2
+                className="text-2xl md:text-3xl font-bold mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {collaborationData.headerTitle}
+              </motion.h2>
+              <motion.p
+                className="text-lg leading-relaxed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                {collaborationData.headerDescription}
+              </motion.p>
+
+              <motion.div
+                className="flex flex-wrap gap-3 mt-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                {collaborationData.tags &&
+                  collaborationData.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 rounded-full bg-white/20 text-sm font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+              </motion.div>
+            </div>
+            <div className="md:w-1/3 flex justify-center">
+              <motion.div
+                className="relative w-full h-52 md:h-64"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                <Image
+                  src={collaborationData.headerImageSrc}
+                  alt="Ilustrasi Kolaborasi"
+                  fill
+                  className="object-contain"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        {/* Collaboration Stats with animated counters */}
+        {collaborationData.stats && (
+          <div className="p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {collaborationData.stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className={`text-center p-4 rounded-lg ${currentTheme.statsCard}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
+                >
+                  <span className={`text-3xl font-bold ${currentTheme.icon}`}>{stat.value}</span>
+                  <p className={`text-sm mt-1 ${currentTheme.text}`}>{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Secondary Navigation */}
+      <div className="flex flex-wrap gap-2 justify-center mb-8">
+        {navItems.map(item => (
+          <button
+            key={item.id}
+            onClick={() => setActiveSection(item.id)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ${
+              activeSection === item.id ? currentTheme.buttonPrimary : currentTheme.buttonSecondary
+            }`}
+          >
+            <item.icon className="w-4 h-4" />
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Dynamic Content Sections */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeSection}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Overview Section */}
+          {activeSection === 'overview' && (
+            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
+              <h3 className={`text-xl font-bold mb-4 ${currentTheme.headingText}`}>
+                Ringkasan Kolaborasi
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {features.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    className="rounded-xl overflow-hidden shadow-md"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                  >
+                    <div className={`${feature.bgColor} p-4 text-white`}>
+                      <h4 className="text-lg font-bold">{feature.title}</h4>
+                    </div>
+                    <div className={`p-4 ${currentTheme.featureCard}`}>
+                      <p className={currentTheme.text}>{feature.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {collaborationData.overviewContent && (
+                <div
+                  className="prose prose-sm md:prose lg:prose-lg max-w-none dark:prose-invert
+                  prose-p:leading-relaxed prose-p:text-justify prose-p:mb-5 prose-p:indent-6
+                  prose-li:mb-2 prose-li:ml-6 list-disc prose-a:text-blue-600 dark:prose-a:text-blue-400"
+                  dangerouslySetInnerHTML={{ __html: collaborationData.overviewContent }}
+                />
+              )}
+            </div>
+          )}
+
+          {/* Partners Section */}
+          {activeSection === 'partners' && (
+            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
+              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
+                Mitra Kerja Sama
+              </h3>
+
+              <p className={`${currentTheme.text} mb-6`}>
+                ANRI berkolaborasi dengan berbagai mitra dari perguruan tinggi, instansi pemerintah,
+                dan lembaga kearsipan untuk pengembangan bidang kearsipan Indonesia.
+              </p>
+
+              {collaborationData.partners && (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {collaborationData.partners.map((partner, index) => (
+                    <motion.div
+                      key={index}
+                      className={`border ${currentTheme.divider} rounded-lg p-4 flex flex-col items-center text-center backdrop-blur-sm`}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.4 }}
+                    >
+                      <div className="relative w-16 h-16 mb-3">
+                        <Image
+                          src={`/images/partners/${partner.logo}`}
+                          alt={partner.name}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <h4 className={`font-medium ${currentTheme.headingText} text-sm`}>
+                        {partner.name}
+                      </h4>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {partner.category}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Programs Section */}
+          {activeSection === 'programs' && (
+            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
+              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
+                Program Kolaborasi
+              </h3>
+
+              {collaborationData.programs && (
+                <div className="relative">
+                  {/* Timeline line */}
+                  <div
+                    className={`absolute left-4 top-0 bottom-0 w-1 ${currentTheme.accent}`}
+                  ></div>
+
+                  {/* Timeline items */}
+                  <div className="space-y-8 pl-12 relative">
+                    {collaborationData.programs.map((program, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.15, duration: 0.5 }}
+                        className="relative"
+                      >
+                        {/* Timeline dot */}
+                        <div
+                          className={`absolute -left-12 w-8 h-8 rounded-full ${currentTheme.accent} flex items-center justify-center text-white font-bold`}
+                        >
+                          {index + 1}
+                        </div>
+
+                        <div
+                          className={`rounded-lg border ${currentTheme.divider} p-4 backdrop-blur-sm`}
+                        >
+                          <span
+                            className={`inline-block px-3 py-1 rounded-full text-xs ${currentTheme.badge} mb-2`}
+                          >
+                            {program.type}
+                          </span>
+                          <h4 className={`font-bold ${currentTheme.headingText} mb-2`}>
+                            {program.title}
+                          </h4>
+                          <p className={currentTheme.text}>{program.description}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Testimonials Section */}
+          {activeSection === 'testimonials' && (
+            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
+              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
+                Testimoni Peserta
+              </h3>
+
+              {collaborationData.testimonials && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {collaborationData.testimonials.map((testimonial, index) => (
+                    <motion.div
+                      key={index}
+                      className={`border ${currentTheme.divider} rounded-lg overflow-hidden`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                    >
+                      <div className="relative h-48">
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="p-4 backdrop-blur-sm">
+                        <h4 className={`font-bold ${currentTheme.headingText}`}>
+                          {testimonial.name}
+                        </h4>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                          {testimonial.university} - {testimonial.program}
+                        </p>
+                        <p className={currentTheme.text}>{testimonial.quote}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Contact Section */}
+          {activeSection === 'contact' && (
+            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
+              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
+                Kontak Kerja Sama
+              </h3>
+
+              {collaborationData.contactInfo && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    className={`p-6 border ${currentTheme.divider} rounded-lg backdrop-blur-sm`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <h4 className={`font-bold ${currentTheme.headingText} mb-4`}>
+                      Informasi Kontak
+                    </h4>
+
+                    <div className="space-y-3">
+                      {collaborationData.contactInfo.map((contact, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className={`mt-1 ${currentTheme.icon}`}>
+                            {contact.icon && <contact.icon className="w-5 h-5" />}
+                          </div>
+                          <div>
+                            <p className={`font-medium ${currentTheme.headingText}`}>
+                              {contact.label}
+                            </p>
+                            <p className={currentTheme.text}>{contact.value}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className={`p-6 border ${currentTheme.divider} rounded-lg backdrop-blur-sm`}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <h4 className={`font-bold ${currentTheme.headingText} mb-4`}>Alamat</h4>
+
+                    <div className="mb-4">
+                      <p className={currentTheme.text}>
+                        {collaborationData.address && collaborationData.address.street}
+                        <br />
+                        {collaborationData.address && collaborationData.address.city},{' '}
+                        {collaborationData.address && collaborationData.address.zipCode}
+                        <br />
+                        {collaborationData.address && collaborationData.address.province}
+                      </p>
+                    </div>
+
+                    {collaborationData.mapEmbedUrl && (
+                      <div className="relative h-48 rounded-lg overflow-hidden">
+                        <iframe
+                          src={collaborationData.mapEmbedUrl}
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title="Lokasi ANRI"
+                        ></iframe>
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+              )}
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Accordion Content - FAQ */}
+      <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6 mt-8`}>
+        <h3 className={`text-xl font-bold mb-4 ${currentTheme.headingText}`}>
+          Informasi Kolaborasi
+        </h3>
+        <div className={`border rounded-lg overflow-hidden divide-y ${currentTheme.divider}`}>
+          {collaborationData.accordionItems.map(item => (
+            <Accordion
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              content={item.content}
+              isOpenDefault={item.isOpen}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* External Link - Call to Action */}
+      {collaborationData.externalLink && (
+        <div className="flex justify-center mt-8">
+          <motion.a
+            href={collaborationData.externalLink.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center px-6 py-3 ${currentTheme.buttonPrimary} font-medium rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {collaborationData.externalLink.label}
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </motion.a>
+        </div>
+      )}
+    </div>
+  );
+};

@@ -11,20 +11,23 @@ export const useScrollspy = (elementIds: string[], options: UseScrollspyOptions 
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
-    const { threshold = 0.1, rootMargin = '0px 0px -20% 0px' } = options;
+    // Ubah threshold dan rootMargin agar lebih sesuai untuk deteksi section
+    const { threshold = 0.3, rootMargin = '-80px 0px -40% 0px' } = options;
 
     const observer = new IntersectionObserver(
       entries => {
+        // Dari entries yang terlihat, prioritaskan yang paling tinggi intersectionRatio
         const visibleEntries = entries
           .filter(entry => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
         if (visibleEntries.length > 0) {
+          // Set activeId ke ID element yang paling terlihat
           setActiveId(visibleEntries[0].target.id);
         }
       },
       {
-        threshold,
+        threshold: [threshold, 0.5, 0.75], // Tambahkan multiple threshold untuk deteksi lebih baik
         rootMargin,
       }
     );
@@ -42,26 +45,64 @@ export const useScrollspy = (elementIds: string[], options: UseScrollspyOptions 
     };
   }, [elementIds, options]);
 
-  // ⬇ Tambahkan bagian ini
+  // Tambahkan handler untuk manual scroll juga
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleScroll = () => {
+      // Hitung visibility setiap section
+      let mostVisibleId = null;
+      let maxVisiblePercentage = 0;
+
+      // Iterasi melalui semua section yang kita spy
       elementIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top >= 0 && rect.top < window.innerHeight * 0.6) {
-            setActiveId(id);
-          }
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        const rect = element.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        // Bagian elemen yang terlihat di viewport
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(windowHeight, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+        // Persentase elemen yang terlihat
+        const visiblePercentage = visibleHeight / element.clientHeight;
+
+        // Berikan preferensi pada elemen yang berada di bagian atas viewport
+        // dengan menambahkan bobot berdasarkan posisi
+        let positionBonus = 0;
+        if (rect.top <= 100 && rect.bottom >= windowHeight * 0.3) {
+          positionBonus = 0.3; // Bonus untuk elemen di atas viewport
+        }
+
+        const effectiveVisibility = visiblePercentage + positionBonus;
+
+        if (effectiveVisibility > maxVisiblePercentage) {
+          maxVisiblePercentage = effectiveVisibility;
+          mostVisibleId = id;
         }
       });
+
+      if (mostVisibleId && maxVisiblePercentage > 0.1) {
+        setActiveId(mostVisibleId);
+      }
     };
 
+    // Handler untuk perubahan hash URL
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && elementIds.includes(hash)) {
+        setActiveId(hash);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('hashchange', handleHashChange);
-    window.addEventListener('load', handleHashChange);
+    handleScroll(); // Periksa posisi scroll saat pertama kali dimuat
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('hashchange', handleHashChange);
-      window.removeEventListener('load', handleHashChange);
     };
   }, [elementIds]);
 

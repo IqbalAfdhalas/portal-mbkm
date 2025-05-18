@@ -25,7 +25,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Kunjungan ke Dalam BAST ANRI',
-      icon: '/images/icons/visit-in.svg',
+      icon: '/images/ChatGPT Image 18 Mei 2025, 11.03.22.png',
       description: 'Jelajahi dunia arsip lewat tur seru langsung di BAST ANRI!',
       features: [
         'Tur Ruang Arsip',
