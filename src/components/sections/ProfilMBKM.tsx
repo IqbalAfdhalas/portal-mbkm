@@ -3,8 +3,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiGrid, FiList } from 'react-icons/fi';
 import ProfileCard from '@/components/ui/ProfileCard';
+import ProfileListItem from '@/components/ui/ProfileListItem';
 import StatisticsCard from '@/components/ui/StatisticsCard';
 import { profileData } from '@/constants/profileData';
 
@@ -12,17 +13,21 @@ import { profileData } from '@/constants/profileData';
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
 type Program = 'MI' | 'IK' | 'Arsip' | 'Perpustakaan' | 'Semua';
 type Batch = '2022' | '2023' | '2024' | 'Semua';
+type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
+type ViewMode = 'grid' | 'list';
 
 const ProfilMBKM = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
   const [selectedBatch, setSelectedBatch] = useState<Batch>('Semua');
   const [selectedRole, setSelectedRole] = useState<Role>('Semua');
+  const [selectedUnit, setSelectedUnit] = useState<Unit>('Semua');
   const [filteredData, setFilteredData] = useState(profileData);
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const cardsPerPage = 8;
+  const cardsPerPage = viewMode === 'grid' ? 8 : 10;
 
   // Calculate statistics
   const stats = {
@@ -63,9 +68,16 @@ const ProfilMBKM = () => {
       result = result.filter(profile => profile.peran === selectedRole);
     }
 
+    // Unit filter (only applies to Mentor BAST ANRI)
+    if (selectedUnit !== 'Semua') {
+      result = result.filter(
+        profile => profile.peran !== 'Mentor BAST ANRI' || profile.unit === selectedUnit
+      );
+    }
+
     setFilteredData(result);
     setCurrentPage(1); // Reset to first page after filtering
-  }, [searchTerm, selectedProgram, selectedBatch, selectedRole]);
+  }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit]);
 
   // Group profiles by role
   const pembimbingKampus = filteredData.filter(profile => profile.peran === 'Pembimbing Kampus');
@@ -112,6 +124,20 @@ const ProfilMBKM = () => {
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRole(e.target.value as Role);
+    // Reset unit filter when changing role
+    if (e.target.value !== 'Mentor BAST ANRI') {
+      setSelectedUnit('Semua');
+    }
+  };
+
+  const handleUnitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedUnit(e.target.value as Unit);
+  };
+
+  // Toggle view mode
+  const toggleViewMode = (mode: ViewMode) => {
+    setViewMode(mode);
+    setCurrentPage(1); // Reset to first page when changing view mode
   };
 
   // Pagination functions
@@ -142,19 +168,29 @@ const ProfilMBKM = () => {
   };
 
   // Render paginated cards
-  const renderPaginatedCards = (data: typeof profileData, role: string) => {
+  const renderPaginatedProfiles = (data: typeof profileData, role: string) => {
     const paginatedData = paginate(data, currentPage);
     const totalPages = Math.ceil(data.length / cardsPerPage);
 
     return (
       <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {paginatedData.map(profile => (
-            <motion.div key={profile.id} variants={itemVariants}>
-              <ProfileCard profile={profile} />
-            </motion.div>
-          ))}
-        </div>
+        {viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {paginatedData.map(profile => (
+              <motion.div key={profile.id} variants={itemVariants}>
+                <ProfileCard profile={profile} />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {paginatedData.map(profile => (
+              <motion.div key={profile.id} variants={itemVariants}>
+                <ProfileListItem profile={profile} />
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* Pagination controls */}
         {data.length > cardsPerPage && (
@@ -211,8 +247,8 @@ const ProfilMBKM = () => {
             Profil MBKM BAST ANRI
           </h2>
           <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-            Program kolaborasi antara BAST ANRI dengan berbagai perguruan tinggi untuk memberikan
-            pengalaman praktis kepada mahasiswa dalam bidang kearsipan.
+            Direktori lengkap seluruh anggota program MBKM BAST ANRI, termasuk mahasiswa, pembimbing
+            kampus, dan mentor BAST ANRI dari berbagai program studi, angkatan, dan unit kerja.
           </p>
         </div>
 
@@ -251,7 +287,7 @@ const ProfilMBKM = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-12 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
         >
-          <div className="flex flex-col md:flex-row md:items-center gap-4">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
             {/* Search box */}
             <div className="relative flex-grow">
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -264,50 +300,97 @@ const ProfilMBKM = () => {
               />
             </div>
 
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-3 md:w-auto">
-              <div className="flex items-center gap-2">
-                <FiFilter className="text-gray-400" />
-                <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                  Filter:
-                </span>
-              </div>
+            {/* View mode toggle */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => toggleViewMode('grid')}
+                className={`flex items-center justify-center p-2 rounded-md ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-gray-600 text-primary-light shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+                aria-label="Grid view"
+              >
+                <FiGrid size={18} />
+              </button>
+              <button
+                onClick={() => toggleViewMode('list')}
+                className={`flex items-center justify-center p-2 rounded-md ${
+                  viewMode === 'list'
+                    ? 'bg-white dark:bg-gray-600 text-primary-light shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+                aria-label="List view"
+              >
+                <FiList size={18} />
+              </button>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <select
-                  value={selectedProgram}
-                  onChange={handleProgramChange}
-                  className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
-                >
-                  <option value="Semua">Semua Prodi</option>
-                  <option value="MI">Manajemen Informatika</option>
-                  <option value="IK">Ilmu Komunikasi</option>
-                  <option value="Arsip">Arsip</option>
-                  <option value="Perpustakaan">Perpustakaan</option>
-                </select>
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex items-center gap-2">
+              <FiFilter className="text-gray-400" />
+              <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                Filter:
+              </span>
+            </div>
 
-                <select
-                  value={selectedBatch}
-                  onChange={handleBatchChange}
-                  className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
-                >
-                  <option value="Semua">Semua Angkatan</option>
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
-                </select>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-grow">
+              <select
+                value={selectedRole}
+                onChange={handleRoleChange}
+                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+              >
+                <option value="Semua">Semua Peran</option>
+                <option value="Mahasiswa">Mahasiswa</option>
+                <option value="Pembimbing Kampus">Pembimbing Kampus</option>
+                <option value="Mentor BAST ANRI">Mentor BAST ANRI</option>
+              </select>
 
+              <select
+                value={selectedProgram}
+                onChange={handleProgramChange}
+                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+              >
+                <option value="Semua">Semua Prodi</option>
+                <option value="MI">Manajemen Informatika</option>
+                <option value="IK">Ilmu Komunikasi</option>
+                <option value="Arsip">Arsip</option>
+                <option value="Perpustakaan">Perpustakaan</option>
+              </select>
+
+              <select
+                value={selectedBatch}
+                onChange={handleBatchChange}
+                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+              >
+                <option value="Semua">Semua Angkatan</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+              </select>
+
+              {/* Only show Unit filter when Peran is Mentor BAST ANRI */}
+              {(selectedRole === 'Semua' || selectedRole === 'Mentor BAST ANRI') && (
                 <select
-                  value={selectedRole}
-                  onChange={handleRoleChange}
-                  className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+                  value={selectedUnit}
+                  onChange={handleUnitChange}
+                  className={`px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white ${
+                    selectedRole !== 'Mentor BAST ANRI' && selectedRole !== 'Semua'
+                      ? 'opacity-50'
+                      : ''
+                  }`}
+                  disabled={selectedRole !== 'Mentor BAST ANRI' && selectedRole !== 'Semua'}
                 >
-                  <option value="Semua">Semua Peran</option>
-                  <option value="Mahasiswa">Mahasiswa</option>
-                  <option value="Pembimbing Kampus">Pembimbing Kampus</option>
-                  <option value="Mentor BAST ANRI">Mentor BAST ANRI</option>
+                  <option value="Semua">Semua Unit</option>
+                  <option value="Akuisisi">Akuisisi</option>
+                  <option value="Pengolahan">Pengolahan</option>
+                  <option value="Preservasi">Preservasi</option>
+                  <option value="Pelayanan">Pelayanan</option>
+                  <option value="Tata Usaha">Tata Usaha</option>
                 </select>
-              </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -329,7 +412,7 @@ const ProfilMBKM = () => {
               </span>
             </div>
 
-            {renderPaginatedCards(pembimbingKampus, 'Pembimbing Kampus')}
+            {renderPaginatedProfiles(pembimbingKampus, 'Pembimbing Kampus')}
           </motion.div>
         )}
 
@@ -350,7 +433,7 @@ const ProfilMBKM = () => {
               </span>
             </div>
 
-            {renderPaginatedCards(mentorBASTANRI, 'Mentor BAST ANRI')}
+            {renderPaginatedProfiles(mentorBASTANRI, 'Mentor BAST ANRI')}
           </motion.div>
         )}
 
@@ -366,7 +449,7 @@ const ProfilMBKM = () => {
               </span>
             </div>
 
-            {renderPaginatedCards(mahasiswa, 'Mahasiswa')}
+            {renderPaginatedProfiles(mahasiswa, 'Mahasiswa')}
           </motion.div>
         )}
 
@@ -401,6 +484,7 @@ const ProfilMBKM = () => {
                   setSelectedProgram('Semua');
                   setSelectedBatch('Semua');
                   setSelectedRole('Semua');
+                  setSelectedUnit('Semua');
                 }}
                 className="px-6 py-2 bg-primary-light text-white rounded-lg hover:bg-primary transition-colors dark:bg-primary-light dark:hover:bg-primary"
               >

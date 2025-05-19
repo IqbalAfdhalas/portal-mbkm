@@ -60,7 +60,6 @@ export const MBKMContent = () => {
     { id: 'overview', label: 'Ringkasan', icon: Book },
     { id: 'benefits', label: 'Manfaat', icon: Award },
     { id: 'timeline', label: 'Timeline', icon: Calendar },
-    { id: 'partners', label: 'Mitra', icon: Users },
     { id: 'success-stories', label: 'Kisah Sukses', icon: Rocket },
   ];
 
@@ -282,47 +281,6 @@ export const MBKMContent = () => {
                     </motion.div>
                   ))}
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Partners Section */}
-          {activeSection === 'partners' && (
-            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
-              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Mitra Kerja Sama
-              </h3>
-
-              <p className={`${currentTheme.text} mb-6`}>
-                MBKM berkolaborasi dengan berbagai mitra dari industri, institusi pemerintah, dan
-                lembaga non-profit untuk memberikan pengalaman belajar terbaik.
-              </p>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {mbkmData.partners.map((partner, index) => (
-                  <motion.div
-                    key={index}
-                    className={`border ${currentTheme.divider} rounded-lg p-4 flex flex-col items-center text-center backdrop-blur-sm`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
-                  >
-                    <div className="relative w-16 h-16 mb-3">
-                      <Image
-                        src={`/images/partners/${partner.logo}`}
-                        alt={partner.name}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                    <h4 className={`font-medium ${currentTheme.headingText} text-sm`}>
-                      {partner.name}
-                    </h4>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {partner.category}
-                    </span>
-                  </motion.div>
-                ))}
               </div>
             </div>
           )}
