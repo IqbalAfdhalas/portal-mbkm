@@ -1,357 +1,447 @@
+// src/components/sections/Galery.tsx
 'use client';
 
-import { useState } from 'react';
-import { Share2, Heart, Download, ExternalLink } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, X, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-// Type definitions for gallery items
-interface GalleryItem {
-  id: string;
-  title: string;
-  category: string;
-  thumbnailUrl: string;
-  type: 'photo' | 'video';
-  publishedAt: string;
-  description?: string;
-  likes?: number;
-}
-
-// Sample gallery data - replace with your actual data source
-const galleryData: GalleryItem[] = [
+// Demo data for gallery images
+const demoImages = [
   {
-    id: '1',
-    title: 'Kegiatan Seminar Nasional MBKM 2025',
-    category: 'Seminar',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'photo',
-    publishedAt: '2025-05-01',
-    description: 'Seminar nasional membahas perkembangan program MBKM di Indonesia',
-    likes: 42,
+    id: 1,
+    src: "/images/Akuisisi_Unit.jpg",
+    title: "Kegiatan Magang BAST ANRI 2024",
+    category: "Kegiatan",
+    year: "2024",
+    date: "15 Maret 2024"
   },
   {
-    id: '2',
-    title: 'Workshop Pengembangan Web MBKM Batch 12',
-    category: 'Workshop',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'video',
-    publishedAt: '2025-04-25',
-    description: 'Mahasiswa mempelajari teknik pengembangan web modern',
-    likes: 36,
+    id: 2,
+    src: "/images/contoh1.jpg",
+    title: "Workshop Digitalisasi Arsip Nasional",
+    category: "Event",
+    year: "2024",
+    date: "2 Februari 2024"
   },
   {
-    id: '3',
-    title: 'Pelepasan Magang Mahasiswa Angkatan 2023',
-    category: 'Kegiatan Kampus',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'photo',
-    publishedAt: '2025-04-20',
-    description: 'Acara pelepasan mahasiswa magang ke berbagai industri partner',
-    likes: 29,
+    id: 3,
+    src: "/images/Pengolahan_Unit.jpg",
+    title: "Kunjungan Kepala ANRI",
+    category: "Dokumentasi",
+    year: "2023",
+    date: "10 Desember 2023"
   },
   {
-    id: '4',
-    title: 'Dokumentasi Program Pertukaran Mahasiswa 2025',
-    category: 'Magang',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'video',
-    publishedAt: '2025-04-15',
-    description: 'Kegiatan mahasiswa pertukaran di berbagai kampus mitra',
-    likes: 45,
+    id: 4,
+    src: "/images/logo_mbkm_white.png",
+    title: "Presentasi Hasil Program MBKM",
+    category: "Kegiatan",
+    year: "2023",
+    date: "25 November 2023"
   },
   {
-    id: '5',
-    title: 'Kunjungan Industri ke Perusahaan Mitra MBKM',
-    category: 'Kegiatan Kampus',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'photo',
-    publishedAt: '2025-04-10',
-    description: 'Mahasiswa berkunjung ke perusahaan teknologi terkemuka',
-    likes: 38,
+    id: 5,
+    src: "/images/Preservasi_unit.jpg",
+    title: "Pelatihan Pengelolaan Arsip",
+    category: "Event",
+    year: "2024",
+    date: "8 April 2024"
   },
   {
-    id: '6',
-    title: 'Penandatanganan MoU dengan Industri Partner Baru',
-    category: 'Kegiatan Kampus',
-    thumbnailUrl: '/api/placeholder/600/400',
-    type: 'photo',
-    publishedAt: '2025-04-05',
-    description: 'Perluasan kerjasama dengan mitra industri untuk program MBKM',
-    likes: 27,
+    id: 6,
+    src: "/images/hero-illustration.png",
+    title: "Seminar Nasional Kearsipan",
+    category: "Event",
+    year: "2023",
+    date: "5 Oktober 2023"
   },
+  {
+    id: 7,
+    src: "/images/Pelayanan_Unit.jpg",
+    title: "Orientasi Mahasiswa MBKM",
+    category: "Kegiatan",
+    year: "2024",
+    date: "22 Januari 2024"
+  },
+  {
+    id: 8,
+    src: "/images/contoh2.jpg",
+    title: "Penutupan Program MBKM Batch 2023",
+    category: "Dokumentasi",
+    year: "2023",
+    date: "15 Desember 2023"
+  },
+  {
+    id: 9,
+    src: "/images/contoh2.jpg",
+    title: "Diskusi Panel Kearsipan Digital",
+    category: "Event",
+    year: "2024",
+    date: "12 Maret 2024"
+  },
+  {
+    id: 10,
+    src: "/images/contoh5.jpg",
+    title: "Kunjungan Studi di ANRI",
+    category: "Dokumentasi",
+    year: "2023",
+    date: "8 September 2023"
+  },
+  {
+    id: 11,
+    src: "/images/Akuisisi_Unit.jpg",
+    title: "Kolaborasi Lintas Institusi",
+    category: "Kegiatan",
+    year: "2024",
+    date: "5 April 2024"
+  },
+  {
+    id: 12,
+    src: "/images/contoh4.jpeg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2024",
+    date: "28 Februari 2024"
+  }
 ];
 
-// Date formatter utility
-const formatDate = (dateString: string): string => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  return new Date(dateString).toLocaleDateString('id-ID', options);
-};
-
-// GalleryItem component
-const GalleryItem = ({
-  item,
-  onItemClick,
-}: {
-  item: GalleryItem;
-  onItemClick: (item: GalleryItem) => void;
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [liked, setLiked] = useState(false);
-
-  const handleLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLiked(!liked);
-  };
-
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    // Share functionality can be implemented here
-    alert(`Berbagi: ${item.title}`);
-  };
-
+// Component for each gallery item
+const GaleryItem = ({ image, onClick }) => {
   return (
-    <div
-      className="relative rounded-lg overflow-hidden shadow-lg transition-all duration-300 h-full bg-white dark:bg-gray-800 cursor-pointer group"
-      style={{ transform: isHovered ? 'translateY(-5px)' : 'translateY(0)' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={() => onItemClick(item)}
+    <div 
+      className="mb-4 break-inside-avoid cursor-pointer transform transition duration-200 hover:scale-105"
+      onClick={() => onClick(image)}
     >
-      <div className="relative w-full h-52 sm:h-56 md:h-64 bg-gray-200 overflow-hidden">
-        <img
-          src={item.thumbnailUrl}
-          alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      <div className="relative overflow-hidden rounded-lg shadow-md">
+        <img 
+          src={image.src} 
+          alt={image.title} 
+          className="w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-        {item.type === 'video' && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-14 h-14 bg-blue-600/75 rounded-full flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </div>
+        <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-2">
+          <div className="text-white text-sm font-medium truncate">{image.title}</div>
+          <div className="flex items-center text-gray-300 text-xs">
+            <Calendar size={12} className="mr-1" />
+            <span>{image.date}</span>
           </div>
-        )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-        <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <button
-            className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
-            onClick={handleShare}
-            aria-label="Share"
-          >
-            <Share2 size={16} className="text-blue-600 dark:text-blue-400" />
-          </button>
-          <button
-            className="p-2 bg-white/90 dark:bg-gray-800/90 rounded-full shadow-md hover:bg-white dark:hover:bg-gray-700 transition-colors"
-            onClick={handleLike}
-            aria-label="Like"
-          >
-            <Heart
-              size={16}
-              className={liked ? 'text-red-500 fill-red-500' : 'text-gray-600 dark:text-gray-400'}
+// Lightbox component
+const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight' && hasNext) onNext();
+      if (e.key === 'ArrowLeft' && hasPrev) onPrev();
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, onNext, onPrev, hasNext, hasPrev]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+      <div className="relative w-full max-w-4xl max-h-screen p-4">
+        <button 
+          className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
+          onClick={onClose}
+        >
+          <X size={24} />
+        </button>
+        
+        <div className="flex flex-col bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
+          <div className="flex-1 overflow-hidden">
+            <img 
+              src={image.src} 
+              alt={image.title} 
+              className="w-full h-full object-contain"
             />
-          </button>
-        </div>
-      </div>
-
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <span className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-            {item.category}
-          </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {formatDate(item.publishedAt)}
-          </span>
-        </div>
-        <h3 className="font-semibold text-sm sm:text-base text-gray-800 dark:text-white line-clamp-2 mb-2">
-          {item.title}
-        </h3>
-        {item.description && (
-          <p className="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">
-            {item.description}
-          </p>
-        )}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-            <Heart size={14} className="mr-1" />
-            <span>{item.likes || 0}</span>
           </div>
-          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 flex items-center">
-            Detail <ExternalLink size={12} className="ml-1" />
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Modal component for detailed view
-const GalleryModal = ({
-  item,
-  isOpen,
-  onClose,
-}: {
-  item: GalleryItem | null;
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
-  if (!isOpen || !item) return null;
-
-  // Close when clicking outside the modal content
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose();
-  };
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-      onClick={handleBackdropClick}
-    >
-      <div
-        className="bg-white dark:bg-gray-800 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-        onClick={e => e.stopPropagation()}
-      >
-        <div className="relative">
-          <div className="relative aspect-video bg-gray-200">
-            <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover" />
-            {item.type === 'video' && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 bg-blue-600/75 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700/75 transition-colors">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </div>
-              </div>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300">
-              {item.category}
-            </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {formatDate(item.publishedAt)}
-            </span>
-          </div>
-
-          <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-3">{item.title}</h2>
-
-          {item.description && (
-            <p className="text-gray-600 dark:text-gray-300 mb-6">{item.description}</p>
-          )}
-
-          <div className="flex items-center justify-between border-t dark:border-gray-700 pt-4">
-            <div className="flex items-center gap-4">
-              <button className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                <Heart size={18} />
-                <span>Suka ({item.likes})</span>
-              </button>
-              <button className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                <Share2 size={18} />
-                <span>Bagikan</span>
-              </button>
+          
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{image.title}</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                {image.category}
+              </span>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                {image.year}
+              </span>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                {image.date}
+              </span>
             </div>
-
-            <button className="flex items-center gap-1 text-blue-600 dark:text-blue-400 font-medium hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-              <Download size={18} />
-              <span>Unduh</span>
-            </button>
           </div>
+        </div>
+        
+        <div className="absolute top-1/2 -translate-y-1/2 flex w-full justify-between px-4">
+          {hasPrev && (
+            <button 
+              className="bg-white/30 dark:bg-gray-900/50 hover:bg-white/50 dark:hover:bg-gray-900/70 rounded-full p-2 transition-colors"
+              onClick={onPrev}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          )}
+          
+          {hasNext && (
+            <button 
+              className="ml-auto bg-white/30 dark:bg-gray-900/50 hover:bg-white/50 dark:hover:bg-gray-900/70 rounded-full p-2 transition-colors"
+              onClick={onNext}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-// Main Gallery component
-export default function Gallery() {
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+// Main Gallery Component
+const Galery = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeYear, setActiveYear] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState('masonry'); // masonry or grid
 
-  // Sort items by likes to get the most popular ones
-  const popularItems = [...galleryData].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 4);
+  const categories = ['all', 'Event', 'Kegiatan', 'Dokumentasi'];
+  const years = ['all', '2023', '2024', '2025'];
 
-  // Handle item click to open modal
-  const handleItemClick = (item: GalleryItem) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
+  // Filter images based on active filters and search query
+  const filteredImages = demoImages.filter(image => {
+    const matchesCategory = activeCategory === 'all' || image.category === activeCategory;
+    const matchesYear = activeYear === 'all' || image.year === activeYear;
+    const matchesSearch = searchQuery === '' || 
+      image.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      image.category.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesCategory && matchesYear && matchesSearch;
+  });
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    setActiveIndex(filteredImages.findIndex(img => img.id === image.id));
   };
 
-  // Handle modal close
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseLightbox = () => {
+    setSelectedImage(null);
+    setActiveIndex(-1);
+  };
+
+  const handlePrevImage = () => {
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex - 1);
+      setSelectedImage(filteredImages[activeIndex - 1]);
+    }
+  };
+
+  const handleNextImage = () => {
+    if (activeIndex < filteredImages.length - 1) {
+      setActiveIndex(activeIndex + 1);
+      setSelectedImage(filteredImages[activeIndex + 1]);
+    }
   };
 
   return (
-    <section id="Galery" className="relative w-full py-12 px-4 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
+    <section
+      id="Galery"
+      className="py-20 bg-white dark:bg-gray-900"
+    >
+      <div className="container mx-auto max-w-screen-xl px-4">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <span className="text-sm font-medium text-secondary uppercase tracking-wider">
-            Program Unggulan
+            Dokumentasi Kegiatan
           </span>
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
-            Galeri MBKM di BAST ANRI
+            Galeri MBKM BAST ANRI
           </h2>
-          <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300 text-sm">
-            Berikut dokumentasi kegiatan MBKM yang telah dilaksanakan oleh mahasiswa di lingkungan
-            BAST ANRI.
+          <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
+            Dokumentasi berbagai kegiatan pembelajaran, pelatihan, dan kolaborasi mahasiswa 
+            dalam program Merdeka Belajar Kampus Merdeka di Arsip Nasional Republik Indonesia.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Grid layout with 2x2 items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {popularItems.map(item => (
-            <GalleryItem key={item.id} item={item} onItemClick={handleItemClick} />
-          ))}
-        </div>
-
-        {/* Lihat Semua button moved to the bottom */}
-        <div className="flex justify-center mt-10">
-          <a
-            href="/galeri"
-            className="px-6 py-3 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-300 text-sm font-medium flex items-center"
+        <div className="flex flex-col gap-6">
+          {/* Header & Search */}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative">
+              <input
+                type="text"
+                placeholder="Cari gambar..."
+                className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full py-2 pl-10 pr-4 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" size={18} />
+            </motion.div>
+          </div>
+          
+          {/* Filters */}
+          <motion.div 
+            className="flex flex-wrap gap-2 md:gap-4"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Lihat Semua
-            <ExternalLink size={16} className="ml-2" />
-          </a>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-gray-700 dark:text-gray-300 font-medium">Kategori:</span>
+              {categories.map(category => (
+                <button
+                  key={category}
+                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                    activeCategory === category 
+                      ? 'bg-blue-600 text-white' 
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  }`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category === 'all' ? 'Semua' : category}
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              <span className="text-gray-700 dark:text-gray-300 font-medium">Tahun:</span>
+              {years.map(year => (
+                <button
+                  key={year}
+                  className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                    activeYear === year 
+                      ? 'bg-blue-600 text-white' 
+                      : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                  }`}
+                  onClick={() => setActiveYear(year)}
+                >
+                  {year === 'all' ? 'Semua' : year}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+          
+          {/* Image Counter */}
+          <motion.div 
+            className="text-sm text-gray-500 dark:text-gray-400"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Menampilkan {filteredImages.length} foto
+            {activeCategory !== 'all' && ` dalam kategori "${activeCategory}"`}
+            {activeYear !== 'all' && ` tahun ${activeYear}`}
+            {searchQuery && ` dengan pencarian "${searchQuery}"`}
+          </motion.div>
+          
+          {/* Gallery */}
+          <motion.div 
+            className="relative max-h-[600px] overflow-y-auto custom-scrollbar"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            {filteredImages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 className="text-lg font-medium">Tidak ada foto yang ditemukan</h3>
+                <p className="mt-1">Coba ubah filter atau kata kunci pencarian</p>
+              </div>
+            ) : viewMode === 'masonry' ? (
+              <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+                {filteredImages.map((image) => (
+                  <GaleryItem 
+                    key={image.id} 
+                    image={image} 
+                    onClick={handleImageClick}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {filteredImages.map((image) => (
+                  <GaleryItem 
+                    key={image.id} 
+                    image={image} 
+                    onClick={handleImageClick}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
         </div>
       </div>
-
-      {/* Modal for item details */}
-      <GalleryModal item={selectedItem} isOpen={isModalOpen} onClose={handleCloseModal} />
+      
+      {/* Lightbox */}
+      {selectedImage && (
+        <Lightbox 
+          image={selectedImage}
+          onClose={handleCloseLightbox}
+          onPrev={handlePrevImage}
+          onNext={handleNextImage}
+          hasPrev={activeIndex > 0}
+          hasNext={activeIndex < filteredImages.length - 1}
+        />
+      )}
+      
+      {/* Inject custom stylesheet for scrollbar */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+          background: #2D3748;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 4px;
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4A5568;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #718096;
+        }
+      `}</style>
     </section>
   );
-}
+};
+
+export default Galery;
