@@ -88,14 +88,23 @@ export const mbkmData: MBKMData = {
       id: 'latar-belakang',
       title: 'Latar Belakang Program',
       content: `
-        <div class="mb-4">
-          <p class="mb-3">Program Merdeka Belajar Kampus Merdeka (MBKM) diluncurkan oleh Kementerian Pendidikan dan Kebudayaan (Kemendikbud) sebagai bagian dari kebijakan Merdeka Belajar yang diperkenalkan oleh Menteri Pendidikan dan Kebudayaan.</p>
-          
-          <p class="mb-3">Latar belakang program ini adalah untuk merespon tantangan dunia kerja yang semakin dinamis dan kebutuhan akan lulusan yang memiliki kompetensi yang sesuai dengan kebutuhan industri. Program ini juga didasari oleh pentingnya memberikan kebebasan dan otonomi kepada kampus untuk mengembangkan program pendidikan yang inovatif dan sesuai dengan kebutuhan masa kini.</p>
-          
-          <p>MBKM dirancang untuk memberikan mahasiswa pengalaman belajar yang beragam dan komprehensif melalui berbagai kegiatan di luar kampus seperti magang, proyek di desa, pertukaran pelajar, penelitian, wirausaha, dan lain-lain.</p>
-        </div>
-      `,
+  <div class="mb-4">
+    <p class="mb-3">
+      <strong>Merdeka Belajar – Kampus Merdeka (MBKM)</strong> merupakan program luncuran 
+      <strong>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek)</strong> 
+      yang dirancang untuk memberikan Mahasiswa kesempatan belajar selain dari lingkup program studi mereka, 
+      baik di dalam maupun di luar lingkungan Kampus. Bertujuan menciptakan ruang bagi Mahasiswa agar memperoleh 
+      pengalaman belajar yang lebih luas, relevan, dan sesuai dengan kebutuhan dunia kerja saat ini.
+    </p>
+    <p>
+      <strong>MBKM</strong> menghadiahkan Mahasiswa peluang untuk keluar dari zona nyaman mereka, dengan 
+      terjun langsung ke Instansi yang terikat oleh kampus. Mengenal dunia kerja dengan segala cinta dan kotornya. 
+      Bagaimana dunia kantor bekerja, mental yang harus disiapkan, belajar mengambil sikap dan keputusan dalam 
+      menghadapi suatu masalah, maupun skill yang terasah secara terbiasa. Mengantarkan kita untuk siap menghadapi 
+      kedewasaan, dunia baru.
+    </p>
+  </div>
+`,
       isOpen: true,
     },
     {
@@ -171,7 +180,7 @@ export const mbkmData: MBKMData = {
           
           <div>
             <p class="font-semibold">Berapa banyak SKS yang dapat dikonversi melalui program MBKM?</p>
-            <p class="mt-1">Mahasiswa dapat mengambil dan diakui SKS kegiatan pembelajaran di luar kampus sebanyak dua semester atau setara dengan 40 SKS.</p>
+            <p class="mt-1">Mahasiswa dapat mengambil dan diakui SKS kegiatan pembelajaran di luar kampus sebanyak satu semester atau setara dengan 18 ~ 22 SKS.</p>
           </div>
         </div>
       `,
@@ -179,16 +188,9 @@ export const mbkmData: MBKMData = {
     },
   ],
   externalLink: {
-    url: 'https://kampusmerdeka.kemdikbud.go.id/',
+    url: 'https://mbkmunggul.usk.ac.id/',
     label: 'Kunjungi Website Resmi MBKM',
   },
-  overviewContent: `
-  <p>Program MBKM merupakan inisiatif Kementerian Pendidikan dan Kebudayaan yang bertujuan untuk meningkatkan kompetensi lulusan, baik soft skills maupun hard skills, agar lebih siap dan relevan dengan kebutuhan zaman.</p>
-  
-  <p>MBKM memberi kesempatan bagi mahasiswa untuk memilih mata kuliah yang akan mereka ambil dan memberikan kebebasan untuk mengambil SKS di luar program studi selama 3 semester.</p>
-  
-  <p>Mahasiswa juga bisa mengambil kesempatan belajar di luar kampus melalui program magang, proyek di desa, pertukaran pelajar, penelitian, wirausaha, studi independen, proyek kemanusiaan, dan kegiatan mengajar di sekolah.</p>
-`,
 
   benefits: [
     {

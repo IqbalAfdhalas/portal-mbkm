@@ -7,10 +7,14 @@ import Image from 'next/image';
 import slugify from 'slugify';
 
 const ProgramPreview = () => {
+  // Menggunakan varian dash untuk semua list item
+  const LIST_STYLE = 'dash';
+
+  // Redesigned basePrograms with brighter colors
   const basePrograms = [
     {
       title: 'Aktivitas Unit',
-      icon: '/images/icons/activity.svg',
+      icon: '/images/Aktivitas Unit.png',
       description: 'Rasakan langsung serunya jadi bagian dari tiap unit di BAST ANRI!',
       features: [
         'Unit Akuisisi Arsip',
@@ -19,13 +23,15 @@ const ProgramPreview = () => {
         'Unit Pelayanan Arsip',
         'Unit Tata Usaha',
       ],
-      image: '/images/program-aktivitas.jpg',
-      color: 'from-yellow-500/20 to-yellow-600/20',
-      borderColor: 'border-yellow-500',
+      gradient: 'from-yellow-300 to-amber-400',
+      colorStart: '#fcd34d', // bright yellow
+      colorEnd: '#fbbf24', // bright amber
+      borderColor: 'border-yellow-400',
+      particleColor: '#fde68a',
     },
     {
       title: 'Kunjungan ke Dalam BAST ANRI',
-      icon: '/images/ChatGPT Image 18 Mei 2025, 11.03.22.png',
+      icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
       description: 'Jelajahi dunia arsip lewat tur seru langsung di BAST ANRI!',
       features: [
         'Tur Ruang Arsip',
@@ -33,13 +39,15 @@ const ProgramPreview = () => {
         'Pengenalan Unit dan Fungsi',
         'Interaksi dengan Arsiparis',
       ],
-      image: '/images/program-kunjungan-dalam.jpg',
-      color: 'from-indigo-500/20 to-indigo-600/20',
-      borderColor: 'border-indigo-500',
+      gradient: 'from-cyan-300 to-sky-400',
+      colorStart: '#67e8f9', // bright cyan
+      colorEnd: '#38bdf8', // bright sky blue
+      borderColor: 'border-cyan-400',
+      particleColor: '#a5f3fc',
     },
     {
       title: 'Kunjungan ke Luar BAST ANRI',
-      icon: '/images/icons/visit-out.svg',
+      icon: '/images/Kunjungan ke Luar BAST ANRI.png',
       description: 'Kami datang langsung ke tempatmu bawa semangat arsip!',
       features: [
         'Sosialisasi Kearsipan',
@@ -47,13 +55,15 @@ const ProgramPreview = () => {
         'Kerja Sama Penyelamatan Arsip',
         'Promosi Program Arsip',
       ],
-      image: '/images/program-kunjungan-luar.jpg',
-      color: 'from-red-500/20 to-red-600/20',
-      borderColor: 'border-red-500',
+      gradient: 'from-green-300 to-emerald-400',
+      colorStart: '#86efac', // bright green
+      colorEnd: '#34d399', // bright emerald
+      borderColor: 'border-green-400',
+      particleColor: '#bbf7d0',
     },
     {
       title: 'Daily Activity',
-      icon: '/images/icons/daily.svg',
+      icon: '/images/Daily Activity.png',
       description: 'Intip keseharian seru di balik layar BAST ANRI!',
       features: [
         'Pencatatan Kegiatan Harian',
@@ -61,9 +71,11 @@ const ProgramPreview = () => {
         'Pelayanan Arsip Publik',
         'Rapat Evaluasi',
       ],
-      image: '/images/program-daily.jpg',
-      color: 'from-pink-500/20 to-pink-600/20',
-      borderColor: 'border-pink-500',
+      gradient: 'from-violet-300 to-purple-400',
+      colorStart: '#c4b5fd', // bright violet
+      colorEnd: '#a78bfa', // bright purple
+      borderColor: 'border-violet-400',
+      particleColor: '#ddd6fe',
     },
     {
       title: 'Pameran Arsip',
@@ -75,9 +87,11 @@ const ProgramPreview = () => {
         'Pameran Keliling',
         'Edukasi Publik',
       ],
-      image: '/images/program-pameran.jpg',
-      color: 'from-orange-500/20 to-orange-600/20',
-      borderColor: 'border-orange-500',
+      gradient: 'from-rose-300 to-pink-400',
+      colorStart: '#fda4af', // bright rose
+      colorEnd: '#f472b6', // bright pink
+      borderColor: 'border-rose-400',
+      particleColor: '#fecdd3',
     },
   ];
 
@@ -90,8 +104,8 @@ const ProgramPreview = () => {
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
   const pauseTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const AUTO_SCROLL_INTERVAL = 5000; // 5 detik untuk scrolling otomatis
-  const PAUSE_DURATION = 5000; // detik durasi pause setelah klik manual
+  const AUTO_SCROLL_INTERVAL = 10000; // 5 detik untuk scrolling otomatis
+  const PAUSE_DURATION = 10000; // detik durasi pause setelah klik manual
 
   const getVisibleCount = () => {
     if (typeof window !== 'undefined') {
@@ -190,6 +204,52 @@ const ProgramPreview = () => {
     }, PAUSE_DURATION);
   };
 
+  // Function to render list items based on selected style
+  const renderListItem = (program: any, feature: string, index: number) => {
+    return (
+      <div
+        key={feature + index}
+        className="flex items-center p-1 group-hover:bg-blue-50/50 dark:group-hover:bg-blue-900/20 transition-colors duration-300"
+      >
+        <div className="flex-shrink-0 mr-2 font-bold" style={{ color: program.colorStart }}>
+          —
+        </div>
+        <span className="text-xs text-gray-700 dark:text-gray-200 font-medium">{feature}</span>
+      </div>
+    );
+  };
+
+  // Floating Particle Component
+  const Particles = ({ color }: { color: string }) => {
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => {
+          const size = Math.floor(Math.random() * 10) + 5; // 5-15px
+          const animDuration = Math.floor(Math.random() * 20) + 10; // 10-30s
+          const delay = Math.floor(Math.random() * 10); // 0-10s
+          const startX = Math.floor(Math.random() * 100); // 0-100%
+
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full opacity-70 animate-float"
+              style={{
+                backgroundColor: color,
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${startX}%`,
+                top: `${Math.floor(Math.random() * 100)}%`,
+                animationDuration: `${animDuration}s`,
+                animationDelay: `${delay}s`,
+                boxShadow: `0 0 ${size / 2}px ${color}80`,
+              }}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <section
       id="program"
@@ -252,51 +312,48 @@ const ProgramPreview = () => {
 
                     {/* Decorative Circle */}
                     <div
-                      className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-gradient-to-br from-primary/10 to-blue-400/10 blur-md group-hover:scale-125 transition-transform duration-700"
+                      className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-gradient-to-br blur-md group-hover:scale-125 transition-transform duration-700"
                       style={{
-                        background: `radial-gradient(circle, ${program.borderColor.replace('border-', '')}15 0%, ${program.borderColor.replace('border-', '')}05 70%)`,
+                        background: `radial-gradient(circle, ${program.colorStart}30 0%, ${program.colorEnd}15 70%)`,
                       }}
                     />
 
                     <div
-                      className={`relative h-40 bg-gradient-to-br ${program.color} overflow-hidden group-hover:h-44 transition-all duration-500`}
+                      className={`relative h-40 overflow-hidden group-hover:h-44 transition-all duration-500`}
+                      style={{
+                        background: `linear-gradient(135deg, ${program.colorStart}, ${program.colorEnd})`,
+                      }}
                     >
-                      <div className="absolute top-0 left-0 w-full h-full opacity-30 group-hover:opacity-40 transition-opacity duration-500">
-                        <Image
-                          src={program.image}
-                          alt={program.title}
-                          fill
-                          className="object-cover transform group-hover:scale-110 transition-transform duration-700"
-                        />
-                      </div>
+                      {/* Brighter gradient banner */}
+                      <div
+                        className="absolute inset-0 opacity-100 group-hover:opacity-95 transition-opacity duration-500"
+                        style={{
+                          background: `linear-gradient(135deg, ${program.colorStart}, ${program.colorEnd})`,
+                        }}
+                      />
 
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <div
-                          className="w-20 h-20 rounded-full flex items-center justify-center shadow-lg p-4
-                          bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm
-                          group-hover:scale-110 transition-transform duration-500"
-                          style={{
-                            boxShadow: `0 8px 32px -8px ${program.borderColor.replace('border-', '')}50`,
-                          }}
-                        >
-                          <div className="relative w-full h-full">
-                            <Image
-                              src={program.icon}
-                              alt={program.title}
-                              fill
-                              className="object-contain p-1 group-hover:scale-110 transition-transform duration-500"
-                            />
-                          </div>
+                      {/* Floating particles effect */}
+                      <Particles color={program.particleColor} />
+
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="flex justify-center items-center h-full">
+                          <Image
+                            src={program.icon}
+                            alt={program.title}
+                            width={150}
+                            height={150}
+                            className="object-contain drop-shadow-lg"
+                          />
                         </div>
                       </div>
                     </div>
 
                     <div className="flex flex-col p-5 z-10 relative flex-grow">
                       <h3
-                        className="text-xl font-heading font-bold text-center mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-700 dark:from-blue-400 dark:to-blue-300"
+                        className="text-xl font-heading font-bold text-center mb-3 bg-clip-text text-transparent"
                         style={{
                           textShadow: '0 1px 2px rgba(0,0,0,0.05)',
-                          backgroundImage: `linear-gradient(to right, ${program.borderColor.replace('border-', '')}, #3b82f6)`,
+                          backgroundImage: `linear-gradient(to right, ${program.colorStart}, ${program.colorEnd})`,
                         }}
                       >
                         {program.title}
@@ -307,37 +364,9 @@ const ProgramPreview = () => {
                       </p>
 
                       <div className="space-y-1 mb-4">
-                        {program.features.map(feature => (
-                          <div
-                            key={feature}
-                            className="flex items-center p-1 rounded-lg group-hover:bg-blue-50/50 dark:group-hover:bg-blue-900/20 transition-colors duration-300"
-                          >
-                            <div
-                              className="flex-shrink-0 w-6 h-6 mr-2 rounded-full flex items-center justify-center"
-                              style={{
-                                background: `linear-gradient(135deg, ${program.borderColor.replace('border-', '')}20, ${program.borderColor.replace('border-', '')}40)`,
-                              }}
-                            >
-                              <svg
-                                className="w-3 h-3"
-                                style={{ color: program.borderColor.replace('border-', '') }}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 13l4 4L19 7"
-                                />
-                              </svg>
-                            </div>
-                            <span className="text-xs text-gray-700 dark:text-gray-200 font-medium">
-                              {feature}
-                            </span>
-                          </div>
-                        ))}
+                        {program.features.map((feature, featureIndex) =>
+                          renderListItem(program, feature, featureIndex)
+                        )}
                       </div>
 
                       <div className="text-center mt-auto">
@@ -346,20 +375,22 @@ const ProgramPreview = () => {
                           className={`
                           group relative inline-flex items-center justify-center gap-1 
                           px-4 py-2 rounded-lg overflow-hidden
-                          bg-gradient-to-r from-primary to-blue-500 dark:from-blue-500 dark:to-blue-400
                           text-white text-sm font-medium
                           shadow-md hover:shadow-lg
                           transition-all duration-300 ease-in-out
                           hover:-translate-y-1
-                          before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-600 before:to-indigo-600 
-                          dark:before:from-blue-400 dark:before:to-indigo-500
-                          before:origin-left before:scale-x-0 hover:before:scale-x-100
+                          before:absolute before:inset-0 before:origin-left before:scale-x-0 hover:before:scale-x-100
                           before:transition-transform before:duration-300 before:ease-out
                           before:z-0
                         `}
-                          style={{
-                            borderColor: program.borderColor.replace('border-', ''),
-                          }}
+                          style={
+                            {
+                              '--before-gradient': `linear-gradient(to right, ${program.colorEnd}, ${program.colorStart})`,
+                              backgroundColor: program.colorStart,
+                              backgroundImage: `linear-gradient(to right, ${program.colorStart}, ${program.colorEnd})`,
+                              borderColor: program.colorStart,
+                            } as React.CSSProperties
+                          }
                         >
                           <span className="relative z-10 flex items-center">
                             Lihat Detail
@@ -403,6 +434,31 @@ const ProgramPreview = () => {
           </button>
         </div>
       </div>
+
+      {/* Add keyframes style for floating particles */}
+      <style jsx global>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-20px) translateX(10px);
+          }
+          50% {
+            transform: translateY(-10px) translateX(20px);
+          }
+          75% {
+            transform: translateY(-30px) translateX(-10px);
+          }
+        }
+
+        .animate-float {
+          animation-name: float;
+          animation-iteration-count: infinite;
+          animation-timing-function: ease-in-out;
+        }
+      `}</style>
     </section>
   );
 };
