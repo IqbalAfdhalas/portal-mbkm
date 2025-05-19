@@ -5,7 +5,6 @@ export const navigation = [
   { id: 'program', name: 'Program', href: '/#program' },
   { id: 'profil-mbkm', name: 'ProfilMBKM', href: '/#profil-mbkm' },
   { id: 'Galery', name: 'Galeri', href: '/#Galery' },
-  { id: 'gallery', name: 'Galeri', href: '/#gallery' },
   { id: 'forum', name: 'Forum', href: '/#forum' },
   { id: 'faq', name: 'FAQ', href: '/#faq' },
   { id: 'kontak', name: 'Kontak', href: '/#contact' },

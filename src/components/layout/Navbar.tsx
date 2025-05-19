@@ -9,23 +9,19 @@ import { navigation } from '@/constants/navigation';
 import LoginButton from '@/components/ui/LoginButton';
 import { useAuth } from '@/hooks/useAuth';
 import UserDropdown from '@/components/layout/UserDropdown';
+import { usePathname, useRouter } from 'next/navigation';
+import { scrollToId } from '@/lib/utils';
 
 // Smooth scroll helper
 const NAVBAR_OFFSET = -5;
-
-const scrollToId = (id: string, offset: number = -100) => {
-  const el = document.getElementById(id);
-  if (el) {
-    const y = el.getBoundingClientRect().top + window.pageYOffset + offset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-  }
-};
 
 const Navbar = () => {
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const activeSection = useScrollspy(
     navigation.map(item => item.id),
@@ -93,7 +89,23 @@ const Navbar = () => {
                 href={`#${item.id}`}
                 onClick={e => {
                   e.preventDefault();
-                  scrollToId(item.id, NAVBAR_OFFSET);
+
+                  if (pathname !== '/') {
+                    sessionStorage.setItem('scrollTarget', item.id); // simpan id target
+                    router.push('/'); // arahkan ke homepage tanpa #
+                  } else {
+                    // Gunakan offset yang lebih besar untuk memastikan judul terlihat dengan baik
+                    // di bawah navbar (sekitar -80px atau sesuaikan dengan kebutuhan)
+                    scrollToId(item.id, -10);
+
+                    // Update state secara manual untuk highlight menu
+                    setHoveredItem(null);
+
+                    // Tutup mobile menu jika terbuka
+                    if (mobileMenuOpen) {
+                      setMobileMenuOpen(false);
+                    }
+                  }
                 }}
                 className={`text-sm font-medium transition-colors relative px-2 py-1 ${
                   activeSection === item.id
@@ -188,8 +200,13 @@ const Navbar = () => {
                 href={`#${item.id}`}
                 onClick={e => {
                   e.preventDefault();
-                  scrollToId(item.id, NAVBAR_OFFSET);
-                  setMobileMenuOpen(false);
+
+                  if (pathname !== '/') {
+                    sessionStorage.setItem('scrollTarget', item.id); // simpan id target
+                    router.push('/'); // arahkan ke homepage tanpa #
+                  } else {
+                    scrollToId(item.id, NAVBAR_OFFSET); // scroll langsung kalau udah di homepage
+                  }
                 }}
                 className={`text-sm font-medium py-2 ${
                   activeSection === item.id

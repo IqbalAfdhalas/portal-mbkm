@@ -36,13 +36,8 @@ const AktivitasUnitDetail = () => {
         icon: '/images/logo_mbkm_white.png',
         description:
           'Belajar gimana arsip pertama kali diterima — mulai dari seleksi, penerimaan, sampai pencatatan dokumen yang masuk.',
-        activities: [
-          'Menyeleksi arsip yang diterima dari berbagai instansi',
-          'Pencatatan metadata arsip yang baru masuk',
-          'Koordinasi dengan pihak eksternal untuk pengambilan arsip',
-          'Verifikasi kelengkapan dokumen yang diterima',
-        ],
-        image: '/images/Preservasi_unit.jpg',
+        activities: `Kamu akan dilibatkan langsung dalam proses awal pengelolaan arsip. Mulai dari menyeleksi arsip yang diterima dari berbagai instansi, melakukan pencatatan metadata, hingga koordinasi pengambilan arsip dan verifikasi dokumen. Semuanya kamu rasakan langsung seolah menjadi bagian dari tim akuisisi.`,
+        video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
       },
       {
         name: 'Unit Pengolahan Arsip',
@@ -311,43 +306,30 @@ const AktivitasUnitDetail = () => {
                   </div>
 
                   <div className="w-full rounded-lg overflow-hidden mb-6">
-                    <Image
-                      src={unit.image}
-                      alt={unit.name}
-                      width={800}
-                      height={450}
-                      className="w-full h-auto object-contain rounded-lg"
-                    />
+                    {unit.video ? (
+                      <div className="relative w-full pb-[56.25%]">
+                        <video
+                          src={unit.video}
+                          controls
+                          className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={unit.image}
+                        alt={unit.name}
+                        width={800}
+                        height={450}
+                        className="w-full h-auto object-contain rounded-lg"
+                      />
+                    )}
                   </div>
 
                   <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">
                     Aktivitas yang Dilakukan:
                   </h4>
 
-                  <div className="space-y-2">
-                    {unit.activities.map((activity, idx) => (
-                      <div key={idx} className="flex items-start space-x-3">
-                        <div
-                          className={`flex-shrink-0 w-6 h-6 rounded-full bg-${program.color}/20 flex items-center justify-center mt-0.5`}
-                        >
-                          <svg
-                            className={`w-3 h-3 text-${program.color}`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-gray-700 dark:text-gray-300">{activity}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-gray-700 dark:text-gray-300">{unit.activities}</p>
                 </motion.div>
               ))}
             </motion.div>

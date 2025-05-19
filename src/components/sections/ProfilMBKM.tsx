@@ -199,26 +199,24 @@ const ProfilMBKM = () => {
   return (
     <section
       id="profil-mbkm"
-      className="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800"
+      className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
     >
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary-light font-heading">
+      <div className="container mx-auto max-w-screen-xl px-4">
+        {/* Header - Revised to match Program.tsx style */}
+        <div className="text-center mb-12">
+          <span className="text-sm font-medium text-secondary uppercase tracking-wider">
+            PROFIL UNGGULAN
+          </span>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
             Profil MBKM BAST ANRI
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
             Program kolaborasi antara BAST ANRI dengan berbagai perguruan tinggi untuk memberikan
             pengalaman praktis kepada mahasiswa dalam bidang kearsipan.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Statistics - Revisi sesuai permintaan */}
+        {/* Statistics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
