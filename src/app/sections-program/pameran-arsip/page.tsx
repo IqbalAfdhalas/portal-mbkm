@@ -33,61 +33,16 @@ const PameranArsipDetail = () => {
     color: 'orange-500',
     video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
     unitDescription:
-      'Pameran arsip menghadirkan koleksi arsip penting dalam bentuk yang menarik dan interaktif, memungkinkan pengunjung untuk belajar sejarah dari sumber aslinya.',
+      'Pameran Balai Arsip Statis dan Tsunami yang diselenggarakan oleh Arsip Nasional Republik Indonesia (ANRI) merupakan sebuah kegiatan yang bertujuan untuk memperkenalkan dan menyebarluaskan informasi mengenai arsip-arsip statis yang memiliki nilai sejarah, serta dokumentasi tentang bencana tsunami yang pernah terjadi di Indonesia. Pameran ini menjadi ajang penting untuk mempromosikan Balai Arsip Statis dan Tsunami (BAST) Arsip Nasional Republik Indonesia (ANRI) ',
     unitActivities:
-      'Pameran arsip BAST ANRI mengangkat berbagai tema sejarah nasional, menampilkan arsip-arsip bersejarah dalam format yang menarik dan inovatif. Pengunjung dapat menjelajahi arsip melalui media interaktif, mengikuti pameran keliling, dan berpartisipasi dalam berbagai kegiatan edukatif seperti workshop dan talkshow.',
+      'Ikut berpartisipasi pameran gini seru banget pengunjung banyak yang bertanya, bahkan ada yang baru tahu kalau dokumen-dokumen kayak gini bisa disimpan dan punya banyak nilai penting.',
     allUnits: [
       {
-        name: 'Tema Sejarah Nasional',
+        name: 'Pengenalan Arsip',
         description:
-          'Arsip-arsip yang dipamerkan diangkat dari momen penting dalam sejarah bangsa, memungkinkan pengunjung untuk belajar sejarah dari sumber aslinya langsung.',
+          'Interaksi antara pengunjung dan mahasiswa. Mahasiswa menjelaskan cerita dibalik arsip sementara pengunjung aktif dalam bertanya dan berdiskusi, pengunjung terlihat antusias dan penuh rasa ingin tahu. BAST turut memberikan Layanan Restorasi Arsip Keluarga (LARASKA) bagi masyarakat yang ingin memperbaiki data keluarga yang rusak, dengan cara menyediakan layanan pencegahan kerusakan arsip melalui metode Enkapsulasi. Layanan ini sendiri diberikan tanpa pungutan biaya apapun.',
         icon: '/images/icons/history.svg',
-        activities: [
-          'Pameran arsip proklamasi kemerdekaan',
-          'Koleksi dokumen sejarah pembentukan negara',
-          'Arsip peristiwa-peristiwa penting nasional',
-          'Dokumentasi perjalanan bangsa dari masa ke masa',
-        ],
-        image: '/images/theme-history.jpg',
-      },
-      {
-        name: 'Media Arsip Interaktif',
-        description:
-          'Arsip tidak hanya dipajang secara konvensional, tetapi juga disajikan dalam format digital interaktif yang memungkinkan pengunjung untuk menjelajahi arsip secara lebih mendalam.',
-        icon: '/images/icons/interactive.svg',
-        activities: [
-          'Layar sentuh untuk menjelajahi arsip digital',
-          'Rekonstruksi sejarah berbasis augmented reality',
-          'Pengalaman arsip dengan teknologi multimedia',
-          'Visualisasi data arsip secara interaktif',
-        ],
-        image: '/images/interactive-archive.jpg',
-      },
-      {
-        name: 'Pameran Keliling',
-        description:
-          'BAST ANRI tidak hanya menyelenggarakan pameran di kantor, tetapi juga membawa pameran ke berbagai lokasi untuk menjangkau lebih banyak pengunjung di seluruh Indonesia.',
-        icon: '/images/icons/travelling.svg',
-        activities: [
-          'Pameran di institusi pendidikan (sekolah dan kampus)',
-          'Partisipasi dalam festival dan event budaya',
-          'Roadshow arsip ke berbagai daerah',
-          'Kolaborasi dengan museum dan pusat kebudayaan',
-        ],
-        image: '/images/travelling-exhibition.jpg',
-      },
-      {
-        name: 'Edukasi Publik',
-        description:
-          'Pameran tidak hanya berfokus pada display, tetapi juga dilengkapi dengan berbagai program edukatif untuk meningkatkan pemahaman dan apresiasi terhadap arsip.',
-        icon: '/images/icons/education.svg',
-        activities: [
-          'Workshop kearsipan untuk pengunjung',
-          'Sesi tanya jawab dengan arsiparis',
-          'Pemutaran film dan dokumenter berbasis arsip',
-          'Talkshow dengan sejarawan dan praktisi arsip',
-        ],
-        image: '/images/public-education.jpg',
+        image: '/images/program/pameran_arsip/foto6.jpg',
       },
     ],
     benefits: [
@@ -114,19 +69,31 @@ const PameranArsipDetail = () => {
     ],
     gallery: [
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
+        src: '/images/program/pameran_arsip/foto7.jpg',
         caption: 'Suasana pameran dengan pengunjung',
       },
       {
-        src: '/images/hero-illustration.png',
+        src: '/images/program/pameran_arsip/foto3.jpg',
         caption: 'Arsip yang dipajang di booth pameran',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
+        src: '/images/program/pameran_arsip/foto5.jpg',
         caption: 'Pengunjung berinteraksi dengan media digital',
       },
       {
-        src: '/images/hero-illustration.png',
+        src: '/images/program/pameran_arsip/foto2.jpg',
+        caption: 'Kegiatan workshop dalam pameran',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto1.jpg',
+        caption: 'Kegiatan workshop dalam pameran',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto4.jpg',
+        caption: 'Kegiatan workshop dalam pameran',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto8.jpg',
         caption: 'Kegiatan workshop dalam pameran',
       },
     ],
@@ -349,9 +316,6 @@ const PameranArsipDetail = () => {
               <p className="text-gray-700 dark:text-gray-300 mb-6">{program.unitActivities}</p>
 
               <div className="mt-8">
-                <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
-                  Yang Biasanya Ada di Pameran:
-                </h4>
 
                 <div className="space-y-2 mt-4">
                   {program.allUnits.map((unit, idx) => (
@@ -404,14 +368,6 @@ const PameranArsipDetail = () => {
                               <p className="text-gray-700 dark:text-gray-300 mb-4">
                                 {unit.description}
                               </p>
-                              <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Kegiatan di {unit.name}:
-                              </h5>
-                              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {unit.activities.map((activity, actIdx) => (
-                                  <li key={actIdx}>{activity}</li>
-                                ))}
-                              </ul>
                             </div>
                           </div>
                         </div>

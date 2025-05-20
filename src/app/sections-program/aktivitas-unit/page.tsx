@@ -29,13 +29,13 @@ const AktivitasUnitDetail = () => {
     subtitle: 'Ikut Serunya Aktivitas Unit di BAST ANRI!',
     description:
       'Lewat program ini, kamu akan ikut langsung dalam aktivitas harian di unit-unit kerja BAST ANRI. Bukan cuma duduk dan mengamati, tapi benar-benar terlibat seperti bagian dari tim! Setiap unit punya tugas dan pengalaman yang beda-beda — cocok banget buat kamu yang pengen belajar dari praktik nyata.',
-    icon: '/images/Aktivitas Unit.png',
+    icon: '/images/program/logo_program/aktivitas_unit.png',
     color: 'yellow-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/aktivitas_unit/vidio_unit.mp4',
     unitDescription:
       'Jelajahi aktivitas dari berbagai unit kerja di BAST ANRI — mulai dari penerimaan arsip, pengolahan, hingga pelayanan kepada masyarakat.',
     unitActivities:
-      'Kamu akan dilibatkan langsung dalam proses awal pengelolaan arsip. Mulai dari menyeleksi arsip yang diterima dari berbagai instansi, melakukan pencatatan metadata, hingga koordinasi pengambilan arsip dan verifikasi dokumen. Semuanya kamu rasakan langsung seolah menjadi bagian dari tim akuisisi.',
+      'Kalau ditanya pengalaman selama di unit, pastinya complex tapi joyfull. Kalau diceritain dari lantai tiga ada ruangan Akusisi, nah disana kalian bakal ngerasain ruangan tanpa sekat tapi nyaman banget. Lalu dilantai dua kalian bakal jumpain kelas Pengolahan, yang paling seru karena arsiparis nya selalu bikin rame. Kerja rumit tapi euphorianya  seru! Nyebrang lurus kedepan ada Preservasi, disini kita bisa belajar banyak hal, dari nge-restorasi arsip, reboksing, scan peta, serta ngerasain ambil arsip di roll o pack raksasa. Kami juga berkesempatan berkunjung ke Gedung BAST yang di Lampineung, yeay. Masuk ke layanan, langsung disuguhi “Konten, konten, konten terus” hal yang cukup tepat untuk describe kegiatan unit ini, diasah kritis mikirin ide terus, pokoknya kreatif is a must. Terakhir untuk pengalaman dari unit Tata Usaha/Record Center, jangan lupa sedia jaket sebelum kedinginan!',
     allUnits: [
       {
         name: 'Unit Akuisisi Arsip',
@@ -48,7 +48,7 @@ const AktivitasUnitDetail = () => {
           'Koordinasi pengambilan arsip dari instansi',
           'Verifikasi kelengkapan dokumen',
         ],
-        image: '/images/unit-acquisition.jpg',
+        image: '/images/program/aktivitas_unit/akuisisi.jpg',
       },
       {
         name: 'Unit Pengolahan Arsip',
@@ -61,7 +61,7 @@ const AktivitasUnitDetail = () => {
           'Menata arsip sesuai sistem klasifikasi',
           'Membuat indeks dan katalog arsip',
         ],
-        image: '/images/unit-processing.jpg',
+        image: '/images/program/aktivitas_unit/pengolahan.jpg',
       },
       {
         name: 'Unit Preservasi Arsip',
@@ -74,7 +74,7 @@ const AktivitasUnitDetail = () => {
           'Mendigitalisasi arsip untuk preservasi',
           'Mengelola kondisi ruang penyimpanan',
         ],
-        image: '/images/unit-preservation.jpg',
+        image: '/images/program/aktivitas_unit/preservasi.jpg',
       },
       {
         name: 'Unit Pelayanan Arsip',
@@ -127,7 +127,7 @@ const AktivitasUnitDetail = () => {
     ],
     gallery: [
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
+        src: '/images/program/aktivitas_unit/',
         caption: 'Mahasiswa sedang mendigitalisasi arsip',
       },
       {
