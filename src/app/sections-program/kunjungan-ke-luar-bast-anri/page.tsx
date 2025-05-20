@@ -13,10 +13,10 @@ import 'swiper/css/navigation';
 const KunjunganLuarDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [activeFAQ, setActiveFAQ] = useState<number | null>(0);
+  const [activeItem, setActiveItem] = useState<number | null>(0);
   const handleImageClick = (src: string) => setPreviewImage(src);
   const closeModal = () => setPreviewImage(null);
-  const toggleFAQ = (index: number) => setActiveFAQ(activeFAQ === index ? null : index);
+  const toggleItem = (index: number) => setActiveItem(activeItem === index ? null : index);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -32,126 +32,104 @@ const KunjunganLuarDetail = () => {
     icon: '/images/Kunjungan Luar.png',
     color: 'red-500',
     video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
-    programDescription:
-      'Tim BAST ANRI siap berkunjung ke lokasi Anda untuk memperkenalkan dunia kearsipan dengan cara yang edukatif dan interaktif. Program ini dirancang khusus untuk sekolah, kampus, dan berbagai instansi yang ingin mengenal lebih dekat tentang pengelolaan arsip secara profesional.',
-    programActivities:
-      'Dalam kunjungan ini, tim kami akan memberikan sosialisasi komprehensif tentang pentingnya arsip dalam kehidupan sehari-hari, pelatihan praktis pengelolaan arsip, dan membuka peluang kolaborasi untuk penyelamatan arsip penting. Melalui pendekatan yang ramah dan interaktif, kami berharap dapat membangun kesadaran tentang pentingnya arsip di berbagai lapisan masyarakat.',
-    activities: [
+    activityDescription:
+      'Tim BAST ANRI berkunjung ke berbagai institusi untuk membagikan pengetahuan kearsipan dan mempromosikan pentingnya pengelolaan arsip yang baik.',
+    mainActivity:
+      'Melalui program kunjungan ke luar ini, tim BAST ANRI melakukan berbagai kegiatan edukatif dan interaktif seperti sosialisasi tentang pentingnya arsip, pelatihan dasar pengelolaan arsip, serta mendiskusikan potensi kerja sama dalam penyelamatan arsip penting. Kegiatan ini dirancang agar lebih menjangkau masyarakat yang belum memiliki kesempatan untuk mengunjungi BAST ANRI secara langsung.',
+    allActivities: [
       {
         name: 'Sosialisasi Kearsipan',
         description:
-          'Mengenalkan pentingnya arsip sejak dini dan bagaimana perannya dalam kehidupan sehari-hari, serta bagaimana dokumen-dokumen tertentu memiliki nilai sejarah yang perlu dilestarikan.',
-        icon: '/images/icons/socialization.svg',
-        details: [
-          'Pengenalan dasar dunia kearsipan',
-          'Pentingnya arsip dalam kehidupan sehari-hari',
-          'Jenis-jenis arsip dan nilainya',
-          'Arsip sebagai warisan sejarah bangsa',
+          'Kegiatan yang bertujuan mengenalkan pentingnya arsip sejak dini dan bagaimana perannya dalam kehidupan sehari-hari. Tim BAST ANRI memberikan presentasi yang interaktif dan edukatif tentang nilai arsip bagi masyarakat dan bangsa.',
+        icon: '/images/icons/education.svg',
+        activities: [
+          'Presentasi tentang pentingnya arsip',
+          'Diskusi interaktif dengan peserta',
+          'Pemutaran video edukasi tentang arsip',
+          'Pengenalan jenis-jenis arsip penting',
         ],
-        image: '/images/kunjungan-sosialisasi.jpg',
+        image: '/images/outreach-education.jpg',
       },
       {
         name: 'Penyuluhan & Pelatihan',
         description:
-          'Sesi belajar bersama tentang cara mengelola arsip yang baik dan benar, mencakup praktik-praktik dasar pengarsipan yang dapat diterapkan oleh berbagai kalangan.',
+          'Sesi pembelajaran bersama tentang cara mengelola arsip yang baik dan benar. Tim memberikan pelatihan praktis yang dapat langsung diterapkan oleh peserta dalam mengelola arsip pribadi maupun institusi.',
         icon: '/images/icons/training.svg',
-        details: [
-          'Workshop pengelolaan arsip dasar',
-          'Teknik penyimpanan dokumen yang tepat',
-          'Digitalisasi arsip sederhana',
-          'Pemeliharaan arsip jangka panjang',
+        activities: [
+          'Pelatihan dasar pengelolaan arsip',
+          'Workshop penyusunan sistem arsip sederhana',
+          'Praktik pengamanan dokumen penting',
+          'Teknik digitalisasi arsip dasar',
         ],
-        image: '/images/kunjungan-pelatihan.jpg',
+        image: '/images/outreach-training.jpg',
       },
       {
         name: 'Kerja Sama Penyelamatan Arsip',
         description:
-          'Mengajak pihak luar untuk sama-sama menjaga dokumen penting dengan pendekatan kolaboratif, termasuk penyelamatan arsip yang bernilai sejarah tinggi.',
+          'Mengajak pihak luar untuk sama-sama menjaga dokumen penting dengan pendekatan kolaboratif. Tim BAST ANRI menawarkan program kerja sama untuk menyelamatkan dan melestarikan arsip bernilai sejarah.',
         icon: '/images/icons/collaboration.svg',
-        details: [
-          'Identifikasi arsip bernilai tinggi',
-          'Protokol penyelamatan arsip darurat',
-          'Kemitraan dalam preservasi arsip',
-          'Program adopsi arsip untuk institusi',
+        activities: [
+          'Identifikasi arsip bernilai sejarah',
+          'Perencanaan program penyelamatan bersama',
+          'Pemberian bantuan teknis preservasi',
+          'Perjanjian kerja sama pelestarian arsip',
         ],
-        image: '/images/kunjungan-kerjasama.jpg',
+        image: '/images/outreach-collaboration.jpg',
       },
       {
         name: 'Promosi Program Arsip',
         description:
-          'Memperkenalkan program-program BAST ANRI lainnya supaya makin dikenal luas, serta menjaring minat kolaborasi dari berbagai institusi.',
+          'Memperkenalkan program-program BAST ANRI lainnya agar semakin dikenal luas. Tim mempromosikan berbagai kegiatan dan layanan BAST ANRI yang dapat dimanfaatkan oleh masyarakat.',
         icon: '/images/icons/promotion.svg',
-        details: [
-          'Pengenalan berbagai program BAST ANRI',
-          'Peluang magang dan kunjungan ke BAST ANRI',
-          'Program edukasi kearsipan berkelanjutan',
-          'Ajakan partisipasi masyarakat dalam kearsipan',
+        activities: [
+          'Presentasi program-program BAST ANRI',
+          'Pembagian brosur dan materi promosi',
+          'Pendaftaran program kunjungan ke dalam BAST ANRI',
+          'Penawaran program kerja sama lanjutan',
         ],
-        image: '/images/kunjungan-promosi.jpg',
+        image: '/images/outreach-promotion.jpg',
       },
     ],
     benefits: [
       {
-        title: 'Penyebarluasan Ilmu Kearsipan',
-        description: 'Masyarakat dapat belajar ilmu kearsipan tanpa harus datang ke BAST ANRI',
+        title: 'Jangkauan Lebih Luas',
+        description: 'Menjangkau masyarakat yang belum berkesempatan mengunjungi BAST ANRI',
       },
       {
         title: 'Edukasi Langsung',
-        description: 'Pembelajaran langsung dari para ahli dalam lingkungan yang familiar',
+        description: 'Pembelajaran langsung dari para profesional arsip dalam suasana familiar',
       },
       {
-        title: 'Membangun Kesadaran',
-        description: 'Menanamkan kesadaran pentingnya arsip di berbagai lapisan masyarakat',
+        title: 'Kesadaran Arsip',
+        description: 'Meningkatkan kesadaran tentang pentingnya pengelolaan arsip yang baik',
       },
       {
-        title: 'Jangkauan Lebih Luas',
-        description: 'Menjangkau institusi dan komunitas yang mungkin belum bisa mengunjungi BAST ANRI',
+        title: 'Jaringan Kolaborasi',
+        description: 'Membangun jaringan kerja sama untuk pelestarian arsip bernilai sejarah',
       },
       {
-        title: 'Peluang Kolaborasi',
-        description: 'Membuka pintu kerja sama untuk proyek-proyek kearsipan di masa depan',
+        title: 'Pengetahuan Praktis',
+        description: 'Mendapatkan keterampilan praktis dalam pengelolaan dokumen penting',
       },
     ],
     gallery: [
       {
-        src: '/images/kunjungan-luar-1.jpg',
-        caption: 'Tim BAST ANRI presentasi di sebuah kampus',
+        src: '/images/outreach-gallery-1.jpg',
+        caption: 'Presentasi tim BAST ANRI di sebuah universitas',
       },
       {
-        src: '/images/kunjungan-luar-2.jpg',
-        caption: 'Workshop kearsipan di sekolah menengah',
+        src: '/images/outreach-gallery-2.jpg',
+        caption: 'Workshop pengelolaan arsip di sekolah',
       },
       {
-        src: '/images/kunjungan-luar-3.jpg',
-        caption: 'Sesi interaktif dengan siswa-siswi',
-      },
-      {
-        src: '/images/kunjungan-luar-4.jpg',
+        src: '/images/outreach-gallery-3.jpg',
         caption: 'Penandatanganan kerja sama dengan institusi',
       },
+      {
+        src: '/images/outreach-gallery-4.jpg',
+        caption: 'Pelatihan digitalisasi arsip dasar',
+      },
     ],
-    faqs: [
-      {
-        question: 'Bagaimana cara mengajukan permohonan kunjungan BAST ANRI ke institusi kami?',
-        answer: 'Permohonan kunjungan dapat diajukan melalui surat resmi ke Kepala BAST ANRI atau melalui formulir online di website kami. Mohon cantumkan informasi mengenai institusi, tujuan kunjungan, dan perkiraan jumlah peserta yang akan terlibat.'
-      },
-      {
-        question: 'Berapa lama durasi kunjungan tim BAST ANRI?',
-        answer: 'Durasi kunjungan bervariasi tergantung kebutuhan dan program yang dipilih, mulai dari setengah hari (3-4 jam) hingga program intensif sehari penuh. Kami dapat menyesuaikan durasi sesuai kebutuhan institusi Anda.'
-      },
-      {
-        question: 'Apakah ada biaya untuk program kunjungan ini?',
-        answer: 'Program kunjungan ke luar BAST ANRI untuk institusi pendidikan negeri disediakan secara gratis sebagai bagian dari misi edukasi kami. Untuk kunjungan ke institusi swasta atau komersial, mungkin dikenakan biaya transportasi dan akomodasi tim.'
-      },
-      {
-        question: 'Berapa jumlah minimal peserta untuk program ini?',
-        answer: 'Untuk efektivitas program, kami menyarankan minimal 20 peserta. Namun, kami tetap terbuka untuk diskusi jika institusi Anda memiliki jumlah peserta yang berbeda.'
-      },
-      {
-        question: 'Apakah BAST ANRI menyediakan materi untuk peserta?',
-        answer: 'Ya, tim kami akan menyiapkan materi presentasi, modul pelatihan, dan beberapa alat peraga untuk kegiatan interaktif. Jika ada kebutuhan spesifik, mohon dapat diinformasikan saat pengajuan permohonan.'
-      }
-    ]
   };
 
   const fadeInUp = {
@@ -171,7 +149,7 @@ const KunjunganLuarDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-0 pb-12">
-      {/* Banner Section - with red theme */}
+      {/* Banner Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white py-32 px-4">
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
@@ -240,7 +218,7 @@ const KunjunganLuarDetail = () => {
               <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-red-200">
                 {program.title}
               </h1>
-              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-red-400 to-red-500 rounded-full opacity-70 blur-sm"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-70 blur-sm"></div>
             </div>
 
             {/* Subjudul dengan styling yang lebih menarik */}
@@ -248,12 +226,12 @@ const KunjunganLuarDetail = () => {
               <p className="text-xl md:text-2xl italic bg-gradient-to-r from-red-200 to-white bg-clip-text text-transparent font-medium">
                 {program.subtitle}
               </p>
-              <div className="absolute -inset-px bg-gradient-to-r from-red-500 to-red-500 rounded-lg opacity-20 blur-sm -z-10"></div>
+              <div className="absolute -inset-px bg-gradient-to-r from-red-500 to-red-700 rounded-lg opacity-20 blur-sm -z-10"></div>
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-500 opacity-20 blur-md"></div>
-            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-red-500 opacity-20 blur-md"></div>
+            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
+            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
           </motion.div>
         </div>
       </section>
@@ -336,17 +314,17 @@ const KunjunganLuarDetail = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
                       />
                     </svg>
                   </div>
                 </div>
                 <div>
                   <h3 className="text-xl font-heading font-bold text-primary dark:text-white">
-                    Program Kunjungan ke Luar BAST ANRI
+                    Kunjungan ke Luar BAST ANRI
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 italic">
-                    {program.programDescription}
+                    {program.activityDescription}
                   </p>
                 </div>
               </div>
@@ -365,24 +343,24 @@ const KunjunganLuarDetail = () => {
               </div>
 
               <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-3">
-                Aktivitas dalam Program:
+                Aktivitas yang Dilakukan:
               </h4>
 
-              <p className="text-gray-700 dark:text-gray-300 mb-6">{program.programActivities}</p>
+              <p className="text-gray-700 dark:text-gray-300 mb-6">{program.mainActivity}</p>
 
               <div className="mt-8">
                 <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
-                  Kegiatan dalam Program Kunjungan:
+                  Kegiatan dalam Program:
                 </h4>
 
-                <div className="space-y-4 mt-4">
-                  {program.activities.map((activity, idx) => (
+                <div className="space-y-2 mt-4">
+                  {program.allActivities.map((activity, idx) => (
                     <div
                       key={idx}
                       className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
                     >
                       <button
-                        onClick={() => toggleFAQ(idx)}
+                        onClick={() => toggleItem(idx)}
                         className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
                         <div className="flex items-center">
@@ -395,7 +373,7 @@ const KunjunganLuarDetail = () => {
                         </div>
                         <svg
                           className={`w-5 h-5 text-gray-500 transition-transform ${
-                            activeFAQ === idx ? 'transform rotate-180' : ''
+                            activeItem === idx ? 'transform rotate-180' : ''
                           }`}
                           fill="none"
                           viewBox="0 0 24 24"
@@ -410,7 +388,7 @@ const KunjunganLuarDetail = () => {
                         </svg>
                       </button>
 
-                      {activeFAQ === idx && (
+                      {activeItem === idx && (
                         <div className="p-4 bg-white dark:bg-gray-800">
                           <div className="flex flex-col md:flex-row">
                             <div className="relative w-full md:w-1/3 h-48 md:h-auto flex-shrink-0 overflow-hidden rounded-lg mb-4 md:mb-0 md:mr-4">
@@ -427,11 +405,11 @@ const KunjunganLuarDetail = () => {
                                 {activity.description}
                               </p>
                               <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Detail Kegiatan:
+                                Kegiatan {activity.name}:
                               </h5>
                               <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {activity.details.map((detail, detailIdx) => (
-                                  <li key={detailIdx}>{detail}</li>
+                                {activity.activities.map((item, actIdx) => (
+                                  <li key={actIdx}>{item}</li>
                                 ))}
                               </ul>
                             </div>
@@ -441,56 +419,6 @@ const KunjunganLuarDetail = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-            </motion.div>
-
-            {/* FAQ Section */}
-            <motion.div
-              initial="hidden"
-              animate={isLoaded ? 'visible' : 'hidden'}
-              variants={fadeInUp}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
-            >
-              <h3 className="text-xl font-heading font-bold text-primary dark:text-red-400 mb-6">
-                Pertanyaan yang Sering Diajukan
-              </h3>
-              
-              <div className="space-y-3">
-                {program.faqs.map((faq, idx) => (
-                  <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => toggleFAQ(idx + program.activities.length)}
-                      className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                    >
-                      <span className="font-medium text-gray-800 dark:text-gray-200">
-                        {faq.question}
-                      </span>
-                      <svg
-                        className={`w-5 h-5 text-gray-500 flex-shrink-0 ml-2 transition-transform ${
-                          activeFAQ === idx + program.activities.length ? 'transform rotate-180' : ''
-                        }`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                    
-                    {activeFAQ === idx + program.activities.length && (
-                      <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
-                        <p className="text-gray-700 dark:text-gray-300">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                ))}
               </div>
             </motion.div>
           </div>
@@ -548,14 +476,7 @@ const KunjunganLuarDetail = () => {
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M19 11H5C3.89543 11 3 11.8954 3 13V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V13C21 11.8954 20.1046 11 19 11Z"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M7 11V7C7 5.93913 7.42143 4.92172 8.17157 4.17157C8.92172 3.42143 9.93913 3 11 3H13C14.0609 3 15.0783 3.42143 15.8284 4.17157C16.5786 4.92172 17 5.93913 17 7V11"
+                              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                               stroke="currentColor"
                               strokeWidth="2"
                               strokeLinecap="round"
@@ -571,18 +492,178 @@ const KunjunganLuarDetail = () => {
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M6 8L2 12L6 16"
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                               stroke="currentColor"
                               strokeWidth="2"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             />
+                          </svg>
+                        )}
+                        {index === 2 && (
+                          <svg
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
                             <path
-                              d="M2 12H22"
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                               stroke="currentColor"
                               strokeWidth="2"
                               strokeLinecap="round"
                               strokeLinejoin="round"
                             />
+                          </svg>
+                        )}
+                        {index === 3 && (
+                          <svg
+                            className="w-5 h-5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
                             <path
-                              d="M14 12V7C14 6.46957 14.2107 5.96086 14.5858 5.58579C14.9609 5.21071 15.4696 5 16 5H19C19.5304 5 20.0391 5.
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <h4 className="text-gray-800 dark:text-gray-200 font-medium group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">
+                          {otherProgram.title}
+                        </h4>
+                      </div>
+                      <svg
+                        className={`w-5 h-5 text-gray-400 group-hover:text-${otherProgram.color} transform group-hover:translate-x-1 transition-all`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gallery Section */}
+        <motion.div
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={fadeInUp}
+          className="mt-12"
+        >
+          <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
+            Galeri Kegiatan
+          </h2>
+          <div className="relative">
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: '.custom-swiper-button-next',
+                prevEl: '.custom-swiper-button-prev',
+              }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="relative"
+            >
+              {program.gallery.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={image.src}
+                        alt={image.caption}
+                        fill
+                        className="object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(image.src)}
+                      />
+                    </div>
+                    <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
+                      {image.caption}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              {/* 🔻 Panah kiri */}
+              <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </div>
+
+              {/* 🔺 Panah kanan */}
+                                   <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                       <path
+                                         strokeLinecap="round"
+                                         strokeLinejoin="round"
+                                         strokeWidth={2}
+                                         d="M9 5l7 7-7 7"
+                                       />
+                                     </svg>
+                                   </div>
+                                 </Swiper>
+                               </div>
+                             </motion.div>
+                           </div>
+              {/* Image Preview Modal */}
+                   {previewImage && (
+                     <div
+                       className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4"
+                       onClick={closeModal}
+                     >
+                       <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
+                         <Image
+                           src={previewImage}
+                           alt="Preview"
+                           width={1200}
+                           height={800}
+                           className="max-h-[90vh] w-auto object-contain"
+                         />
+                         <button
+                           onClick={closeModal}
+                           className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+                         >
+                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                             <path
+                               strokeLinecap="round"
+                               strokeLinejoin="round"
+                               strokeWidth={2}
+                               d="M6 18L18 6M6 6l12 12"
+                             />
+                           </svg>
+                         </button>
+                       </div>
+                     </div>
+                   )}
+                 </div>
+               );
+             };
+             
+             export default KunjunganLuarDetail;
+                         
