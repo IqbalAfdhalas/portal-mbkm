@@ -63,7 +63,7 @@ const About = () => {
           >
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image
-                src="/images/Pelayanan_Unit.jpg"
+                src="/images/about.jpg"
                 alt="Kegiatan mahasiswa dalam program MBKM"
                 fill
                 className="object-cover"
@@ -82,7 +82,7 @@ const About = () => {
               Program yang Berfokus pada Pengembangan Mahasiswa
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-8">
-              MBKM BAST ANRI merupakan program yang dirancang untuk memberikan pengalaman belajar
+              MBKM x BAST ANRI merupakan program yang dirancang untuk memberikan pengalaman belajar
               yang komprehensif melalui kolaborasi dengan Arsip Nasional Republik Indonesia. Program
               ini memberikan kesempatan mahasiswa untuk mengembangkan hard skill dan soft skill yang
               relevan dengan dunia kerja.

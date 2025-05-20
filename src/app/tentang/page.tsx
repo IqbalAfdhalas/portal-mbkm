@@ -6,7 +6,6 @@ import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TabContent } from '@/components/about-detail/TabContent';
 import { MBKMContent } from '@/components/about-detail/MBKMContent';
-import { BASTContent } from '@/components/about-detail/BASTContent';
 import { CollaborationContent } from '@/components/about-detail/CollaborationContent';
 import { ProgramFlowContent } from '@/components/about-detail/ProgramFlowContent';
 import { WebsiteContent } from '@/components/about-detail/WebsiteContent';
@@ -42,12 +41,8 @@ export default function AboutDetailPage() {
     switch (activeTab) {
       case 'mbkm':
         return <MBKMContent />;
-      case 'bast':
-        return <BASTContent />;
       case 'collaboration':
         return <CollaborationContent />;
-      case 'program-flow':
-        return <ProgramFlowContent />;
       case 'website':
         return <WebsiteContent />;
       default:
@@ -167,7 +162,7 @@ export default function AboutDetailPage() {
             <h1
               className={`text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent ${currentTheme.heading}`}
             >
-              Tentang MBKM BAST ANRI
+              Tentang MBKM x BAST ANRI
             </h1>
             <motion.p
               className="text-xl md:text-2xl max-w-3xl leading-relaxed mb-8"
@@ -175,8 +170,8 @@ export default function AboutDetailPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              Program kolaborasi antara MBKM dan BAST ANRI yang bertujuan untuk memberikan
-              kesempatan belajar dan pengalaman kerja yang berharga bagi mahasiswa Indonesia.
+              Program magang MBKM di BAST ANRI yang bertujuan untuk memberikan kesempatan belajar
+              dan pengalaman kerja yang berharga bagi mahasiswa Indonesia.
             </motion.p>
 
             <motion.div
@@ -223,8 +218,7 @@ export default function AboutDetailPage() {
                 <div className="flex flex-col gap-2">
                   {[
                     { id: 'mbkm', label: 'MBKM', icon: Book },
-                    { id: 'bast', label: 'BAST ANRI', icon: Building },
-                    { id: 'collaboration', label: 'Kolaborasi', icon: Handshake },
+                    { id: 'collaboration', label: 'Magang di BAST ANRI', icon: Handshake },
                     { id: 'website', label: 'Tentang Website', icon: Monitor },
                   ].map(tab => (
                     <motion.button
@@ -264,7 +258,6 @@ export default function AboutDetailPage() {
                     className={`absolute left-0 top-0 w-16 h-16 rounded-full ${currentTheme.hero} flex items-center justify-center text-white opacity-80`}
                   >
                     {activeTab === 'mbkm' && <Book className="w-6 h-6" />}
-                    {activeTab === 'bast' && <Building className="w-6 h-6" />}
                     {activeTab === 'collaboration' && <Handshake className="w-6 h-6" />}
                     {activeTab === 'program-flow' && <Shuffle className="w-6 h-6" />}
                     {activeTab === 'website' && <Monitor className="w-6 h-6" />}
@@ -273,13 +266,11 @@ export default function AboutDetailPage() {
                   <h2 className="text-3xl font-bold ml-20 text-gray-800 dark:text-gray-100">
                     {activeTab === 'mbkm'
                       ? 'MBKM'
-                      : activeTab === 'bast'
-                        ? 'BAST ANRI'
-                        : activeTab === 'collaboration'
-                          ? 'Kolaborasi'
-                          : activeTab === 'program-flow'
-                            ? 'Alur Program'
-                            : 'Tentang Website'}
+                      : activeTab === 'collaboration'
+                        ? 'Magang di BAST ANRI'
+                        : activeTab === 'program-flow'
+                          ? 'Alur Program'
+                          : 'Tentang Website'}
                   </h2>
                   <div className={`h-1 w-40 ${currentTheme.hero} rounded-full mt-2 ml-20`}></div>
                 </div>

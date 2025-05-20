@@ -1,4 +1,4 @@
-// src/components/sections/ProfilMBKM.tsx
+// src/components/sections/KatalogMBKM.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -11,12 +11,18 @@ import { profileData } from '@/constants/profileData';
 
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
-type Program = 'MI' | 'IK' | 'Arsip' | 'Perpustakaan' | 'Semua';
-type Batch = '2022' | '2023' | '2024' | 'Semua';
+type Program =
+  | 'ManajemenInformatika'
+  | 'IlmuKomunikasi'
+  | 'Sejarah'
+  | 'BahasaInggris'
+  | 'TehnikMesin'
+  | 'Semua';
+type Batch = '2024' | '2025' | 'Semua';
 type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
 type ViewMode = 'grid' | 'list';
 
-const ProfilMBKM = () => {
+const KatalogMBKM = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
   const [selectedBatch, setSelectedBatch] = useState<Batch>('Semua');
@@ -79,10 +85,15 @@ const ProfilMBKM = () => {
     setCurrentPage(1); // Reset to first page after filtering
   }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit]);
 
-  // Group profiles by role
-  const pembimbingKampus = filteredData.filter(profile => profile.peran === 'Pembimbing Kampus');
-  const mentorBASTANRI = filteredData.filter(profile => profile.peran === 'Mentor BAST ANRI');
-  const mahasiswa = filteredData.filter(profile => profile.peran === 'Mahasiswa');
+  const sortedData = [...filteredData].sort((a, b) => {
+    const aYear = parseInt(a.angkatan || '0');
+    const bYear = parseInt(b.angkatan || '0');
+    return bYear - aYear; // descending
+  });
+
+  const pembimbingKampus = sortedData.filter(profile => profile.peran === 'Pembimbing Kampus');
+  const mentorBASTANRI = sortedData.filter(profile => profile.peran === 'Mentor BAST ANRI');
+  const mahasiswa = sortedData.filter(profile => profile.peran === 'Mahasiswa');
 
   // Animation variants
   const containerVariants = {
@@ -234,7 +245,7 @@ const ProfilMBKM = () => {
 
   return (
     <section
-      id="profil-mbkm"
+      id="katalog-mbkm"
       className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
     >
       <div className="container mx-auto max-w-screen-xl px-4">
@@ -354,10 +365,11 @@ const ProfilMBKM = () => {
                 className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Prodi</option>
-                <option value="MI">Manajemen Informatika</option>
-                <option value="IK">Ilmu Komunikasi</option>
-                <option value="Arsip">Arsip</option>
-                <option value="Perpustakaan">Perpustakaan</option>
+                <option value="ManajemenInformatika">Manajemen Informatika</option>
+                <option value="IlmuKomunikasi">Ilmu Komunikasi</option>
+                <option value="Sejarah">Sejarah</option>
+                <option value="BahasaInggris">Bahasa Inggris</option>
+                <option value="TehnikMesin">Tehnik Mesin</option>
               </select>
 
               <select
@@ -366,9 +378,8 @@ const ProfilMBKM = () => {
                 className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Angkatan</option>
+                <option value="2025">2025</option>
                 <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
               </select>
 
               {/* Only show Unit filter when Peran is Mentor BAST ANRI */}
@@ -498,4 +509,4 @@ const ProfilMBKM = () => {
   );
 };
 
-export default ProfilMBKM;
+export default KatalogMBKM;

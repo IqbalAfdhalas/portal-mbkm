@@ -1,20 +1,10 @@
-// src/components/ui/ProfileListItem.tsx
+import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  FiUser,
-  FiUsers,
-  FiBookmark,
-  FiCalendar,
-  FiHome,
-  FiMapPin,
-  FiBookOpen,
-  FiBriefcase,
-  FiChevronRight,
-} from 'react-icons/fi';
-import { ProfileData } from '@/components/ui/ProfileCard';
+import { FiMapPin, FiBookOpen, FiCalendar, FiBriefcase } from 'react-icons/fi';
+import type { ProfileType } from '@/constants/profileData';
 
 interface ProfileListItemProps {
-  profile: ProfileData;
+  profile: ProfileType;
 }
 
 const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
@@ -78,7 +68,7 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
         <div className="flex-grow">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div>
-              <h4 className="text-lg font-semibold font-heading text-gray-800 dark:text-white">
+              <h4 className="text-lg font-semibold font-heading text-gray-800 dark:text-white line-clamp-1">
                 {profile.nama}
               </h4>
               <span
@@ -93,7 +83,7 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
               {profile.asalInstitusi && (
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                   <FiMapPin className="mr-1 text-primary-light flex-shrink-0" />
-                  <span>{profile.asalInstitusi}</span>
+                  <span className="line-clamp-1">{profile.asalInstitusi}</span>
                 </div>
               )}
 
@@ -101,10 +91,11 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                   <FiBookOpen className="mr-1 text-primary-light flex-shrink-0" />
                   <span>
-                    {profile.prodi === 'MI' && 'Manajemen Informatika'}
-                    {profile.prodi === 'IK' && 'Ilmu Komunikasi'}
-                    {profile.prodi === 'Arsip' && 'Arsip'}
-                    {profile.prodi === 'Perpustakaan' && 'Perpustakaan'}
+                    {profile.prodi === 'ManajemenInformatika' && 'Manajemen Informatika'}
+                    {profile.prodi === 'IlmuKomunikasi' && 'Ilmu Komunikasi'}
+                    {profile.prodi === 'Sejarah' && 'Sejarah'}
+                    {profile.prodi === 'BahasaInggris' && 'Bahasa Inggris'}
+                    {profile.prodi === 'TehnikMesin' && 'Tehnik Mesin'}
                   </span>
                 </div>
               )}
@@ -119,17 +110,12 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
               {profile.unit && (
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                   <FiBriefcase className="mr-1 text-primary-light flex-shrink-0" />
-                  <span>Unit: {profile.unit}</span>
+                  <span className="line-clamp-1">Unit: {profile.unit}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
-
-        {/* Action Button */}
-        <button className="ml-3 p-2 rounded-full bg-primary-light hover:bg-primary text-white flex-shrink-0 transition-colors">
-          <FiChevronRight />
-        </button>
       </div>
     </motion.div>
   );

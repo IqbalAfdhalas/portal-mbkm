@@ -64,10 +64,8 @@ export const CollaborationContent = () => {
   // Navigation items for the collaboration sections
   const navItems = [
     { id: 'overview', label: 'Ringkasan', icon: FileText },
-    { id: 'partners', label: 'Mitra Kerja Sama', icon: Building },
     { id: 'programs', label: 'Program', icon: Award },
     { id: 'testimonials', label: 'Testimoni', icon: Users },
-    { id: 'contact', label: 'Kontak', icon: Handshake },
   ];
 
   return (
@@ -212,54 +210,11 @@ export const CollaborationContent = () => {
             </div>
           )}
 
-          {/* Partners Section */}
-          {activeSection === 'partners' && (
-            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
-              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Mitra Kerja Sama
-              </h3>
-
-              <p className={`${currentTheme.text} mb-6`}>
-                ANRI berkolaborasi dengan berbagai mitra dari perguruan tinggi, instansi pemerintah,
-                dan lembaga kearsipan untuk pengembangan bidang kearsipan Indonesia.
-              </p>
-
-              {collaborationData.partners && (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {collaborationData.partners.map((partner, index) => (
-                    <motion.div
-                      key={index}
-                      className={`border ${currentTheme.divider} rounded-lg p-4 flex flex-col items-center text-center backdrop-blur-sm`}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.05, duration: 0.4 }}
-                    >
-                      <div className="relative w-16 h-16 mb-3">
-                        <Image
-                          src={`/images/partners/${partner.logo}`}
-                          alt={partner.name}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
-                      <h4 className={`font-medium ${currentTheme.headingText} text-sm`}>
-                        {partner.name}
-                      </h4>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {partner.category}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Programs Section */}
           {activeSection === 'programs' && (
             <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
               <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Program Kolaborasi
+                Praktek Kerja
               </h3>
 
               {collaborationData.programs && (
@@ -319,105 +274,29 @@ export const CollaborationContent = () => {
                   {collaborationData.testimonials.map((testimonial, index) => (
                     <motion.div
                       key={index}
-                      className={`border ${currentTheme.divider} rounded-lg overflow-hidden`}
+                      className={`relative rounded-lg overflow-hidden border ${currentTheme.divider}`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1, duration: 0.5 }}
                     >
-                      <div className="relative h-48">
+                      <div className="relative aspect-[4/3]">
                         <Image
                           src={testimonial.image}
                           alt={testimonial.name}
                           fill
                           className="object-cover"
                         />
-                      </div>
-                      <div className="p-4 backdrop-blur-sm">
-                        <h4 className={`font-bold ${currentTheme.headingText}`}>
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                          {testimonial.university} - {testimonial.program}
-                        </p>
-                        <p className={currentTheme.text}>{testimonial.quote}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+                        <div className="absolute bottom-0 p-4 text-white z-10">
+                          <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                          <p className="text-sm mb-1">
+                            {testimonial.university} - {testimonial.program}
+                          </p>
+                          <p className="text-sm line-clamp-4">{testimonial.quote}</p>
+                        </div>
                       </div>
                     </motion.div>
                   ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Contact Section */}
-          {activeSection === 'contact' && (
-            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
-              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Kontak Kerja Sama
-              </h3>
-
-              {collaborationData.contactInfo && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    className={`p-6 border ${currentTheme.divider} rounded-lg backdrop-blur-sm`}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <h4 className={`font-bold ${currentTheme.headingText} mb-4`}>
-                      Informasi Kontak
-                    </h4>
-
-                    <div className="space-y-3">
-                      {collaborationData.contactInfo.map((contact, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                          <div className={`mt-1 ${currentTheme.icon}`}>
-                            {contact.icon && <contact.icon className="w-5 h-5" />}
-                          </div>
-                          <div>
-                            <p className={`font-medium ${currentTheme.headingText}`}>
-                              {contact.label}
-                            </p>
-                            <p className={currentTheme.text}>{contact.value}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className={`p-6 border ${currentTheme.divider} rounded-lg backdrop-blur-sm`}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <h4 className={`font-bold ${currentTheme.headingText} mb-4`}>Alamat</h4>
-
-                    <div className="mb-4">
-                      <p className={currentTheme.text}>
-                        {collaborationData.address && collaborationData.address.street}
-                        <br />
-                        {collaborationData.address && collaborationData.address.city},{' '}
-                        {collaborationData.address && collaborationData.address.zipCode}
-                        <br />
-                        {collaborationData.address && collaborationData.address.province}
-                      </p>
-                    </div>
-
-                    {collaborationData.mapEmbedUrl && (
-                      <div className="relative h-48 rounded-lg overflow-hidden">
-                        <iframe
-                          src={collaborationData.mapEmbedUrl}
-                          width="100%"
-                          height="100%"
-                          style={{ border: 0 }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                          title="Lokasi ANRI"
-                        ></iframe>
-                      </div>
-                    )}
-                  </motion.div>
                 </div>
               )}
             </div>
