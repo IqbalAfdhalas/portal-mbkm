@@ -17,7 +17,7 @@ export interface CollaborationData {
     url: string;
     label: string;
   };
-  overviewContent: string;
+  overviewContent?: string;
   partners: {
     name: string;
     logo: string;
@@ -53,7 +53,7 @@ export const collaborationData: CollaborationData = {
   headerTitle: 'Kolaborasi MBKM x BAST ANRI',
   headerDescription:
     'Kerjasama strategis antara program MBKM dan BAST ANRI untuk mengembangkan kompetensi mahasiswa di bidang kearsipan.',
-  headerImageSrc: '/images/collaboration-illustration.svg',
+  headerImageSrc: '/images/collaboration-illustration.png',
   tags: ['Kearsipan', 'Digitalisasi', 'Praktik Kerja', 'Penelitian', 'Tata Naskah'],
   stats: [
     { value: '50+', label: 'Perguruan Tinggi Mitra' },
@@ -66,14 +66,38 @@ export const collaborationData: CollaborationData = {
       id: 'latar-belakang',
       title: 'Latar Belakang Kolaborasi',
       content: `
-        <div class="mb-4">
-          <p class="mb-3">Kolaborasi antara Merdeka Belajar Kampus Merdeka (MBKM) dan Badan Arsip Statis dan Tata Naskah (BAST) ANRI berawal dari kesadaran akan pentingnya pengembangan kompetensi mahasiswa di bidang kearsipan dan tata naskah yang semakin relevan di era digital.</p>
-          
-          <p class="mb-3">Dalam era informasi digital saat ini, keahlian dalam pengelolaan arsip dan dokumen elektronik menjadi sangat penting. Namun, masih terdapat kesenjangan antara kebutuhan industri dan kemampuan lulusan perguruan tinggi dalam bidang ini. Kolaborasi ini hadir sebagai jawaban atas tantangan tersebut.</p>
-          
-          <p>Melalui kolaborasi ini, BAST ANRI menyediakan platform bagi mahasiswa untuk mendapatkan pengalaman praktis di bidang kearsipan, sementara program MBKM memberikan kerangka kerja dan pengakuan akademis atas pengalaman tersebut. Ini menciptakan sinergi yang saling menguntungkan bagi semua pihak yang terlibat.</p>
-        </div>
-      `,
+    <div class="mb-4 text-justify">
+      <p class="mb-3"><strong>Jumat, 22 Oktober 2021</strong><br>
+        Perjanjian hitam di atas putih antara <strong>BAST ANRI</strong> dan <strong>Universitas Syiah Kuala (USK)</strong> menjadi tonggak awal ikatan kerja sama yang bertujuan untuk meningkatkan kualitas pendidikan kearsipan. Kerja sama ini mencakup pengembangan pusat studi arsip kebencanaan/arsip tsunami, serta sistem dan sumber daya manusia (SDM) kearsipan di lingkungan USK.
+      </p>
+
+      <p class="mb-3">Terdapat sejumlah poin kesepakatan yang selaras dengan semangat <em>Merdeka Belajar Kampus Merdeka (MBKM)</em>, di antaranya:</p>
+
+      <ul class="list-disc pl-5 space-y-2 mb-4">
+        <li><strong>Pasal 2</strong> — <em>"Ruang lingkup kerja sama mencakup pengembangan program vokasi, pusat studi, dan digitalisasi arsip"</em>, yang mendukung pelaksanaan kegiatan MBKM seperti magang, riset, proyek independen, serta pembelajaran kolaboratif lintas institusi.</li>
+        <li><strong>Pasal 4</strong> — <em>"Pembentukan Program Studi Vokasi D-IV Kearsipan"</em>, menjadi bagian dari skema pengembangan kurikulum MBKM yang memungkinkan mahasiswa mengambil pembelajaran lintas program studi dan memperoleh pengalaman praktis di lapangan.</li>
+        <li><strong>Pasal 7 dan 8</strong> — <em>"Pelatihan, workshop, dan penelitian"</em>, membuka peluang bagi mahasiswa dan dosen untuk terlibat aktif dalam kegiatan MBKM seperti pelatihan wirausaha, proyek desa, hingga riset terapan.</li>
+      </ul>
+
+      <p class="mb-3"><strong>Selasa, 13 Juni 2023</strong><br>
+        Pandangan tersebut terus berkembang hingga USK kembali melakukan perundingan tindak lanjut atas <em>Memorandum of Understanding (MoU)</em> dan <em>Perjanjian Kerja Sama (PKS)</em> dengan pihak BAST ANRI.
+      </p>
+
+      <p class="mb-3">Pertemuan ini dihadiri oleh:</p>
+      <ul class="list-disc pl-5 space-y-1 mb-4">
+        <li>Prof. Agussabti – Wakil Rektor I USK</li>
+        <li>Prof. Nasaruddin – Direktur Direktorat Pendidikan dan Pembelajaran</li>
+        <li>Prof. Muhammad Syukri – Direktur MBKM</li>
+        <li>Elly Sufriadi – Koordinator MBKM</li>
+      </ul>
+
+      <p class="mb-3">Pembahasan difokuskan pada pengembangan pusat studi arsip kebencanaan/tsunami, pembentukan program vokasi bidang kearsipan, penyelenggaraan lembaga kearsipan perguruan tinggi, serta pengembangan dan pembinaan SDM di bidang kearsipan.</p>
+
+      <p class="mb-3">Sebagai hasil dari pertemuan tersebut, disepakati bahwa <strong>BAST ANRI siap menerima mahasiswa MBKM dari USK</strong>. Ini menjadi bagian dari upaya pengembangan SDM mahasiswa serta peningkatan literasi kearsipan di masyarakat luas.</p>
+
+      <p><strong>Kesepakatan ini mulai direalisasikan pada Senin, 19 Februari 2024.</strong></p>
+    </div>
+  `,
       isOpen: true,
     },
     {
@@ -154,15 +178,7 @@ export const collaborationData: CollaborationData = {
     url: 'https://anri.go.id/kolaborasi-mbkm',
     label: 'Daftar Program Kolaborasi',
   },
-  overviewContent: `
-    <p>Program Kolaborasi MBKM x BAST ANRI menawarkan pendekatan terintegrasi antara pembelajaran teoritis di kampus dengan pengalaman praktis di lingkungan kearsipan nasional.</p>
-    
-    <p>Melalui program ini, mahasiswa berkesempatan untuk terlibat langsung dalam pengelolaan arsip nasional, digitalisasi dokumen bersejarah, pengembangan sistem kearsipan modern, dan berbagai kegiatan profesional lainnya di bawah bimbingan tenaga ahli ANRI.</p>
-    
-    <p>Program ini juga memungkinkan mahasiswa untuk mendapatkan pengakuan formal atas kegiatan pembelajaran di luar kampus dalam bentuk konversi SKS sesuai dengan kebijakan MBKM, sehingga mahasiswa tetap dapat menyelesaikan studi tepat waktu sambil mendapatkan pengalaman berharga di bidang kearsipan.</p>
-    
-    <p>Kolaborasi ini tidak hanya bermanfaat bagi mahasiswa, tetapi juga bagi perguruan tinggi dan BAST ANRI. Perguruan tinggi dapat memperkuat kurikulum dengan perspektif praktis dari dunia kerja, sementara BAST ANRI mendapatkan ide-ide segar dan dukungan untuk proyek-proyek inovasi mereka.</p>
-  `,
+
   partners: [
     {
       name: 'Universitas Indonesia',
@@ -207,65 +223,65 @@ export const collaborationData: CollaborationData = {
   ],
   programs: [
     {
-      title: 'Digitalisasi Arsip Nasional',
+      title: 'Digitalisasi Arsip',
       description:
         'Program alih media arsip fisik ke bentuk digital dengan standardisasi metadata internasional',
-      type: 'Magang',
+      type: 'Kegiatan 1',
     },
     {
-      title: 'Konservasi Dokumen Bersejarah',
-      description:
-        'Praktek kerja dalam preservasi dan konservasi dokumen-dokumen bersejarah dengan teknologi modern',
-      type: 'Praktek Kerja',
+      title: 'Klasifikasi Arsip',
+      description: 'Menyusun daftar arsip berdasarkan jenis, kategori, dan nilai informasi arsip.',
+      type: 'Kegiatan 2',
     },
     {
-      title: 'Pengembangan Sistem Kearsipan',
-      description: 'Riset dan pengembangan sistem pengelolaan arsip digital yang terintegrasi',
-      type: 'Riset',
+      title: 'Re-boxing Arsip',
+      description: 'Memindahkan arsip ke box baru sesuai standar preservasi dan pencatatan ulang.',
+      type: 'Kegiatan 3',
     },
     {
-      title: 'Sosialisasi Kearsipan',
+      title: 'Edukasi Kearsipan',
       description: 'Program edukasi publik tentang pentingnya arsip dan cara pengelolaannya',
-      type: 'Proyek',
+      type: 'Kegiatan 4',
     },
     {
       title: 'Manajemen Data Kearsipan',
-      description: 'Implementasi big data dan analitik dalam pengelolaan data kearsipan nasional',
-      type: 'Magang',
+      description:
+        'Menyesuaikan data arsip fisik dan digital agar selaras dan terdokumentasi baik.',
+      type: 'Kegiatan 5',
     },
   ],
   testimonials: [
     {
-      name: 'Dinda Prasetya',
+      name: 'Budi Setiawan',
       university: 'Universitas Indonesia',
-      program: 'Digitalisasi Arsip',
+      program: 'Magang di Telkom Indonesia',
       quote:
-        'Program kolaborasi MBKM x BAST ANRI membuka wawasan saya tentang pentingnya preservasi warisan sejarah melalui teknologi digital. Pengalaman praktek langsung sangat berharga bagi karir saya.',
-      image: '/images/testimonials/dinda.jpg',
+        'Program MBKM membuka pintu karir saya di industri telekomunikasi. Pengalaman magang di Telkom Indonesia memberikan saya keterampilan praktis yang tidak saya dapatkan di kampus.',
+      image: '/images/testing.jpg',
     },
     {
-      name: 'Fadli Rahman',
-      university: 'Institut Teknologi Bandung',
-      program: 'Pengembangan Sistem',
-      quote:
-        'Saya berkesempatan mengembangkan sistem database kearsipan dengan teknologi terkini. Mentor dari ANRI sangat membantu dan suportif dalam memberikan bimbingan praktis.',
-      image: '/images/testimonials/fadli.jpg',
-    },
-    {
-      name: 'Putri Anindita',
+      name: 'Anisa Rahma',
       university: 'Universitas Gadjah Mada',
-      program: 'Konservasi Dokumen',
+      program: 'Penelitian di LIPI',
       quote:
-        'Bekerja dengan dokumen berusia ratusan tahun adalah pengalaman yang tidak ternilai. Program ini mengajarkan saya teknik konservasi yang tidak didapatkan di perkuliahan biasa.',
-      image: '/images/testimonials/putri.jpg',
+        'Saya berkesempatan untuk terlibat dalam penelitian riil dengan ilmuwan ternama. Pengalaman ini memperkuat minat saya di bidang penelitian dan mengembangkan cara berpikir kritis.',
+      image: '/images/testing.jpg',
     },
     {
-      name: 'Bayu Wicaksono',
-      university: 'Universitas Padjadjaran',
-      program: 'Sosialisasi Kearsipan',
+      name: 'Dian Permata',
+      university: 'Institut Teknologi Bandung',
+      program: 'Wirausaha',
       quote:
-        'Program ini mengajarkan saya bagaimana mengkomunikasikan pentingnya kearsipan kepada masyarakat umum. Keterampilan komunikasi yang saya peroleh sangat bermanfaat.',
-      image: '/images/testimonials/bayu.jpg',
+        'MBKM memberikan saya modal dan mentoring untuk memulai startup saya sendiri. Kini bisnis saya berkembang dan bahkan mempekerjakan lulusan baru dari kampus saya.',
+      image: '/images/testing.jpg',
+    },
+    {
+      name: 'Reza Mahendra',
+      university: 'Universitas Diponegoro',
+      program: 'Proyek Desa',
+      quote:
+        'Program Proyek Desa mengajarkan saya bagaimana menerapkan ilmu teknik untuk menyelesaikan masalah nyata masyarakat. Pengalaman ini sangat berharga dan mengubah perspektif saya.',
+      image: '/images/testing.jpg',
     },
   ],
   contactInfo: [
