@@ -100,7 +100,7 @@ const AktivitasUnitDetail = () => {
           'Mengelola dokumentasi internal',
           'Membantu koordinasi antar unit',
         ],
-        image: '/images/unit-administration.jpg',
+        image: '/images/program/aktivitas_unit/tata_usaha.jpg',
       },
     ],
     benefits: [

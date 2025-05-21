@@ -29,13 +29,13 @@ const KunjunganLuarDetail = () => {
     subtitle: 'BAST ANRI Keliling? Bisa!',
     description:
       'Kalau biasanya orang datang ke BAST ANRI, kali ini kita yang datang ke tempatmu! Lewat program ini, tim BAST ANRI melakukan kunjungan ke sekolah, kampus, atau instansi lain untuk berbagi pengetahuan seputar dunia arsip. Edukatif, interaktif, dan pastinya seru!',
-    icon: '/images/Kunjungan Luar.png',
+    icon: '/images/program/logo_program/Kunjungan_ke_Luar_BAST_ANRI.png',
     color: 'red-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/kunjungan_ke_luar_bast_anri/vidio1.mp4',
     activityDescription:
-      'Tim BAST ANRI berkunjung ke berbagai institusi untuk membagikan pengetahuan kearsipan dan mempromosikan pentingnya pengelolaan arsip yang baik.',
+      'Kegiatan kunjungan keluar kantor BAST ANRI bersama para mahasiswa peserta program MBKM ke Palang Merah Indonesia (PMI) Aceh menjadi momen yang sangat berharga dan penuh makna. Dalam kunjungan ini, para peserta mendapat kesempatan istimewa untuk mendengarkan secara langsung pengalaman para relawan PMI Aceh dalam menjalankan tugas-tugas kemanusiaan, khususnya saat menghadapi situasi duka akibat bencana Tsunami. Tidak hanya itu, para peserta juga memperoleh wawasan tentang pentingnya pengelolaan arsip kebencanaan, yang menjadi bagian tak terpisahkan dari upaya dokumentasi dan pembelajaran di masa depan.',
     mainActivity:
-      'Melalui program kunjungan ke luar ini, tim BAST ANRI melakukan berbagai kegiatan edukatif dan interaktif seperti sosialisasi tentang pentingnya arsip, pelatihan dasar pengelolaan arsip, serta mendiskusikan potensi kerja sama dalam penyelamatan arsip penting. Kegiatan ini dirancang agar lebih menjangkau masyarakat yang belum memiliki kesempatan untuk mengunjungi BAST ANRI secara langsung.',
+      'Trip singkat ini sangat inspiratif, penuh makna dan memberi pengalaman baru. Kami dikenalin dengan para relawan PMI yang hebat, dan dengerin kisah mengharukan dibalik layer. Kami dikasih kesempatan merasakan momen trip singkat keluar kantor bersama kakak dan abang-abang yang sangat fun dan asik. Memorable untuk dikenang, informatif untuk diceritakan kembali. ',
     allActivities: [
       {
         name: 'Sosialisasi Kearsipan',
@@ -114,20 +114,28 @@ const KunjunganLuarDetail = () => {
     ],
     gallery: [
       {
-        src: '/images/outreach-gallery-1.jpg',
-        caption: 'Presentasi tim BAST ANRI di sebuah universitas',
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto1.jpg',
+        caption: '',
       },
       {
-        src: '/images/outreach-gallery-2.jpg',
-        caption: 'Workshop pengelolaan arsip di sekolah',
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto2.jpg',
+        caption: '',
       },
       {
-        src: '/images/outreach-gallery-3.jpg',
-        caption: 'Penandatanganan kerja sama dengan institusi',
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/outreach-gallery-4.jpg',
-        caption: 'Pelatihan digitalisasi arsip dasar',
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto5.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto6.jpg',
+        caption: '',
       },
     ],
   };
@@ -150,7 +158,7 @@ const KunjunganLuarDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-0 pb-12">
       {/* Banner Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white py-32 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#86efac] via-[#4ade80] to-[#34d399] text-white py-32 px-4">
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
@@ -218,15 +226,15 @@ const KunjunganLuarDetail = () => {
               <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-red-200">
                 {program.title}
               </h1>
-              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-red-400 to-red-600 rounded-full opacity-70 blur-sm"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-[#86efac] to-[#34d399] rounded-full opacity-70 blur-sm"></div>
             </div>
 
             {/* Subjudul dengan styling yang lebih menarik */}
             <div className="relative inline-block px-6 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-red-200 to-white bg-clip-text text-transparent font-medium">
+              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-[#bbf7d0] to-white bg-clip-text text-transparent font-medium">
                 {program.subtitle}
               </p>
-              <div className="absolute -inset-px bg-gradient-to-r from-red-500 to-red-700 rounded-lg opacity-20 blur-sm -z-10"></div>
+              <div className="absolute -inset-px bg-gradient-to-r from-[#86efac] to-[#34d399] rounded-lg opacity-20 blur-sm -z-10"></div>
             </div>
 
             {/* Decorative elements */}
@@ -264,11 +272,11 @@ const KunjunganLuarDetail = () => {
                 {program.benefits.map((benefit, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/30"
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-red-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center mt-0.5">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
                       <svg
-                        className="w-4 h-4 text-red-600 dark:text-red-400"
+                        className="w-4 h-4 text-green-600 dark:text-green-400"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -298,13 +306,13 @@ const KunjunganLuarDetail = () => {
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
-              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-red-500 mb-8`}
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-green-500 mb-8`}
             >
               <div className="flex flex-col md:flex-row md:items-center mb-6">
                 <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                  <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center shadow-lg p-4">
+                  <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center shadow-lg p-4">
                     <svg
-                      className="w-8 h-8 text-red-500"
+                      className="w-8 h-8 text-green-500"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

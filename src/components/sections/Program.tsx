@@ -79,7 +79,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Pameran Arsip',
-      icon: '/images/icons/exhibition.svg',
+      icon: '/images/program//logo_program/pameran_arsip.jpg',
       description: 'Lihat arsip tampil beda lewat pameran tematik dan interaktif!',
       features: [
         'Tema Sejarah Nasional',
