@@ -29,7 +29,7 @@ const DailyActivityDetail = () => {
     subtitle: 'Kegiatan Sehari-hari yang Penuh Cerita!',
     description:
       'Mau tahu apa aja yang dilakukan di BAST ANRI setiap hari? Nah, di sini kamu bisa lihat aktivitas harian para staf dan mahasiswa magang. Mulai dari yang administratif sampai yang teknis, semuanya seru buat diikuti. Program ini juga jadi cara kita mendokumentasikan keseharian yang kadang terlihat biasa, tapi sebenarnya penuh makna!',
-    icon: '/images/Daily Activity.png',
+    icon: '/images/program/aktivitas_unit/ChatGPT Image 19 Mei 2025, 11.45.11.png',
     color: 'purple-500',
     video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
     unitDescription:
