@@ -155,7 +155,6 @@ const Navbar = () => {
         {/* Right side actions */}
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          {user ? <UserDropdown user={user} /> : <LoginButton className="hidden md:block" />}
 
           {/* Mobile menu button */}
           <button
@@ -217,7 +216,6 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            {!user && <LoginButton className="w-full mt-4" />}
           </div>
         </motion.div>
       )}
