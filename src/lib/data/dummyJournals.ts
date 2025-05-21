@@ -38,10 +38,10 @@ Hari pertama ini membuat saya semakin yakin bahwa program MBKM di ANRI akan memb
     location: 'Arsip Nasional RI, Jakarta',
     authorId: 'user1',
     authorName: 'Budi Santoso',
-    authorImage: '/api/placeholder/150/150',
+    authorImage: '/images/semua_gambar/author_testing.png',
     media: [
-      { url: '/api/placeholder/640/480', caption: 'Foto bersama tim ANRI' },
-      { url: '/api/placeholder/640/480', caption: 'Ruang kerja di ANRI' },
+      { url: '/images/semua_gambar/testing.jpg', caption: 'Foto bersama tim ANRI' },
+      { url: '/images/semua_gambar/media_testing.png', caption: 'Ruang kerja di ANRI' },
     ],
     status: 'published',
     createdAt: createDate(29),
@@ -330,7 +330,7 @@ export const authors = [
     name: 'Budi Santoso',
     position: 'Mahasiswa Magang - Teknik Informatika',
     university: 'Universitas Indonesia',
-    image: '/api/placeholder/150/150',
+    image: '/images/semua_gambar/author_testing.png',
     bio: 'Mahasiswa Teknik Informatika semester 6 dengan minat di bidang pengembangan web dan pengelolaan data.',
   },
   {
@@ -402,3 +402,9 @@ export const getJournalById = (id: string): Journal | undefined => {
 export const getAuthorById = (id: string) => {
   return authors.find(author => author.id === id);
 };
+
+export function getRelatedJournals(currentId: string, category: string, limit: number = 3) {
+  return dummyJournals
+    .filter(journal => journal.category === category && journal.id !== currentId)
+    .slice(0, limit);
+}
