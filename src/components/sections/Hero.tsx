@@ -352,7 +352,7 @@ const Hero = () => {
               {/* Gambar poster */}
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
                 <Image
-                  src="/images/hero-illustration.png"
+                  src="/images/Beranda/beranda_ilustrasi.png"
                   alt="MBKM BAST ANRI"
                   width={600}
                   height={600}

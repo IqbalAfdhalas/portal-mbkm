@@ -174,7 +174,7 @@ export const profileData: ProfileType[] = [
     foto: '/images/testing.jpg',
     asalInstitusi: 'Universitas Syiah kuala',
     prodi: 'IlmuKomunikasi',
-    angkatan: '2024',
+    angkatan: '2025',
   },
   {
     id: 'mhs010',
