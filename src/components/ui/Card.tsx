@@ -1,8 +1,9 @@
 // src/components/ui/Card.tsx
-import { ReactNode } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import { ReactNode } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface CardProps {
   title?: string;
@@ -13,7 +14,7 @@ interface CardProps {
   href?: string;
   footer?: ReactNode;
   className?: string;
-  variant?: "default" | "elevated" | "bordered" | "simple";
+  variant?: 'default' | 'elevated' | 'bordered' | 'simple';
   onClick?: () => void;
   hoverEffect?: boolean;
 }
@@ -26,27 +27,27 @@ const Card = ({
   subtitle,
   content,
   imageUrl,
-  imageAlt = "Card image",
+  imageAlt = 'Card image',
   href,
   footer,
-  className = "",
-  variant = "default",
+  className = '',
+  variant = 'default',
   onClick,
   hoverEffect = true,
 }: CardProps) => {
   // Card style variations
   const cardStyles = {
-    default: "bg-white dark:bg-dark-surface rounded-lg shadow-md",
-    elevated: "bg-white dark:bg-dark-surface rounded-lg shadow-lg",
+    default: 'bg-white dark:bg-dark-surface rounded-lg shadow-md',
+    elevated: 'bg-white dark:bg-dark-surface rounded-lg shadow-lg',
     bordered:
-      "bg-white dark:bg-dark-surface rounded-lg border border-gray-200 dark:border-gray-700",
-    simple: "bg-transparent",
+      'bg-white dark:bg-dark-surface rounded-lg border border-gray-200 dark:border-gray-700',
+    simple: 'bg-transparent',
   };
 
   // Hover effects
   const hoverStyles = hoverEffect
-    ? "transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-    : "";
+    ? 'transition-all duration-300 hover:shadow-lg hover:-translate-y-1'
+    : '';
 
   // Clickable card wrapper
   const CardWrapper = ({ children }: { children: ReactNode }) => {
@@ -60,11 +61,7 @@ const Card = ({
 
     if (onClick) {
       return (
-        <button
-          className="block w-full h-full text-left"
-          onClick={onClick}
-          type="button"
-        >
+        <button className="block w-full h-full text-left" onClick={onClick} type="button">
           {children}
         </button>
       );
@@ -74,7 +71,7 @@ const Card = ({
   };
 
   const cardContent = (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -87,7 +84,7 @@ const Card = ({
             src={imageUrl}
             alt={imageAlt}
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: 'cover' }}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="transition-transform duration-300 group-hover:scale-105"
             priority={false}
@@ -103,15 +100,11 @@ const Card = ({
           </h3>
         )}
 
-        {subtitle && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-            {subtitle}
-          </p>
-        )}
+        {subtitle && <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{subtitle}</p>}
 
         {content && (
           <div className="text-gray-700 dark:text-gray-300 text-sm">
-            {typeof content === "string" ? <p>{content}</p> : content}
+            {typeof content === 'string' ? <p>{content}</p> : content}
           </div>
         )}
       </div>
@@ -122,7 +115,7 @@ const Card = ({
           {footer}
         </div>
       )}
-    </motion.div>
+    </MotionDiv>
   );
 
   return <CardWrapper>{cardContent}</CardWrapper>;

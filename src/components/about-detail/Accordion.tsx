@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
+
 
 export interface AccordionProps {
   id: string;
@@ -80,18 +82,18 @@ export const Accordion = ({ id, title, content, isOpenDefault = false }: Accordi
         <h3 className={`text-lg font-medium ${currentTheme.title} transition-colors duration-300`}>
           {title}
         </h3>
-        <motion.div
+        <MotionDiv
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.4, ease: 'easeInOut' }}
           className={`${currentTheme.icon} transition-colors duration-300`}
         >
           <ChevronDown className="h-5 w-5" />
-        </motion.div>
+        </MotionDiv>
       </button>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             id={`accordion-panel-${id}`}
             role="region"
             aria-labelledby={`accordion-header-${id}`}
@@ -121,7 +123,7 @@ export const Accordion = ({ id, title, content, isOpenDefault = false }: Accordi
                 dangerouslySetInnerHTML={{ __html: formatContent(content) }}
               />
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </div>

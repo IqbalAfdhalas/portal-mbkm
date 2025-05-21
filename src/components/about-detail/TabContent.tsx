@@ -5,6 +5,7 @@
 import React, { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface TabContentProps {
   children: ReactNode;
@@ -70,7 +71,7 @@ export const TabContent: React.FC<TabContentProps> = ({ children }) => {
         </div>
 
         <AnimatePresence mode="wait">
-          <motion.div
+          <MotionDiv
             key={React.Children.count(children)}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -79,7 +80,7 @@ export const TabContent: React.FC<TabContentProps> = ({ children }) => {
             className="relative z-10"
           >
             {children}
-          </motion.div>
+          </MotionDiv>
         </AnimatePresence>
       </div>
     </div>

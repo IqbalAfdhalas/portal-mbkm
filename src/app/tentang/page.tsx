@@ -99,7 +99,7 @@ export default function AboutDetailPage() {
         {/* Interactive Animated Particles Background */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className={`absolute rounded-full ${currentTheme.particles}`}
               style={{
@@ -153,7 +153,7 @@ export default function AboutDetailPage() {
 
         {/* Hero Content - MADE LARGER */}
         <div className="container mx-auto max-w-6xl relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -174,7 +174,7 @@ export default function AboutDetailPage() {
               dan pengalaman kerja yang berharga bagi mahasiswa Indonesia.
             </motion.p>
 
-            <motion.div
+            <MotionDiv
               className="mt-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -195,8 +195,8 @@ export default function AboutDetailPage() {
               >
                 Pelajari Lebih Lanjut
               </button>
-            </motion.div>
-          </motion.div>
+            </MotionDiv>
+          </MotionDiv>
         </div>
       </section>
 
@@ -244,7 +244,7 @@ export default function AboutDetailPage() {
           {/* Main Content */}
           <div className="md:w-2/3 lg:w-3/4" ref={contentRef}>
             {/* Dynamic Tab Content with animated transitions */}
-            <motion.div
+            <MotionDiv
               key={activeTab}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -311,7 +311,7 @@ export default function AboutDetailPage() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
         </div>
       </section>

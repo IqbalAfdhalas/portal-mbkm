@@ -7,6 +7,7 @@ import { Accordion } from './Accordion';
 import { collaborationData, rawFeatures } from '@/data/about/collaboration';
 import { ExternalLink, Handshake, Building, Users, FileText, Award } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 export const CollaborationContent = () => {
   const [activeSection, setActiveSection] = useState('overview');
@@ -92,7 +93,7 @@ export const CollaborationContent = () => {
                 {collaborationData.headerDescription}
               </motion.p>
 
-              <motion.div
+              <MotionDiv
                 className="flex flex-wrap gap-3 mt-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -107,10 +108,10 @@ export const CollaborationContent = () => {
                       {tag}
                     </span>
                   ))}
-              </motion.div>
+              </MotionDiv>
             </div>
             <div className="md:w-1/3 flex justify-center">
-              <motion.div
+              <MotionDiv
                 className="relative w-full h-52 md:h-64"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -122,7 +123,7 @@ export const CollaborationContent = () => {
                   fill
                   className="object-contain"
                 />
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
@@ -132,7 +133,7 @@ export const CollaborationContent = () => {
           <div className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {collaborationData.stats.map((stat, index) => (
-                <motion.div
+                <MotionDiv
                   key={index}
                   className={`text-center p-4 rounded-lg ${currentTheme.statsCard}`}
                   initial={{ opacity: 0, y: 20 }}
@@ -141,7 +142,7 @@ export const CollaborationContent = () => {
                 >
                   <span className={`text-3xl font-bold ${currentTheme.icon}`}>{stat.value}</span>
                   <p className={`text-sm mt-1 ${currentTheme.text}`}>{stat.label}</p>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
           </div>
@@ -166,7 +167,7 @@ export const CollaborationContent = () => {
 
       {/* Dynamic Content Sections */}
       <AnimatePresence mode="wait">
-        <motion.div
+        <MotionDiv
           key={activeSection}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -182,7 +183,7 @@ export const CollaborationContent = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 {features.map((feature, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={index}
                     className="rounded-xl overflow-hidden shadow-md"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -195,7 +196,7 @@ export const CollaborationContent = () => {
                     <div className={`p-4 ${currentTheme.featureCard}`}>
                       <p className={currentTheme.text}>{feature.description}</p>
                     </div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
               </div>
 
@@ -227,7 +228,7 @@ export const CollaborationContent = () => {
                   {/* Timeline items */}
                   <div className="space-y-8 pl-12 relative">
                     {collaborationData.programs.map((program, index) => (
-                      <motion.div
+                      <MotionDiv
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -254,7 +255,7 @@ export const CollaborationContent = () => {
                           </h4>
                           <p className={currentTheme.text}>{program.description}</p>
                         </div>
-                      </motion.div>
+                      </MotionDiv>
                     ))}
                   </div>
                 </div>
@@ -272,7 +273,7 @@ export const CollaborationContent = () => {
               {collaborationData.testimonials && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {collaborationData.testimonials.map((testimonial, index) => (
-                    <motion.div
+                    <MotionDiv
                       key={index}
                       className={`relative rounded-lg overflow-hidden border ${currentTheme.divider}`}
                       initial={{ opacity: 0, y: 20 }}
@@ -295,13 +296,13 @@ export const CollaborationContent = () => {
                           <p className="text-sm line-clamp-4">{testimonial.quote}</p>
                         </div>
                       </div>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
               )}
             </div>
           )}
-        </motion.div>
+        </MotionDiv>
       </AnimatePresence>
 
       {/* Accordion Content - FAQ */}

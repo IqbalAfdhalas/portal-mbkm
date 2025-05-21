@@ -6,6 +6,7 @@ import { User } from 'firebase/auth';
 import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiUser, FiSettings, FiLogOut, FiBook, FiShield } from 'react-icons/fi';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface UserDropdownProps {
   user: User;
@@ -87,7 +88,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             id="user-dropdown"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,7 +176,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
                 Keluar
               </button>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </div>
