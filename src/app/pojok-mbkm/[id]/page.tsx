@@ -398,22 +398,24 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main content */}
           <div className="w-full lg:w-2/3">
-            {/* Feature image - properly displayed */}
+            {/* Feature image - improved layout with proper aspect ratio */}
             {journal.media && journal.media.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="mb-8 rounded-xl overflow-hidden shadow-md"
+                className="mb-8 rounded-xl overflow-hidden shadow-lg relative"
               >
-                <img
-                  src={journal.media[0].url}
-                  alt={journal.title}
-                  className="w-full h-auto object-cover"
-                />
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <img
+                    src={journal.media[0].url}
+                    alt={journal.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
                 {journal.media[0].caption && (
-                  <div className="p-3 bg-gray-50 dark:bg-gray-800 text-sm text-gray-600 dark:text-gray-400 italic">
-                    {journal.media[0].caption}
+                  <div className="p-4 bg-white dark:bg-gray-800 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="italic">{journal.media[0].caption}</p>
                   </div>
                 )}
               </motion.div>
@@ -424,7 +426,7 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md mb-8"
+              className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-md mb-8"
             >
               <div className="prose dark:prose-invert prose-lg max-w-none prose-headings:text-gray-800 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300">
                 <ReactMarkdown>{journal.content}</ReactMarkdown>
@@ -453,7 +455,7 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
               </div>
             </motion.div>
 
-            {/* Gallery - if there are more than one media items */}
+            {/* Gallery with improved layout - if there are more than one media items */}
             {journal.media && journal.media.length > 1 && (
               <JournalMedia media={journal.media.slice(1)} />
             )}
@@ -464,7 +466,7 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
             {/* Author info in sidebar */}
             <AuthorInfo authorId={journal.authorId} />
 
-            {/* Related Journals in sidebar */}
+            {/* Related Journals in sidebar with improved image layout */}
             <RelatedJournals journalId={journal.id} category={journal.category} />
           </div>
         </div>
