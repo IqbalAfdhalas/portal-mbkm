@@ -26,7 +26,7 @@ export interface MBKMData {
     description: string;
     bgColor?: string;
   }[];
-  overviewContent: string;
+  overviewContent?: string;
   benefits: {
     title: string;
     description: string;
@@ -41,20 +41,13 @@ export interface MBKMData {
     logo: string;
     category: string;
   }[];
-  successStories: {
-    name: string;
-    university: string;
-    program: string;
-    testimonial: string;
-    image: string;
-  }[];
 }
 
 export const mbkmData: MBKMData = {
   headerTitle: 'Merdeka Belajar Kampus Merdeka (MBKM)',
   headerDescription:
     'Program pendidikan yang memberikan kebebasan dan otonomi kepada kampus dan mahasiswa untuk mengembangkan potensi sesuai minat dan bakat.',
-  headerImageSrc: '/images/mbkm-illustration.svg',
+  headerImageSrc: '/images/ilustrasiMBKM.png',
   tags: ['Pendidikan', 'Magang', 'Penelitian', 'Wirausaha', 'Pengalaman Industri'],
   stats: [
     { value: '400+', label: 'Perguruan Tinggi' },
@@ -88,23 +81,40 @@ export const mbkmData: MBKMData = {
       id: 'latar-belakang',
       title: 'Latar Belakang Program',
       content: `
-  <div class="mb-4">
-    <p class="mb-3">
-      <strong>Merdeka Belajar – Kampus Merdeka (MBKM)</strong> merupakan program luncuran 
-      <strong>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek)</strong> 
-      yang dirancang untuk memberikan Mahasiswa kesempatan belajar selain dari lingkup program studi mereka, 
-      baik di dalam maupun di luar lingkungan Kampus. Bertujuan menciptakan ruang bagi Mahasiswa agar memperoleh 
-      pengalaman belajar yang lebih luas, relevan, dan sesuai dengan kebutuhan dunia kerja saat ini.
-    </p>
-    <p>
-      <strong>MBKM</strong> menghadiahkan Mahasiswa peluang untuk keluar dari zona nyaman mereka, dengan 
-      terjun langsung ke Instansi yang terikat oleh kampus. Mengenal dunia kerja dengan segala cinta dan kotornya. 
-      Bagaimana dunia kantor bekerja, mental yang harus disiapkan, belajar mengambil sikap dan keputusan dalam 
-      menghadapi suatu masalah, maupun skill yang terasah secara terbiasa. Mengantarkan kita untuk siap menghadapi 
-      kedewasaan, dunia baru.
-    </p>
-  </div>
-`,
+    <div class="mb-4 text-justify">
+      <p class="mb-3">
+        Program <em>Merdeka Belajar – Kampus Merdeka (MBKM)</em> merupakan inisiatif transformasional dari 
+        <strong>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek)</strong> 
+        yang bertujuan membuka ruang belajar seluas-luasnya bagi Mahasiswa — tidak hanya terbatas di ruang kelas, 
+        tetapi juga di dunia nyata yang lebih dinamis dan kompleks.
+      </p>
+
+      <p class="mb-3">
+        Gagasan <strong>MBKM</strong> lahir dari kesadaran bahwa sistem pendidikan tinggi di Indonesia perlu beradaptasi 
+        dengan perubahan zaman. Dunia kerja terus berkembang, sementara pembelajaran di kampus kerap belum sepenuhnya 
+        membekali Mahasiswa dengan pengalaman praktis dan keterampilan kontekstual yang dibutuhkan.
+      </p>
+
+      <p class="mb-3">
+        Program ini hadir untuk menjembatani kesenjangan tersebut, dengan membuka jalur pembelajaran alternatif 
+        yang lebih fleksibel dan aplikatif.
+      </p>
+
+      <h4 class="font-semibold mb-2">🔎 Mengapa MBKM Diperlukan?</h4>
+      <ul class="list-disc pl-5 space-y-2 mb-4 text-sm">
+        <li><strong>Kesenjangan antara teori dan praktik</strong> — Lulusan sering kali belum siap menghadapi tantangan kerja nyata karena terbatasnya pengalaman di luar kampus.</li>
+        <li><strong>Perubahan dunia kerja yang cepat</strong> — Perkembangan teknologi dan industri menuntut pembaruan kompetensi secara terus-menerus.</li>
+        <li><strong>Kurikulum yang terlalu kaku</strong> — Mahasiswa cenderung terikat pada jalur studi sempit, sehingga tidak leluasa mengeksplorasi potensi lintas bidang.</li>
+        <li><strong>Minimnya ruang eksplorasi mandiri</strong> — Sistem belajar konvensional belum sepenuhnya memberi ruang untuk pengembangan karakter, kreativitas, dan inisiatif.</li>
+        <li><strong>Kurangnya koneksi ke dunia profesional</strong> — Banyak Mahasiswa belum memiliki akses langsung untuk membangun jejaring dengan praktisi industri atau lembaga profesional.</li>
+      </ul>
+
+      <p>
+        Melalui <strong>MBKM</strong>, Mahasiswa diajak untuk keluar dari zona nyaman, menghadapi dinamika lapangan secara langsung, 
+        dan mempersiapkan diri menghadapi dunia kerja secara lebih matang — bukan hanya secara akademik, tetapi juga secara mental dan sosial.
+      </p>
+    </div>
+  `,
       isOpen: true,
     },
     {
@@ -170,7 +180,7 @@ export const mbkmData: MBKMData = {
         <div class="mb-4">
           <div class="mb-4">
             <p class="font-semibold">Bagaimana cara mendaftar program MBKM?</p>
-            <p class="mt-1">Pendaftaran dilakukan melalui platform MBKM resmi Kemendikbud di <a href="https://kampusmerdeka.kemdikbud.go.id/" class="text-blue-600 hover:underline">https://kampusmerdeka.kemdikbud.go.id/</a> dengan menggunakan akun yang terdaftar.</p>
+            <p class="mt-1">Pendaftaran dilakukan melalui platform MBKM resmi Kemendikbud di <a href="https://kampusmerdeka.kemdikbud.go.id/" class="text-blue-600 hover:underline">https://kampusmerdeka.kemdikbud.go.id/</a> dengan menggunakan akun yang terdaftar, serta menyesuaikan kembali dengan ketentuan dari prodi masing-masing.</p>
           </div>
           
           <div class="mb-4">
@@ -226,34 +236,34 @@ export const mbkmData: MBKMData = {
   ],
   timeline: [
     {
-      period: 'Januari - Februari',
+      period: 'Langkah 1',
       title: 'Pendaftaran Program',
       description: 'Mahasiswa mendaftar melalui platform MBKM dan memilih program yang diminati',
     },
     {
-      period: 'Februari - Maret',
+      period: 'Langkah 2',
       title: 'Seleksi dan Penempatan',
       description: 'Proses seleksi oleh perguruan tinggi dan mitra industri',
     },
     {
-      period: 'April - Juli',
-      title: 'Pelaksanaan Semester 1',
-      description: 'Pelaksanaan program MBKM semester pertama dengan pendampingan dosen dan mentor',
+      period: 'Langkah 3',
+      title: 'Serah Terima Mahasiswa MBKM di BAST ANRI',
+      description: 'Pelaksanaan Serah Terima Mahasiswa MBKM dengan pendampingan dosen dan mentor',
     },
     {
-      period: 'Agustus - September',
+      period: 'Langkah 4',
       title: 'Evaluasi Tengah Program',
       description: 'Evaluasi pelaksanaan program dan penyesuaian jika diperlukan',
     },
     {
-      period: 'Oktober - Desember',
-      title: 'Pelaksanaan Semester 2',
-      description: 'Pelaksanaan program MBKM semester kedua dengan fokus pada proyek akhir',
+      period: 'Langkah 5',
+      title: 'Penilaian Proyek Akhir',
+      description: ' Penilaian proyek akhir mahasiswa mbkm di BAST ANRI',
     },
     {
-      period: 'Desember',
-      title: 'Evaluasi dan Pelaporan',
-      description: 'Penilaian akhir dan konversi SKS ke dalam transkrip akademik',
+      period: 'Langkah 6',
+      title: 'Penjemputan Kembali Mahasiswa MBKM',
+      description: 'Dosen pembimbing menjemput kembali mahasiswa-nya ke kampus',
     },
   ],
   partners: [
@@ -296,40 +306,6 @@ export const mbkmData: MBKMData = {
       name: 'Microsoft Indonesia',
       logo: 'microsoft.png',
       category: 'Teknologi',
-    },
-  ],
-  successStories: [
-    {
-      name: 'Budi Setiawan',
-      university: 'Universitas Indonesia',
-      program: 'Magang di Telkom Indonesia',
-      testimonial:
-        'Program MBKM membuka pintu karir saya di industri telekomunikasi. Pengalaman magang di Telkom Indonesia memberikan saya keterampilan praktis yang tidak saya dapatkan di kampus.',
-      image: '/images/success-stories/budi.jpg',
-    },
-    {
-      name: 'Anisa Rahma',
-      university: 'Universitas Gadjah Mada',
-      program: 'Penelitian di LIPI',
-      testimonial:
-        'Saya berkesempatan untuk terlibat dalam penelitian riil dengan ilmuwan ternama. Pengalaman ini memperkuat minat saya di bidang penelitian dan mengembangkan cara berpikir kritis.',
-      image: '/images/success-stories/anisa.jpg',
-    },
-    {
-      name: 'Dian Permata',
-      university: 'Institut Teknologi Bandung',
-      program: 'Wirausaha',
-      testimonial:
-        'MBKM memberikan saya modal dan mentoring untuk memulai startup saya sendiri. Kini bisnis saya berkembang dan bahkan mempekerjakan lulusan baru dari kampus saya.',
-      image: '/images/success-stories/dian.jpg',
-    },
-    {
-      name: 'Reza Mahendra',
-      university: 'Universitas Diponegoro',
-      program: 'Proyek Desa',
-      testimonial:
-        'Program Proyek Desa mengajarkan saya bagaimana menerapkan ilmu teknik untuk menyelesaikan masalah nyata masyarakat. Pengalaman ini sangat berharga dan mengubah perspektif saya.',
-      image: '/images/success-stories/reza.jpg',
     },
   ],
 };

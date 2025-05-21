@@ -66,7 +66,6 @@ export const WebsiteContent: React.FC = () => {
     { id: 'overview', label: 'Ringkasan', icon: Book },
     { id: 'features', label: 'Fitur', icon: Zap },
     { id: 'technical', label: 'Teknis', icon: Settings },
-    { id: 'team', label: 'Tim Pengembang', icon: Users },
   ];
 
   // Placeholder stats for website metrics (can be replaced with actual data)
@@ -228,19 +227,7 @@ export const WebsiteContent: React.FC = () => {
                 className={`prose prose-sm md:prose lg:prose-lg max-w-none dark:prose-invert
                 prose-p:leading-relaxed prose-p:text-justify prose-p:mb-5 prose-p:indent-6
                 prose-li:mb-2 prose-li:ml-6 list-disc prose-a:text-blue-600 dark:prose-a:text-blue-400 ${currentTheme.text}`}
-              >
-                <p>
-                  Website MBKM BAST ANRI dirancang sebagai solusi digital terpadu untuk mengelola
-                  seluruh dokumen dan proses administratif program Merdeka Belajar Kampus Merdeka di
-                  Arsip Nasional Republik Indonesia. Sistem ini dikembangkan dengan teknologi modern
-                  untuk menyederhanakan proses yang sebelumnya dilakukan secara manual.
-                </p>
-                <p>
-                  Dengan antarmuka yang intuitif, website ini memungkinkan mahasiswa, dosen
-                  pembimbing, dan staf ANRI untuk mengelola dokumen MBKM seperti berita acara serah
-                  terima, laporan kegiatan, dan penilaian dengan lebih efisien dan terstruktur.
-                </p>
-              </div>
+              ></div>
             </div>
           )}
 
@@ -343,29 +330,29 @@ export const WebsiteContent: React.FC = () => {
                 <div className="space-y-8 pl-12 relative">
                   {[
                     {
-                      title: 'Teknologi Frontend',
+                      title: 'Frontend Modern',
                       description:
-                        'Dibangun dengan Next.js, React, dan Tailwind CSS untuk tampilan yang responsif dan modern',
+                        'Dibangun dengan Next.js dan React, dipadukan dengan Tailwind CSS untuk tampilan yang cepat, responsif, dan estetis.',
                     },
                     {
-                      title: 'Backend System',
+                      title: 'Firebase Integration',
                       description:
-                        'Menggunakan Node.js dengan Express dan database PostgreSQL untuk pengelolaan data yang handal',
+                        'Menggunakan Firebase untuk autentikasi user, database (Firestore), dan media storage guna mendukung fitur login serta pengelolaan konten.',
                     },
                     {
-                      title: 'Keamanan',
+                      title: 'Desain Responsif',
                       description:
-                        'Dilengkapi dengan JWT authentication, HTTPS, dan enkripsi data untuk menjaga kerahasiaan informasi',
+                        'UI dirancang dengan pendekatan desktop-first yang tetap optimal di perangkat mobile, dengan dukungan dark/light mode.',
                     },
                     {
-                      title: 'Deployment',
+                      title: 'Animasi Halus',
                       description:
-                        'Di-deploy pada infrastruktur cloud dengan sistem CI/CD untuk pembaruan berkala',
+                        'Didukung oleh Framer Motion untuk transisi interaktif dan animasi yang meningkatkan pengalaman pengguna.',
                     },
                     {
-                      title: 'Performa',
+                      title: 'Optimasi Performa',
                       description:
-                        'Dioptimasi untuk kecepatan akses dengan implementasi caching dan lazy loading',
+                        'Menggunakan teknik lazy loading, image optimization, dan scrollspy untuk pengalaman menjelajah yang cepat dan efisien.',
                     },
                   ].map((item, index) => (
                     <motion.div
@@ -393,82 +380,6 @@ export const WebsiteContent: React.FC = () => {
                     </motion.div>
                   ))}
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Team Section */}
-          {activeSection === 'team' && (
-            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
-              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Tim Pengembang
-              </h3>
-
-              <p className={`${currentTheme.text} mb-6`}>
-                Website MBKM BAST ANRI dikembangkan oleh tim kolaboratif yang terdiri dari mahasiswa
-                MBKM dan staf ANRI.
-              </p>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {[
-                  {
-                    name: 'Ahmad Reza',
-                    role: 'Frontend Developer',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Dewi Sartika',
-                    role: 'UI/UX Designer',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Budi Santoso',
-                    role: 'Backend Developer',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Anisa Rahma',
-                    role: 'Project Manager',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Dimas Prayoga',
-                    role: 'Database Administrator',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Putri Wulandari',
-                    role: 'QA Tester',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Galih Pratama',
-                    role: 'System Analyst',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                  {
-                    name: 'Indah Permata',
-                    role: 'DevOps Engineer',
-                    avatar: '/images/team/default-avatar.png',
-                  },
-                ].map((person, index) => (
-                  <motion.div
-                    key={index}
-                    className={`border ${currentTheme.divider} rounded-lg overflow-hidden`}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05, duration: 0.4 }}
-                    whileHover={{ y: -5 }}
-                  >
-                    <div className="relative h-40">
-                      <Image src={person.avatar} alt={person.name} fill className="object-cover" />
-                    </div>
-                    <div className="p-4">
-                      <h4 className={`font-bold ${currentTheme.headingText}`}>{person.name}</h4>
-                      <p className={`text-sm ${currentTheme.text} opacity-75`}>{person.role}</p>
-                    </div>
-                  </motion.div>
-                ))}
               </div>
             </div>
           )}

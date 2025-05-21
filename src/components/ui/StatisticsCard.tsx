@@ -4,7 +4,7 @@ import { FiUsers, FiCalendar, FiClipboard, FiBookOpen, FiHome } from 'react-icon
 interface StatisticsCardProps {
   title: string;
   value: number;
-  icon: 'users' | 'calendar' | 'clipboard' | 'building';
+  icon: 'users' | 'calendar' | 'clipboard' | 'building' | 'book' | 'briefcase';
   color: 'blue' | 'green' | 'orange' | 'purple';
 }
 

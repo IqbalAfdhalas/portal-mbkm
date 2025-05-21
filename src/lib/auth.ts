@@ -1,93 +1,5 @@
 // src/lib/auth.ts
-import { auth } from "./firebase";
-import {
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-} from "firebase/auth";
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
-
-/**
- * Set the persistence for Firebase Authentication
- * @param remember Whether to remember the user or not
- */
-export const setAuthPersistence = async (remember: boolean) => {
-  const persistenceType = remember
-    ? browserLocalPersistence
-    : browserSessionPersistence;
-
-  return setPersistence(auth, persistenceType);
-};
-
-/**
- * Sign in a user and set necessary cookies
- * @param email User email
- * @param password User password
- * @param remember Whether to remember the user
- */
-export const signIn = async (
-  email: string,
-  password: string,
-  remember: boolean = false,
-) => {
-  await setAuthPersistence(remember);
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password,
-  );
-
-  // Get ID token to store in cookie
-  const token = await userCredential.user.getIdToken();
-
-  // Set auth cookie with appropriate options
-  setCookie("auth-session", token, {
-    maxAge: remember ? 30 * 24 * 60 * 60 : undefined, // 30 days if remember is true
-    path: "/",
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  // Check if user is admin and set admin cookie if needed
-  const idTokenResult = await userCredential.user.getIdTokenResult();
-  if (idTokenResult.claims.admin) {
-    setCookie("admin-session", "true", {
-      maxAge: remember ? 30 * 24 * 60 * 60 : undefined,
-      path: "/",
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-    });
-  }
-
-  return userCredential;
-};
-
-/**
- * Sign out a user and clear cookies
- */
-export const signOut = async () => {
-  await firebaseSignOut(auth);
-
-  // Clear auth cookies
-  deleteCookie("auth-session");
-  deleteCookie("admin-session");
-};
-
-/**
- * Check if the current user is authenticated
- */
-export const isAuthenticated = () => {
-  return !!getCookie("auth-session");
-};
-
-/**
- * Check if the current user is an admin
- */
-export const isAdmin = () => {
-  return !!getCookie("admin-session");
-};
+import { getCookie, setCookie, deleteCookie } from 'cookies-next';
 
 /**
  * Get the redirect URL from query string
@@ -99,11 +11,61 @@ export const getRedirectUrl = (query: { redirect?: string }): string => {
   // Validate redirect URL to prevent open redirects
   if (
     redirect &&
-    typeof redirect === "string" &&
-    redirect.startsWith("/") &&
-    !redirect.startsWith("//")
+    typeof redirect === 'string' &&
+    redirect.startsWith('/') &&
+    !redirect.startsWith('//')
   ) {
     return redirect;
   }
-  return "/";
+  return '/';
+};
+
+/**
+ * Check if the current user is authenticated client-side
+ * Based on cookies existence
+ */
+export const isAuthenticated = () => {
+  return !!getCookie('auth-session');
+};
+
+/**
+ * Check if the current user is an admin client-side
+ * Based on cookies existence
+ */
+export const isAdmin = () => {
+  return !!getCookie('admin-session');
+};
+
+/**
+ * Set authentication cookies after successful login
+ * @param token Authentication token
+ * @param isAdmin Whether user is admin
+ * @param remember Whether to set long-term cookie
+ */
+export const setAuthCookies = (token: string, isAdmin: boolean, remember: boolean = false) => {
+  const maxAge = remember ? 30 * 24 * 60 * 60 : undefined; // 30 days if remember is true
+
+  setCookie('auth-session', token, {
+    maxAge,
+    path: '/',
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+  });
+
+  if (isAdmin) {
+    setCookie('admin-session', 'true', {
+      maxAge,
+      path: '/',
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+  }
+};
+
+/**
+ * Clear authentication cookies
+ */
+export const clearAuthCookies = () => {
+  deleteCookie('auth-session');
+  deleteCookie('admin-session');
 };

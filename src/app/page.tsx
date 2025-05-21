@@ -6,7 +6,7 @@ import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import Program from '@/components/sections/Program';
 import Stats from '@/components/sections/Stats';
-import ProfilMBKM from '@/components/sections/ProfilMBKM';
+import KatalogMBKM from '@/components/sections/KatalogMBKM';
 import Galery from '@/components/sections/Galery';
 import Forum from '@/components/sections/Forum';
 import Faq from '@/components/sections/Faq';
@@ -55,7 +55,7 @@ export default function HomePage() {
       <About />
       <Program />
       <Stats />
-      <ProfilMBKM />
+      <KatalogMBKM />
       <Galery />
       <Forum />
       <Faq />
