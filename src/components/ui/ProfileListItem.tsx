@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiBookOpen, FiCalendar, FiBriefcase } from 'react-icons/fi';
 import type { ProfileType } from '@/constants/profileData';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface ProfileListItemProps {
   profile: ProfileType;
@@ -49,7 +50,7 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
   };
 
   return (
-    <motion.div
+    <MotionDiv
       whileHover="hover"
       variants={listItemVariants}
       className={`rounded-lg overflow-hidden shadow-md hover:shadow-lg bg-gradient-to-r ${getCardColor()} border-l-4`}
@@ -117,7 +118,7 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 

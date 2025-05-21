@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import UserDropdown from '@/components/layout/UserDropdown';
 import { usePathname, useRouter } from 'next/navigation';
 import { scrollToId } from '@/lib/utils';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 // Smooth scroll helper
 const NAVBAR_OFFSET = -5;
@@ -55,7 +56,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <a href="/" className="flex items-center">
-          <motion.div
+          <MotionDiv
             className="flex items-center"
             animate={{ scale: scrolled ? 0.85 : 1 }}
             transition={{ duration: 0.3 }}
@@ -75,7 +76,7 @@ const Navbar = () => {
             <span className="text-primary dark:text-white font-heading font-bold text-xl">
               BAST ANRI
             </span>
-          </motion.div>
+          </MotionDiv>
         </a>
 
         {/* Desktop Navigation */}
@@ -118,13 +119,13 @@ const Navbar = () => {
                 {item.name}
 
                 {showDots && (
-                  <motion.div
+                  <MotionDiv
                     className="absolute left-0 right-0 bottom-[-5px] flex justify-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <motion.div
+                    <MotionDiv
                       className="flex space-x-1"
                       initial={{ y: -5 }}
                       animate={{ y: 0 }}
@@ -144,8 +145,8 @@ const Navbar = () => {
                           }}
                         />
                       ))}
-                    </motion.div>
-                  </motion.div>
+                    </MotionDiv>
+                  </MotionDiv>
                 )}
               </a>
             );
@@ -187,7 +188,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <motion.div
+        <MotionDiv
           className="md:hidden bg-white/95 dark:bg-dark-surface/95 backdrop-blur-md shadow-lg"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
@@ -219,7 +220,7 @@ const Navbar = () => {
             ))}
             {!user && <LoginButton className="w-full mt-4" />}
           </div>
-        </motion.div>
+        </MotionDiv>
       )}
     </motion.header>
   );

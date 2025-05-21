@@ -7,6 +7,7 @@ import { Accordion } from './Accordion';
 import { mbkmData } from '@/data/about/mbkm';
 import { ExternalLink, Book, Award, Calendar, Users, Rocket } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 export const MBKMContent = () => {
   const [activeSection, setActiveSection] = useState('overview');
@@ -92,7 +93,7 @@ export const MBKMContent = () => {
                 {mbkmData.headerDescription}
               </motion.p>
 
-              <motion.div
+              <MotionDiv
                 className="flex flex-wrap gap-3 mt-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -106,10 +107,10 @@ export const MBKMContent = () => {
                     {tag}
                   </span>
                 ))}
-              </motion.div>
+              </MotionDiv>
             </div>
             <div className="md:w-1/3 flex justify-center">
-              <motion.div
+              <MotionDiv
                 className="relative w-full h-52 md:h-64"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -121,7 +122,7 @@ export const MBKMContent = () => {
                   fill
                   className="object-contain"
                 />
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
@@ -130,7 +131,7 @@ export const MBKMContent = () => {
         <div className="p-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {mbkmData.stats.map((stat, index) => (
-              <motion.div
+              <MotionDiv
                 key={index}
                 className={`text-center p-4 rounded-lg ${currentTheme.statsCard}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -139,7 +140,7 @@ export const MBKMContent = () => {
               >
                 <span className={`text-3xl font-bold ${currentTheme.icon}`}>{stat.value}</span>
                 <p className={`text-sm mt-1 ${currentTheme.text}`}>{stat.label}</p>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         </div>
@@ -163,7 +164,7 @@ export const MBKMContent = () => {
 
       {/* Dynamic Content Sections - Updated for theme consistency */}
       <AnimatePresence mode="wait">
-        <motion.div
+        <MotionDiv
           key={activeSection}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,7 +180,7 @@ export const MBKMContent = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 {features.map((feature, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={index}
                     className="rounded-xl overflow-hidden shadow-md"
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -192,7 +193,7 @@ export const MBKMContent = () => {
                     <div className={`p-4 ${currentTheme.featureCard}`}>
                       <p className={currentTheme.text}>{feature.description}</p>
                     </div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
               </div>
 
@@ -212,7 +213,7 @@ export const MBKMContent = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {mbkmData.benefits.map((benefit, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={index}
                     className="flex gap-4"
                     initial={{ opacity: 0, x: -20 }}
@@ -228,7 +229,7 @@ export const MBKMContent = () => {
                       <h4 className={`font-bold ${currentTheme.headingText}`}>{benefit.title}</h4>
                       <p className={`${currentTheme.text} mt-1`}>{benefit.description}</p>
                     </div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
               </div>
             </div>
@@ -248,7 +249,7 @@ export const MBKMContent = () => {
                 {/* Timeline items */}
                 <div className="space-y-8 pl-12 relative">
                   {mbkmData.timeline.map((item, index) => (
-                    <motion.div
+                    <MotionDiv
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -275,13 +276,13 @@ export const MBKMContent = () => {
                         </h4>
                         <p className={currentTheme.text}>{item.description}</p>
                       </div>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
               </div>
             </div>
           )}
-        </motion.div>
+        </MotionDiv>
       </AnimatePresence>
 
       {/* Accordion Content - Frequently Asked Questions - Updated for better theme integration */}
