@@ -10,6 +10,7 @@ import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import { useTheme } from 'next-themes';
 import { FaChevronDown } from 'react-icons/fa';
+import { scrollToId } from '@/lib/utils';
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -35,6 +36,11 @@ const Hero = () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  // Handler untuk scroll ke section
+  const handleScrollToSection = (sectionId: string) => {
+    scrollToId(sectionId, -10);
+  };
 
   // Variant untuk animasi text
   const textVariants = {
@@ -244,12 +250,11 @@ const Hero = () => {
             initial="hidden"
             animate="visible"
           >
-            Laman kolaboratif antara Mahasiswa Merdeka Belajar Kampus Merdeka (MBKM) & Balai Arsip Statis
-            Tsunami Arsip Nasional Republik Indonesia (BAST ANRI) membuka peluang bagi mahasiswa untuk belajar
-            dan berkontribusi dalam pelestarian arsip statis serta pengetahuan kebencanaan.
+            Laman kolaboratif antara Mahasiswa Merdeka Belajar Kampus Merdeka (MBKM) & Balai Arsip
+            Statis Tsunami Arsip Nasional Republik Indonesia (BAST ANRI) membuka peluang bagi
+            mahasiswa untuk belajar dan berkontribusi dalam pelestarian arsip statis serta
+            pengetahuan kebencanaan.
           </motion.p>
-
-          
 
           {/* CTA Buttons */}
           <motion.div
@@ -264,6 +269,7 @@ const Hero = () => {
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
+              onClick={() => handleScrollToSection('program')}
             >
               <FaGraduationCap className="text-xl" />
               <span>Jelajahi Program</span>
@@ -274,6 +280,7 @@ const Hero = () => {
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
+              onClick={() => handleScrollToSection('tentang')}
             >
               <FaBook className="text-xl" />
               <span>Tentang MBKM</span>

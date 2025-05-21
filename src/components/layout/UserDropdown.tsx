@@ -1,11 +1,11 @@
 // src/components/layout/UserDropdown.tsx
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { User } from "firebase/auth";
-import { useAuth } from "@/hooks/useAuth";
-import { motion, AnimatePresence } from "framer-motion";
-import { FiUser, FiSettings, FiLogOut, FiBook, FiShield } from "react-icons/fi";
+import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { User } from 'firebase/auth';
+import { useAuth } from '@/hooks/useAuth';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiUser, FiSettings, FiLogOut, FiBook, FiShield } from 'react-icons/fi';
 
 interface UserDropdownProps {
   user: User;
@@ -19,17 +19,14 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -38,7 +35,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
       await logout();
       setIsOpen(false);
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
     }
   };
 
@@ -46,13 +43,13 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const getUserInitials = () => {
     if (user.displayName) {
       return user.displayName
-        .split(" ")
-        .map((name) => name[0])
-        .join("")
+        .split(' ')
+        .map(name => name[0])
+        .join('')
         .toUpperCase()
         .substring(0, 2);
     }
-    return user.email?.substring(0, 2).toUpperCase() || "U";
+    return user.email?.substring(0, 2).toUpperCase() || 'U';
   };
 
   return (
@@ -68,7 +65,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
           {user.photoURL ? (
             <Image
               src={user.photoURL}
-              alt={user.displayName || "User profile"}
+              alt={user.displayName || 'User profile'}
               width={32}
               height={32}
               className="object-cover"
@@ -83,7 +80,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
 
         <div className="hidden md:block text-left">
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[100px]">
-            {user.displayName || user.email?.split("@")[0]}
+            {user.displayName || user.email?.split('@')[0]}
           </p>
         </div>
       </button>
@@ -104,20 +101,18 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
                   {user.photoURL ? (
                     <Image
                       src={user.photoURL}
-                      alt={user.displayName || "User profile"}
+                      alt={user.displayName || 'User profile'}
                       width={40}
                       height={40}
                       className="rounded-full object-cover"
                     />
                   ) : (
-                    <span className="text-sm font-medium">
-                      {getUserInitials()}
-                    </span>
+                    <span className="text-sm font-medium">{getUserInitials()}</span>
                   )}
                 </div>
                 <div className="space-y-0.5">
                   <p className="text-sm font-medium text-gray-900 dark:text-gray-200 truncate max-w-[180px]">
-                    {user.displayName || "User"}
+                    {user.displayName || 'User'}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[180px]">
                     {user.email}

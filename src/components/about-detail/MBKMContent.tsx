@@ -60,7 +60,6 @@ export const MBKMContent = () => {
     { id: 'overview', label: 'Ringkasan', icon: Book },
     { id: 'benefits', label: 'Manfaat', icon: Award },
     { id: 'timeline', label: 'Timeline', icon: Calendar },
-    { id: 'success-stories', label: 'Kisah Sukses', icon: Rocket },
   ];
 
   // Feature highlights
@@ -198,10 +197,8 @@ export const MBKMContent = () => {
               </div>
 
               <div
-                className="prose prose-sm md:prose lg:prose-lg max-w-none dark:prose-invert
-             prose-p:leading-relaxed prose-p:text-justify prose-p:mb-5 prose-p:indent-6
-             prose-li:mb-2 prose-li:ml-6 list-disc prose-a:text-blue-600 dark:prose-a:text-blue-400"
-                dangerouslySetInnerHTML={{ __html: mbkmData.overviewContent }}
+                className="prose prose-sm md:prose lg:prose-lg max-w-none dark:prose-invert prose-p:leading-relaxed prose-p:text-justify prose-p:mb-5 prose-p:indent-6 prose-li:mb-2 prose-li:ml-6 list-disc prose-a:text-blue-600 dark:prose-a:text-blue-400"
+                dangerouslySetInnerHTML={{ __html: mbkmData.overviewContent ?? '' }}
               />
             </div>
           )}
@@ -281,38 +278,6 @@ export const MBKMContent = () => {
                     </motion.div>
                   ))}
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Success Stories Section */}
-          {activeSection === 'success-stories' && (
-            <div className={`rounded-xl ${currentTheme.card} backdrop-blur-sm p-6`}>
-              <h3 className={`text-xl font-bold mb-6 ${currentTheme.headingText}`}>
-                Kisah Sukses Alumni
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {mbkmData.successStories.map((story, index) => (
-                  <motion.div
-                    key={index}
-                    className={`border ${currentTheme.divider} rounded-lg overflow-hidden`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                  >
-                    <div className="relative h-48">
-                      <Image src={story.image} alt={story.name} fill className="object-cover" />
-                    </div>
-                    <div className="p-4 backdrop-blur-sm">
-                      <h4 className={`font-bold ${currentTheme.headingText}`}>{story.name}</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        {story.university} - {story.program}
-                      </p>
-                      <p className={currentTheme.text}>{story.testimonial}</p>
-                    </div>
-                  </motion.div>
-                ))}
               </div>
             </div>
           )}
