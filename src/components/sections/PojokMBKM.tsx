@@ -89,7 +89,7 @@ const JournalCard = ({ journal, index }: { journal: Journal; index: number }) =>
       className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 flex flex-col h-full"
     >
       {journal.media && journal.media.length > 0 && (
-        <div className="relative h-40 w-full overflow-hidden">
+        <div className="relative w-full aspect-[3/2] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
           <motion.div
             whileHover={{ scale: 1.05 }}

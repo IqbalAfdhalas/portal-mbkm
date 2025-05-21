@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -16,7 +15,6 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import toast from 'react-hot-toast';
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -47,7 +45,6 @@ interface AuthContextType {
  */
 const setAuthPersistence = async (remember: boolean) => {
   const persistenceType = remember ? browserLocalPersistence : browserSessionPersistence;
-
   return setPersistence(auth, persistenceType);
 };
 
@@ -59,12 +56,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Fungsi untuk mendapatkan data user tambahan dari Firestore
   const getUserAdditionalData = async (uid: string) => {
     try {
+      console.log('Fetching user data for:', uid);
       const userRef = doc(db, 'users', uid);
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
+        console.log('User data found:', userDoc.data());
         return userDoc.data();
       }
+      console.log('No user data found in Firestore');
       return null;
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -74,16 +74,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Observer untuk auth state changes
   useEffect(() => {
+    console.log('Setting up auth state observer');
     const unsubscribe = onAuthStateChanged(auth, async currentUser => {
+      console.log('Auth state changed:', currentUser?.email);
+
       if (currentUser) {
         try {
           // Ambil data tambahan user dari Firestore
           const additionalData = await getUserAdditionalData(currentUser.uid);
+          console.log('Additional data:', additionalData);
+
+          // If role is "admin", set isAdmin to true
+          const userIsAdmin = additionalData?.isAdmin || additionalData?.role === 'admin';
 
           // Gabungkan data Firebase Auth dengan data Firestore
           const enhancedUser = {
             ...currentUser,
-            isAdmin: additionalData?.isAdmin || false,
+            isAdmin: userIsAdmin,
             role: additionalData?.role || 'user',
             metadata: {
               ...additionalData?.metadata,
@@ -91,8 +98,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             },
           } as User;
 
+          console.log('Enhanced user:', enhancedUser);
           setUser(enhancedUser);
-          setIsAdmin(enhancedUser.isAdmin || false);
+          setIsAdmin(userIsAdmin);
 
           // Update last login
           const userRef = doc(db, 'users', currentUser.uid);
@@ -111,6 +119,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAdmin(false);
         }
       } else {
+        console.log('No user logged in');
         setUser(null);
         setIsAdmin(false);
       }
@@ -118,16 +127,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      console.log('Cleaning up auth observer');
+      unsubscribe();
+    };
   }, []);
 
   // Login dengan email dan password
   const login = async (email: string, password: string, remember: boolean = false) => {
+    console.log('Login attempt with email:', email);
     setLoading(true);
     try {
       // Set persistence berdasarkan remember me
       await setAuthPersistence(remember);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log('Login successful for:', userCredential.user.email);
+
+      // Don't need to manually set the user here as the auth state observer will handle it
+      return userCredential;
     } catch (error: any) {
       console.error('Login error:', error);
 
@@ -171,15 +188,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
     } catch (error: any) {
       console.error('Register error:', error);
-
-      // Pesan error yang lebih user-friendly
-      const errorMessages: Record<string, string> = {
-        'auth/email-already-in-use': 'Email sudah terdaftar. Silakan gunakan email lain',
-        'auth/invalid-email': 'Format email tidak valid',
-        'auth/weak-password': 'Password terlalu lemah. Gunakan minimal 6 karakter',
-        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
-      };
-
       throw error;
     } finally {
       setLoading(false);
@@ -203,16 +211,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await sendPasswordResetEmail(auth, email);
     } catch (error: any) {
       console.error('Reset password error:', error);
-
-      const errorMessages: Record<string, string> = {
-        'auth/user-not-found': 'Email tidak terdaftar dalam sistem',
-        'auth/invalid-email': 'Format email tidak valid',
-        'auth/missing-email': 'Email harus diisi',
-        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
-      };
-
-      const errorMessage =
-        errorMessages[error.code] || 'Gagal mengirim email reset. Silakan coba lagi';
       throw error;
     } finally {
       setLoading(false);
