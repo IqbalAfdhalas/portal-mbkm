@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const demoImages = [
   {
     id: 1,
-    src: "/images/Akuisisi_Unit.jpg",
+    src: "/images/semua_gambar/galeri1.jpg",
     title: "Kegiatan Magang BAST ANRI 2024",
     category: "Kegiatan",
     year: "2024",
@@ -17,7 +17,7 @@ const demoImages = [
   },
   {
     id: 2,
-    src: "/images/contoh1.jpg",
+    src: "/images/semua_gambar/galeri2.jpg",
     title: "Workshop Digitalisasi Arsip Nasional",
     category: "Event",
     year: "2024",
@@ -25,7 +25,7 @@ const demoImages = [
   },
   {
     id: 3,
-    src: "/images/Pengolahan_Unit.jpg",
+    src: "/images/semua_gambar/galeri3.jpg",
     title: "Kunjungan Kepala ANRI",
     category: "Dokumentasi",
     year: "2023",
@@ -33,7 +33,7 @@ const demoImages = [
   },
   {
     id: 4,
-    src: "/images/logo_mbkm_white.png",
+    src: "/images/semua_gambar/galeri4.jpg",
     title: "Presentasi Hasil Program MBKM",
     category: "Kegiatan",
     year: "2023",
@@ -41,7 +41,7 @@ const demoImages = [
   },
   {
     id: 5,
-    src: "/images/Preservasi_unit.jpg",
+    src: "/images/semua_gambar/galeri5.jpg",
     title: "Pelatihan Pengelolaan Arsip",
     category: "Event",
     year: "2024",
@@ -49,7 +49,7 @@ const demoImages = [
   },
   {
     id: 6,
-    src: "/images/hero-illustration.png",
+    src: "/images/semua_gambar/galeri6.jpg",
     title: "Seminar Nasional Kearsipan",
     category: "Event",
     year: "2023",
@@ -57,7 +57,7 @@ const demoImages = [
   },
   {
     id: 7,
-    src: "/images/Pelayanan_Unit.jpg",
+    src: "/images/semua_gambar/galeri7.jpg",
     title: "Orientasi Mahasiswa MBKM",
     category: "Kegiatan",
     year: "2024",
@@ -65,7 +65,7 @@ const demoImages = [
   },
   {
     id: 8,
-    src: "/images/contoh2.jpg",
+    src: "/images/semua_gambar/galeri8.jpg",
     title: "Penutupan Program MBKM Batch 2023",
     category: "Dokumentasi",
     year: "2023",
@@ -73,7 +73,7 @@ const demoImages = [
   },
   {
     id: 9,
-    src: "/images/contoh2.jpg",
+    src: "/images/semua_gambar/galeri9.jpg",
     title: "Diskusi Panel Kearsipan Digital",
     category: "Event",
     year: "2024",
@@ -81,7 +81,7 @@ const demoImages = [
   },
   {
     id: 10,
-    src: "/images/contoh5.jpg",
+    src: "/images/semua_gambar/galeri10.jpg",
     title: "Kunjungan Studi di ANRI",
     category: "Dokumentasi",
     year: "2023",
@@ -89,7 +89,7 @@ const demoImages = [
   },
   {
     id: 11,
-    src: "/images/Akuisisi_Unit.jpg",
+    src: "/images/semua_gambar/galeri11.jpg",
     title: "Kolaborasi Lintas Institusi",
     category: "Kegiatan",
     year: "2024",
@@ -97,12 +97,365 @@ const demoImages = [
   },
   {
     id: 12,
-    src: "/images/contoh4.jpeg",
+    src: "/images/semua_gambar/galeri12.jpg",
     title: "Pelatihan Pengembangan Kompetensi",
     category: "Event",
     year: "2024",
     date: "28 Februari 2024"
-  }
+  },
+  {
+    id: 13,
+    src: "/images/semua_gambar/galeri13.jpeg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2024",
+    date: "29 Februari 2024"
+  },
+  {
+    id: 14,
+    src: "/images/semua_gambar/galeri14.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2024",
+    date: "30 Februari 2024"
+  },
+  {
+    id: 15,
+    src: "/images/semua_gambar/galeri14.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "31 Februari 2024"
+  },
+  {
+    id: 16,
+    src: "/images/semua_gambar/galeri16.PNG",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "1 januari 2025"
+  },
+  {
+    id: 17,
+    src: "/images/semua_gambar/galeri17.PNG",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "2 januari 2025"
+  },
+  {
+    id: 18,
+    src: "/images/semua_gambar/galeri18.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "3 januari 2025"
+  },
+  {
+    id: 19,
+    src: "/images/semua_gambar/galeri19.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "4 januari 2025"
+  },
+  {
+    id: 20,
+    src: "/images/semua_gambar/galeri20.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "5 januari 2025"
+  },
+  {
+    id: 21,
+    src: "/images/semua_gambar/galeri21.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "6 januari 2025"
+  },
+  {
+    id: 22,
+    src: "/images/semua_gambar/galeri22.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "7 januari 2025"
+  },
+  {
+    id: 23,
+    src: "/images/semua_gambar/galeri23.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "8 januari 2025"
+  },
+  {
+    id: 24,
+    src: "/images/semua_gambar/galeri24.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "9 januari 2025"
+  },
+  {
+    id: 25,
+    src: "/images/semua_gambar/galeri25.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "10 januari 2025"
+  },
+  {
+    id: 26,
+    src: "/images/semua_gambar/galeri26.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 januari 2025"
+  },
+  {
+    id: 27,
+    src: "/images/semua_gambar/galeri27.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "12 januari 2025"
+  },
+  {
+    id: 28,
+    src: "/images/semua_gambar/galeri28.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "13 januari 2025"
+  },
+  {
+    id: 29,
+    src: "/images/semua_gambar/galeri29.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "14 januari 2025"
+  },
+  {
+    id: 30,
+    src: "/images/semua_gambar/galeri30.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "15 januari 2025"
+  },
+  {
+    id: 31,
+    src: "/images/semua_gambar/galeri31.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "16 januari 2025"
+  },
+  {
+    id: 32,
+    src: "/images/semua_gambar/galeri32.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "17 januari 2025"
+  },
+  {
+    id: 33,
+    src: "/images/semua_gambar/galeri33.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "18 januari 2025"
+  },
+  {
+    id: 34,
+    src: "/images/semua_gambar/galeri34.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "19 januari 2025"
+  },
+  {
+    id: 35,
+    src: "/images/semua_gambar/galeri35.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "20 januari 2025"
+  },
+  {
+    id: 36,
+    src: "/images/semua_gambar/galeri36.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "21 januari 2025"
+  },
+  {
+    id: 37,
+    src: "/images/semua_gambar/galeri37.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "22 januari 2025"
+  },
+  {
+    id: 38,
+    src: "/images/semua_gambar/galeri38.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "23 januari 2025"
+  },
+  {
+    id: 39,
+    src: "/images/semua_gambar/galeri39.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "24 januari 2025"
+  },
+  {
+    id: 40,
+    src: "/images/semua_gambar/galeri40.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "25 januari 2025"
+  },
+  {
+    id: 41,
+    src: "/images/semua_gambar/galeri41.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "26 januari 2025"
+  },
+  {
+    id: 42,
+    src: "/images/semua_gambar/galeri42.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "27 januari 2025"
+  },
+  {
+    id: 43,
+    src: "/images/semua_gambar/galeri43.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "28 januari 2025"
+  },
+  {
+    id: 44,
+    src: "/images/semua_gambar/galeri44.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "30 januari 2025"
+  },
+  {
+    id: 45,
+    src: "/images/semua_gambar/galeri45.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "31 januari 2025"
+  },
+  {
+    id: 46,
+    src: "/images/semua_gambar/galeri46.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "1 febuari 2025"
+  },
+  {
+    id: 47,
+    src: "/images/semua_gambar/galeri47.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "2 febuari 2025"
+  },
+  {
+    id: 48,
+    src: "/images/semua_gambar/galeri48.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "3 febuari 2025"
+  },
+  {
+    id: 49,
+    src: "/images/semua_gambar/galeri49.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "4 febuari 2025"
+  },
+  {
+    id: 50,
+    src: "/images/semua_gambar/galeri50.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "5 febuari 2025"
+  },
+  {
+    id: 51,
+    src: "/images/semua_gambar/galeri51.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "6 febuari 2025"
+  },
+  {
+    id: 52,
+    src: "/images/semua_gambar/galeri52.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "7 febuari 2025"
+  },
+  {
+    id: 53,
+    src: "/images/semua_gambar/galeri53.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "8 febuari 2025"
+  },
+  {
+    id: 54,
+    src: "/images/semua_gambar/galeri54.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "9 febuari 2025"
+  },
+  {
+    id: 55,
+    src: "/images/semua_gambar/galeri55.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "10 febuari 2025"
+  },
+  {
+    id: 56,
+    src: "/images/semua_gambar/galeri56.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  
 ];
 
 // Component for each gallery item
@@ -158,7 +511,8 @@ const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
             <img 
               src={image.src} 
               alt={image.title} 
-              className="w-full h-full object-contain"
+              className="max-h-[70vh] mx-auto object-contain"
+
             />
           </div>
           
