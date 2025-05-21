@@ -1,11 +1,11 @@
 // src/components/ui/LoginForm.tsx
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -18,7 +18,7 @@ interface LoginFormData {
   rememberMe: boolean;
 }
 
-const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
+const LoginForm = ({ onSuccess, redirect = '/' }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -30,8 +30,8 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
     formState: { errors },
   } = useForm<LoginFormData>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       rememberMe: false,
     },
   });
@@ -40,7 +40,7 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
     setIsLoading(true);
     try {
       await login(data.email, data.password, data.rememberMe);
-      toast.success("Login berhasil!");
+      toast.success('Login berhasil!');
 
       if (onSuccess) {
         onSuccess();
@@ -48,25 +48,27 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
         router.push(redirect);
       }
     } catch (error: any) {
-      console.error("Login error:", error);
-      // More user-friendly error messages
-      if (
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/wrong-password"
-      ) {
-        toast.error("Email atau password salah. Silakan coba lagi.");
-      } else if (error.code === "auth/too-many-requests") {
-        toast.error("Terlalu banyak percobaan login. Silakan coba lagi nanti.");
-      } else {
-        toast.error(error.message || "Gagal masuk. Silakan coba lagi.");
-      }
+      console.error('Login error:', error);
+
+      // Pesan error yang user-friendly
+      const errorMessages: Record<string, string> = {
+        'auth/user-not-found': 'Email atau password salah',
+        'auth/wrong-password': 'Email atau password salah',
+        'auth/invalid-credential': 'Email atau password salah',
+        'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi nanti',
+        'auth/user-disabled': 'Akun ini telah dinonaktifkan',
+        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
+      };
+
+      const errorMessage = errorMessages[error.code] || 'Gagal login. Silakan coba lagi';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
   return (
@@ -98,23 +100,21 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
                 autoComplete="email"
                 className={`pl-10 w-full py-2 px-4 border ${
                   errors.email
-                    ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-300 dark:border-gray-600 focus:ring-primary-light focus:border-primary-light"
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-300 dark:border-gray-600 focus:ring-primary-light focus:border-primary-light'
                 } dark:bg-gray-800 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2`}
-                {...register("email", {
-                  required: "Email harus diisi",
+                placeholder="nama@example.com"
+                {...register('email', {
+                  required: 'Email harus diisi',
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Format email tidak valid",
+                    message: 'Format email tidak valid',
                   },
                 })}
+                disabled={isLoading}
               />
             </div>
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
-            )}
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           {/* Password Input */}
@@ -131,25 +131,28 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
               </div>
               <input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
                 className={`pl-10 w-full py-2 px-4 border ${
                   errors.password
-                    ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-300 dark:border-gray-600 focus:ring-primary-light focus:border-primary-light"
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-300 dark:border-gray-600 focus:ring-primary-light focus:border-primary-light'
                 } dark:bg-gray-800 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2 pr-10`}
-                {...register("password", {
-                  required: "Password harus diisi",
+                placeholder="Masukkan password"
+                {...register('password', {
+                  required: 'Password harus diisi',
                   minLength: {
                     value: 6,
-                    message: "Password minimal 6 karakter",
+                    message: 'Password minimal 6 karakter',
                   },
                 })}
+                disabled={isLoading}
               />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 onClick={togglePasswordVisibility}
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500" />
@@ -159,9 +162,7 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.password.message}
-              </p>
+              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
             )}
           </div>
 
@@ -172,7 +173,8 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
                 id="rememberMe"
                 type="checkbox"
                 className="h-4 w-4 text-primary-light focus:ring-primary-light border-gray-300 dark:border-gray-600 rounded"
-                {...register("rememberMe")}
+                {...register('rememberMe')}
+                disabled={isLoading}
               />
               <label
                 htmlFor="rememberMe"
@@ -184,7 +186,7 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
             <div className="text-sm">
               <Link
                 href="/auth/forgot-password"
-                className="font-medium text-primary-light hover:text-primary"
+                className="font-medium text-primary-light hover:text-primary transition-colors"
               >
                 Lupa password?
               </Link>
@@ -200,30 +202,11 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
             >
               {isLoading ? (
                 <span className="flex items-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
+                  <Loader2 className="animate-spin h-4 w-4 mr-2" />
                   Memproses...
                 </span>
               ) : (
-                "Masuk"
+                'Masuk'
               )}
             </button>
           </div>
@@ -232,10 +215,10 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
         {/* Sign Up Link */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Belum memiliki akun?{" "}
+            Belum memiliki akun?{' '}
             <Link
               href="/auth/register"
-              className="font-medium text-primary-light hover:text-primary"
+              className="font-medium text-primary-light hover:text-primary transition-colors"
             >
               Daftar sekarang
             </Link>
@@ -244,14 +227,20 @@ const LoginForm = ({ onSuccess, redirect = "/" }: LoginFormProps) => {
 
         {/* Privacy Notice */}
         <p className="mt-6 text-xs text-center text-gray-500 dark:text-gray-400">
-          Dengan masuk, Anda menyetujui{" "}
-          <Link href="/kebijakan-privasi" className="underline">
+          Dengan masuk, Anda menyetujui{' '}
+          <Link
+            href="/kebijakan-privasi"
+            className="underline hover:text-primary-light transition-colors"
+          >
             Kebijakan Privasi
-          </Link>{" "}
-          dan{" "}
-          <Link href="/syarat-ketentuan" className="underline">
+          </Link>{' '}
+          dan{' '}
+          <Link
+            href="/syarat-ketentuan"
+            className="underline hover:text-primary-light transition-colors"
+          >
             Syarat & Ketentuan
-          </Link>{" "}
+          </Link>{' '}
           kami.
         </p>
       </div>
