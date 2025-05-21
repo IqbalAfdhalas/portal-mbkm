@@ -31,7 +31,7 @@ const PameranArsipDetail = () => {
       'Di sini, arsip tampil beda! Lewat program pameran arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
     icon: '/images/Pameran Arsip.png',
     color: 'orange-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/pameran_arsip/vidio1.mp4',
     unitDescription:
       'Pameran Balai Arsip Statis dan Tsunami yang diselenggarakan oleh Arsip Nasional Republik Indonesia (ANRI) merupakan sebuah kegiatan yang bertujuan untuk memperkenalkan dan menyebarluaskan informasi mengenai arsip-arsip statis yang memiliki nilai sejarah, serta dokumentasi tentang bencana tsunami yang pernah terjadi di Indonesia. Pameran ini menjadi ajang penting untuk mempromosikan Balai Arsip Statis dan Tsunami (BAST) Arsip Nasional Republik Indonesia (ANRI) ',
     unitActivities:
@@ -40,7 +40,7 @@ const PameranArsipDetail = () => {
       {
         name: 'Pengenalan Arsip',
         description:
-          'Interaksi antara pengunjung dan mahasiswa. Mahasiswa menjelaskan cerita dibalik arsip sementara pengunjung aktif dalam bertanya dan berdiskusi, pengunjung terlihat antusias dan penuh rasa ingin tahu. BAST turut memberikan Layanan Restorasi Arsip Keluarga (LARASKA) bagi masyarakat yang ingin memperbaiki data keluarga yang rusak, dengan cara menyediakan layanan pencegahan kerusakan arsip melalui metode Enkapsulasi. Layanan ini sendiri diberikan tanpa pungutan biaya apapun.',
+          'Interaksi antara pengunjung dan mahasiswa berlangsung secara aktif dan komunikatif. Para mahasiswa memberikan penjelasan mengenai cerita di balik arsip yang dipamerkan, sementara pengunjung menunjukkan antusiasme tinggi dengan mengajukan pertanyaan serta berdiskusi secara langsung. Kegiatan ini menciptakan suasana edukatif yang mendukung pemahaman publik terhadap pentingnya arsip sebagai sumber sejarah. Selain itu, BAST juga menyediakan Layanan Restorasi Arsip Keluarga (LARASKA) bagi masyarakat yang ingin memperbaiki arsip keluarga yang mengalami kerusakan.',
         icon: '/images/icons/history.svg',
         image: '/images/program/pameran_arsip/foto6.jpg',
       },
@@ -70,31 +70,39 @@ const PameranArsipDetail = () => {
     gallery: [
       {
         src: '/images/program/pameran_arsip/foto7.jpg',
-        caption: 'Suasana pameran dengan pengunjung',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto3.jpg',
-        caption: 'Arsip yang dipajang di booth pameran',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto5.jpg',
-        caption: 'Pengunjung berinteraksi dengan media digital',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto2.jpg',
-        caption: 'Kegiatan workshop dalam pameran',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto1.jpg',
-        caption: 'Kegiatan workshop dalam pameran',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto4.jpg',
-        caption: 'Kegiatan workshop dalam pameran',
+        caption: '',
       },
       {
         src: '/images/program/pameran_arsip/foto8.jpg',
-        caption: 'Kegiatan workshop dalam pameran',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto9.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto10.jpg',
+        caption: '',
       },
     ],
   };

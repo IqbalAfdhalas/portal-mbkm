@@ -29,7 +29,7 @@ const DailyActivityDetail = () => {
     subtitle: 'Kegiatan Sehari-hari yang Penuh Cerita!',
     description:
       'Mau tahu apa aja yang dilakukan di BAST ANRI setiap hari? Nah, di sini kamu bisa lihat aktivitas harian para staf dan mahasiswa magang. Mulai dari yang administratif sampai yang teknis, semuanya seru buat diikuti. Program ini juga jadi cara kita mendokumentasikan keseharian yang kadang terlihat biasa, tapi sebenarnya penuh makna!',
-    icon: '/images/program/aktivitas_unit/ChatGPT Image 19 Mei 2025, 11.45.11.png',
+    icon: '/images/program/logo_program/Daily Activity.png',
     color: 'purple-500',
     video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
     unitDescription:
@@ -38,56 +38,25 @@ const DailyActivityDetail = () => {
       'Kamu akan melihat dan mengikuti berbagai kegiatan rutin seperti pencatatan kegiatan harian, digitalisasi dokumen, pelayanan arsip publik, dan rapat evaluasi mingguan. Melalui program ini, kamu akan mendapatkan gambaran nyata tentang operasional harian di BAST ANRI.',
     allUnits: [
       {
-        name: 'Pencatatan Kegiatan Harian',
+        name: '',
         description:
-          'Setiap divisi di BAST ANRI memiliki agenda harian yang harus dicatat dan dilaporkan secara rutin. Proses ini penting untuk dokumentasi, evaluasi, dan perencanaan kegiatan mendatang.',
+          'Setiap hari jumat pagi mahasiswa magang mbkm usk melakukan senam pagi secara rutin bersama dengan para pegawai anri di depan halaman kantor. Kegiatan di mulai dari jam 8 dan berakhir sekitar jam 9, sebelum melakukan senam pagi para karyawan dan mahasiswa magang mbkm usk melakukan pemanasan dengan cara memutari kantor sebanyak 2 kali. Selama kegiatan senam berlangsung semua peserta senam mengikuti gerakan dari intruktor yang berganti setiap minggunya. Kegiatan senam rutin ini sangat baik untuk meningkatkan keakraban dan menjaga kesehatan tubuh.',
         icon: '/images/icons/daily-record.svg',
-        activities: [
-          'Membuat log aktivitas harian',
-          'Mengisi formulir laporan kegiatan',
-          'Mendokumentasikan perkembangan proyek',
-          'Melakukan rekapitulasi aktivitas mingguan',
-        ],
         image: '/images/daily-record.jpg',
       },
       {
         name: 'Digitalisasi Dokumen',
         description:
-          'Proses mengubah arsip fisik menjadi digital adalah salah satu kegiatan rutin yang penting. Kegiatan ini melibatkan penggunaan peralatan khusus dan penerapan standar tertentu untuk memastikan kualitas arsip digital.',
+          'Selain kegiatan senam terkadang mahasiswa magang dan karyawan anri melakukan aktivitas yang lain yaitu bermain badminton bersama. Kegiatan ini menggantikan kegiatan senam rutin agar tidak monoton dan lebih variatif. Kegiatan ini di lakukan dari jam 8 sampai 10 di lapangan gelanggang usk. Kegiatan yang baru membentuk semangat berolahraga menjadi lebih meningkatkan.',
         icon: '/images/icons/digitalization.svg',
-        activities: [
-          'Memindai dokumen fisik',
-          'Melakukan pengecekan kualitas hasil scan',
-          'Memberikan metadata pada dokumen digital',
-          'Menyimpan dokumen digital ke sistem',
-        ],
         image: '/images/digitalization.jpg',
       },
       {
         name: 'Pelayanan Arsip Publik',
         description:
-          'BAST ANRI secara rutin melayani pengunjung yang membutuhkan akses ke arsip. Layanan ini mencakup bantuan pencarian, konsultasi, dan penyediaan akses ke dokumen yang dibutuhkan.',
+          'Selama bulan Ramadhan mahasiswa magang mbkm dan karyawan anri melakukan kegiatan kultum setelah sholat Dzuhur di musholla anri. Pemateri kultum di rolling setiap harinya kecuali hari rabu yang di isi oleh ustad yang telah di tentukan. Kegiatan ini di harapkan dapat meningkatkan semangat beribadah selama bulan puasa ramadlan.',
         icon: '/images/icons/public-service.svg',
-        activities: [
-          'Membantu pengunjung mencari arsip yang dibutuhkan',
-          'Memberikan informasi tentang prosedur akses',
-          'Memproses permintaan akses arsip',
-          'Melakukan pencatatan penggunaan arsip',
-        ],
         image: '/images/public-service.jpg',
-      },
-      {
-        name: 'Rapat Evaluasi',
-        description:
-          'Setiap minggu diadakan diskusi untuk mengevaluasi kegiatan yang telah dilakukan dan merencanakan langkah selanjutnya. Forum ini penting untuk koordinasi antar unit dan perbaikan berkelanjutan.',
-        icon: '/images/icons/evaluation.svg',
-        activities: [
-          'Menyampaikan progres mingguan',
-          'Mendiskusikan tantangan yang dihadapi',
-          'Merumuskan solusi untuk masalah yang ada',
-          'Merencanakan kegiatan untuk minggu berikutnya',
-        ],
-        image: '/images/evaluation.jpg',
       },
     ],
     benefits: [
@@ -403,14 +372,6 @@ const DailyActivityDetail = () => {
                               <p className="text-gray-700 dark:text-gray-300 mb-4">
                                 {unit.description}
                               </p>
-                              <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Kegiatan di {unit.name}:
-                              </h5>
-                              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {unit.activities.map((activity, actIdx) => (
-                                  <li key={actIdx}>{activity}</li>
-                                ))}
-                              </ul>
                             </div>
                           </div>
                         </div>
