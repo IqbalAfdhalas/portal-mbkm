@@ -63,7 +63,7 @@ const Navbar = () => {
           >
             <div className="relative w-8 h-8 mr-2">
               <Image
-                src="/images/logo_mbkm_white.png"
+                src="/images/logo/logo_mbkm_white.png"
                 alt="MBKM BAST ANRI Logo"
                 fill
                 style={{ objectFit: 'contain' }}
