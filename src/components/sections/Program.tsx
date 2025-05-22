@@ -14,7 +14,7 @@ const ProgramPreview = () => {
   const basePrograms = [
     {
       title: 'Aktivitas Unit',
-      icon: '/images/Aktivitas Unit.png',
+      icon: '/images/program/logo_program/aktivitas_unit.png',
       description: 'Rasakan langsung serunya jadi bagian dari tiap unit di BAST ANRI!',
       features: [
         'Unit Akuisisi Arsip',
@@ -31,7 +31,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Eksplorasi BAST ANRI',
-      icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
+      icon: '/images/program/logo_program/Kunjungan ke Dalam BAST ANRI.png',
       description: 'Jelajahi dunia arsip lewat tur seru langsung di BAST ANRI!',
       features: [
         'Tur Ruang Arsip',
@@ -47,7 +47,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Learning Trip',
-      icon: '/images/Kunjungan ke Luar BAST ANRI.png',
+      icon: '/images/program/logo_program/Kunjungan_ke_Luar_BAST_ANRI.png',
       description: 'Kami datang langsung ke tempatmu bawa semangat arsip!',
       features: [
         'Sosialisasi Kearsipan',
@@ -63,7 +63,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Daily Activity',
-      icon: '/images/Daily Activity.png',
+      icon: '/images/program/logo_program/Daily Activity.png',
       description: 'Intip keseharian seru di balik layar BAST ANRI!',
       features: [
         'Pencatatan Kegiatan Harian',

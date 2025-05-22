@@ -1,4 +1,5 @@
-// src/app/sections-program/daily-activity/page.tsx
+// src/app/(public)/sections-program/daily-activity/page.tsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -78,7 +79,8 @@ const DailyActivityDetail = () => {
         description: 'dengan kegiatan yang rutin dilakukan dapat meningkatkan kerja sama tim',
       },
     ],
-    gallery: [ //bagian untuk taruk foto di galery
+    gallery: [
+      //bagian untuk taruk foto di galery
       {
         src: '/images/program/daily_aktivity/foto1.jpg',
         caption: '',

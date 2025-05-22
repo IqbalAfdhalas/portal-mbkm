@@ -1,4 +1,4 @@
-// src/app/sections-program/tentang/page.tsx
+// src/app/(public)/sections-program/tentang/page.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -7,9 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TabContent } from '@/components/about-detail/TabContent';
 import { MBKMContent } from '@/components/about-detail/MBKMContent';
 import { CollaborationContent } from '@/components/about-detail/CollaborationContent';
-import { ProgramFlowContent } from '@/components/about-detail/ProgramFlowContent';
 import { WebsiteContent } from '@/components/about-detail/WebsiteContent';
 import { Book, Building, Handshake, Shuffle, Monitor } from 'lucide-react';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 export default function AboutDetailPage() {
   const [activeTab, setActiveTab] = useState('mbkm');

@@ -1,4 +1,4 @@
-// src/app/sections-program/pameran-arsip/page.tsx
+// src/app/(public)/sections-program/pameran-arsip/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';

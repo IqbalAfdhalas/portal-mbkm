@@ -30,7 +30,7 @@ const KunjunganKeDalamDetail = () => {
     subtitle: 'Yuk, Intip Serunya Jelajah Arsip di Dalam BAST ANRI!',
     description:
       'Program ini terbuka untuk sekolah, universitas, atau organisasi yang ingin mengenal lebih dekat dunia kearsipan. Dalam kunjungan ini, peserta akan diajak keliling BAST ANRI, melihat langsung ruang-ruang arsip, mengenal proses pengelolaan arsip, dan ngobrol langsung dengan para arsiparis. Cocok buat yang penasaran dunia arsip dari balik layar!',
-    icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
+    icon: '/images/program/logo_program/Kunjungan ke Dalam BAST ANRI.png',
     color: 'indigo-500',
     video: '/images/program/kunjungan_ke_dalam_bast_anri/vidio.mp4',
     tourDescription:
@@ -49,7 +49,7 @@ const KunjunganKeDalamDetail = () => {
           'Mempelajari kondisi ideal penyimpanan arsip',
           'Mengamati sistem klasifikasi arsip',
         ],
-        image: '/images/foto_kedalam_bast_anri.jpg',
+        image: '/images/program/kunjungan_ke_dalam_bast_anri/foto_kedalam_bast_anri1.jpg',
       },
 
       {
@@ -62,7 +62,7 @@ const KunjunganKeDalamDetail = () => {
           'Mendengar pengalaman kerja arsiparis',
           'Tips dan trik pengelolaan arsip',
         ],
-        image: '/images/foto_kedalam_bast_anri2.jpg',
+        image: '/images/program/kunjungan_ke_dalam_bast_anri/foto_kedalam_bast_anri2.jpg',
       },
     ],
     benefits: [
@@ -82,7 +82,6 @@ const KunjunganKeDalamDetail = () => {
         title: 'Inspirasi Karir',
         description: 'Mengenal peluang karir di bidang kearsipan dan pengelolaan informasi',
       },
-      
     ],
     gallery: [
       {

@@ -40,35 +40,32 @@ Hari pertama ini membuat saya semakin yakin bahwa program MBKM di ANRI akan memb
     authorName: 'Budi Santoso',
     authorImage: '/images/semua_gambar/author_testing.png',
     media: [
-      { url: '/images/semua_gambar/testing.jpg', caption: 'Foto bersama tim ANRI' },
-      { url: '/images/semua_gambar/media_testing.png', caption: 'Ruang kerja di ANRI' },
+      { url: '/images/semua_gambar/galeri3.jpg', caption: 'Foto bersama tim ANRI' },
+      { url: '/images/semua_gambar/galeri1.jpg', caption: 'Ruang kerja di ANRI' },
     ],
     status: 'published',
     createdAt: createDate(29),
     updatedAt: createDate(29),
   },
   {
-    id: 'da-002',
-    title: 'Mengikuti Workshop Digitalisasi Arsip',
+    id: 'da-003',
+    title: 'Upacara Hari Kebangkitan Nasional serta Hari Kearsipan Indonesia',
     summary:
-      'Pembelajaran tentang teknologi dan standar dalam proses digitalisasi arsip bersejarah.',
+      'Upacara gabungan memperingati Hari Kebangkitan Nasional ke-117 dan Hari Kearsipan Nasional ke-54 di BAST ANRI.',
     content: `
-# Workshop Digitalisasi Arsip
+# Upacara Hari Kebangkitan Nasional & Hari Kearsipan Nasional
 
-Hari ini saya berkesempatan mengikuti workshop digitalisasi arsip yang difasilitasi oleh tim IT ANRI. Workshop ini sangat informatif dan hands-on.
+Aceh Besar, 20 Mei 2025 – Balai Arsip Statis dan Tsunami Arsip Nasional Republik Indonesia menggelar upacara gabungan dalam rangka memperingati Hari Kebangkitan Nasional ke-117.
 
-## Materi Workshop
-- Standar metadata untuk arsip digital
-- Teknik scanning dokumen bersejarah
-- Proses OCR (Optical Character Recognition)
-- Penyimpanan dan preservasi digital jangka panjang
+## Momentum Khidmat dan Tertib
 
-## Praktik yang Dilakukan
-Secara langsung saya mencoba proses digitalisasi dokumen lama, mulai dari scanning hingga input metadata. Tantangannya adalah memastikan kualitas hasil scan tetap baik sementara dokumen asli tidak rusak dalam proses tersebut.
+Dalam kesempatan yang sama, peringatan Hari Kearsipan Nasional juga mendapat sorotan penting. Bapak Kepala Balai, Muhammad Ihwan menyampaikan bahwa harapan ke depannya pengelolaan arsip dapat meningkat dan dikelola secara digital, tidak manual lagi, serta pengembangan aplikasi Srikandi dapat terus digunakan dengan baik.
 
-## Insight Baru
-Ternyata digitalisasi arsip bukan sekadar proses scan dokumen, tapi juga melibatkan banyak aspek teknis dan standarisasi untuk memastikan arsip digital dapat diakses dalam jangka panjang.
-    `,
+## Catatan Acara
+
+Upacara ini berlangsung secara khidmat di halaman Kantor BAST ANRI pada tanggal 20 Mei 2025. Kegiatan diikuti oleh mahasiswa magang MBKM dan seluruh pegawai BAST ANRI.
+
+`,
     date: createDate(25),
     publishDate: createDate(24),
     category: 'daily-activity',
@@ -77,7 +74,7 @@ Ternyata digitalisasi arsip bukan sekadar proses scan dokumen, tapi juga melibat
     authorName: 'Budi Santoso',
     authorImage: '/api/placeholder/150/150',
     media: [
-      { url: '/api/placeholder/640/480', caption: 'Proses scanning dokumen' },
+      { url: '/images/jurnal/media1.jpg', caption: 'Proses scanning dokumen' },
       { url: '/api/placeholder/640/480', caption: 'Hasil digitalisasi arsip' },
     ],
     status: 'published',
