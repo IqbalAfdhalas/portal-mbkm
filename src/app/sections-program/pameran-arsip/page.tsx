@@ -30,7 +30,7 @@ const PameranArsipDetail = () => {
     subtitle: 'Arsip Bukan Cuma Tumpukan Kertas!',
     description:
       'Di sini, arsip tampil beda! Lewat program pameran arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
-    icon: '/images/Pameran Arsip.png',
+    icon: '/images/program/logo_program/pameran_arsip.png',
     color: 'orange-500',
     video: '/images/program/pameran_arsip/vidio1.mp4',
     unitDescription:
@@ -408,14 +408,14 @@ const PameranArsipDetail = () => {
                       slug: 'aktivitas-unit',
                     },
                     {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'Learning Trip',
                     },
                     {
                       title: 'Daily Activity',

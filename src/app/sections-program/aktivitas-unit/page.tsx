@@ -88,7 +88,7 @@ const AktivitasUnitDetail = () => {
           'Menyediakan layanan akses informasi',
           'Memberikan pendampingan penelitian',
         ],
-        image: '/images/unit-service.jpg',
+        image: '/images/program/aktivitas_unit/layanan.jpg',
       },
       {
         name: 'Unit Tata Usaha',
@@ -128,21 +128,66 @@ const AktivitasUnitDetail = () => {
     ],
     gallery: [
       {
-        src: '/images/program/aktivitas_unit/',
-        caption: 'Mahasiswa sedang mendigitalisasi arsip',
+        src: '/images/program/aktivitas_unit/foto1.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Rapat evaluasi kegiatan unit',
+        src: '/images/program/aktivitas_unit/foto2.jpg',
+        caption: '',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Proses pemindaian dokumen',
+        src: '/images/program/aktivitas_unit/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
+        src: '/images/program/aktivitas_unit/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto5.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto6.JPG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto7.jpg',
         caption: 'Suasana kerja di ruang pengolahan',
       },
+      {
+        src: '/images/program/aktivitas_unit/foto8.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto9.jpeg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto10.PNG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto11.PNG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto12.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto13.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto14.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto15.jpg',
+        caption: '',
+      },
+
     ],
   };
 
@@ -452,15 +497,15 @@ const AktivitasUnitDetail = () => {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      {
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'learning-trip',
                     },
                     {
                       title: 'Daily Activity',

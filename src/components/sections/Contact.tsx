@@ -96,7 +96,7 @@ const Contact = () => {
                       <div>
                         <h4 className="font-medium text-white">Alamat</h4>
                         <p className="text-blue-100 text-sm mt-1">
-                          Jl. Ampera Raya No.7, RT.9/RW.2, Kby. Lama Sel., Jakarta Selatan, 12560
+                          Jl. Tengku Hasan di Bakoi, Bakoy, Kec. Ingin Jaya, Kabupaten Aceh Besar, Aceh 23116
                         </p>
                       </div>
                     </div>
@@ -117,7 +117,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <h4 className="font-medium text-white">Telepon</h4>
-                        <p className="text-blue-100 text-sm mt-1">(021) 7805851</p>
+                        <p className="text-blue-100 text-sm mt-1">(0651) 7551698</p>
                       </div>
                     </div>
 
@@ -137,7 +137,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <h4 className="font-medium text-white">Email</h4>
-                        <p className="text-blue-100 text-sm mt-1">mbkm@anri.go.id</p>
+                        <p className="text-blue-100 text-sm mt-1">bast@anri.go.id</p>
                       </div>
                     </div>
                   </div>

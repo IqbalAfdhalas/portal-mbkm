@@ -29,75 +29,83 @@ const DailyActivityDetail = () => {
     title: 'Daily Activity',
     subtitle: 'Kegiatan Sehari-hari yang Penuh Cerita!',
     description:
-      'Mau tahu apa aja yang dilakukan di BAST ANRI setiap hari? Nah, di sini kamu bisa lihat aktivitas harian para staf dan mahasiswa magang. Mulai dari yang administratif sampai yang teknis, semuanya seru buat diikuti. Program ini juga jadi cara kita mendokumentasikan keseharian yang kadang terlihat biasa, tapi sebenarnya penuh makna!',
+      'Tau ga sih !! Kegiatan magang mahasiswa bukan hanya belajar saja tetapi juga ada kegiatan seru dan menarik seperti olahraga bareng dan kajian di selama bulan Ramadhan. Kegiatan ini bertujuan untuk meningkatkan kebugaran tubuh dan juga mempererat hubungan mahasiswa magang dengan para karyawan di anri.',
     icon: '/images/program/logo_program/Daily Activity.png',
     color: 'purple-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/daily_aktivity/vidio.mp4',
     unitDescription:
-      'Program ini memperlihatkan aktivitas harian di BAST ANRI, mulai dari kegiatan administratif hingga teknis yang dilakukan oleh staf dan mahasiswa magang.',
+      'Program ini memperlihatkan aktivitas lainnya yang lebih asik dan menarik didalam BAST ANRI itu sendiri.',
     unitActivities:
-      'Kamu akan melihat dan mengikuti berbagai kegiatan rutin seperti pencatatan kegiatan harian, digitalisasi dokumen, pelayanan arsip publik, dan rapat evaluasi mingguan. Melalui program ini, kamu akan mendapatkan gambaran nyata tentang operasional harian di BAST ANRI.',
+      'BAST ANRI memiliki kegiatan rutin mingguan yang bertujuan untuk membangun kerja sama tim yang baik serta membangun lingkungan kerja yang sehat , berikut gambaran kegiatannya:',
     allUnits: [
       {
-        name: '',
+        name: 'Senam Rutin Mingguan',
         description:
           'Setiap hari jumat pagi mahasiswa magang mbkm usk melakukan senam pagi secara rutin bersama dengan para pegawai anri di depan halaman kantor. Kegiatan di mulai dari jam 8 dan berakhir sekitar jam 9, sebelum melakukan senam pagi para karyawan dan mahasiswa magang mbkm usk melakukan pemanasan dengan cara memutari kantor sebanyak 2 kali. Selama kegiatan senam berlangsung semua peserta senam mengikuti gerakan dari intruktor yang berganti setiap minggunya. Kegiatan senam rutin ini sangat baik untuk meningkatkan keakraban dan menjaga kesehatan tubuh.',
         icon: '/images/icons/daily-record.svg',
-        image: '/images/daily-record.jpg',
+        image: '/images/program/daily_aktivity/senam.jpg',
       },
       {
-        name: 'Digitalisasi Dokumen',
+        name: 'Badminton',
         description:
           'Selain kegiatan senam terkadang mahasiswa magang dan karyawan anri melakukan aktivitas yang lain yaitu bermain badminton bersama. Kegiatan ini menggantikan kegiatan senam rutin agar tidak monoton dan lebih variatif. Kegiatan ini di lakukan dari jam 8 sampai 10 di lapangan gelanggang usk. Kegiatan yang baru membentuk semangat berolahraga menjadi lebih meningkatkan.',
         icon: '/images/icons/digitalization.svg',
-        image: '/images/digitalization.jpg',
+        image: '/images/program/daily_aktivity/badminton.jpg',
       },
       {
-        name: 'Pelayanan Arsip Publik',
+        name: 'Kultum',
         description:
           'Selama bulan Ramadhan mahasiswa magang mbkm dan karyawan anri melakukan kegiatan kultum setelah sholat Dzuhur di musholla anri. Pemateri kultum di rolling setiap harinya kecuali hari rabu yang di isi oleh ustad yang telah di tentukan. Kegiatan ini di harapkan dapat meningkatkan semangat beribadah selama bulan puasa ramadlan.',
         icon: '/images/icons/public-service.svg',
-        image: '/images/public-service.jpg',
+        image: '/images/program/daily_aktivity/kultum.jpg',
       },
     ],
     benefits: [
       {
-        title: 'Pemahaman Proses',
-        description: 'Memahami alur kerja dan proses kearsipan dari perspektif praktis',
+        title: 'Meningkatkan Hubungan',
+        description: 'Meningkatkan hubungan antara mahasiswa Magang dan Karyawan BAST',
       },
       {
-        title: 'Keterampilan Teknis',
-        description: 'Mempelajari teknik-teknik spesifik dalam pengelolaan informasi dan arsip',
+        title: 'Meningkatkan Produktivitas Kerja',
+        description: 'Dengan berolahraga Jasmani dan Rohani menjadi sehat kerja pun lanjar',
       },
       {
-        title: 'Pengalaman Kerja',
-        description: 'Merasakan suasana kerja nyata dalam lingkungan institusi kearsipan',
+        title: 'Menumbuhkan Lingkungan yang FUN',
+        description: 'Olahraga yang asik membentuk lingkungan kerja yang asik juga ',
       },
       {
-        title: 'Wawasan Profesional',
-        description: 'Mendapatkan pemahaman tentang standar kerja profesional di bidang kearsipan',
-      },
-      {
-        title: 'Jaringan Profesional',
-        description: 'Membangun relasi dengan para profesional dan praktisi kearsipan',
+        title: 'Meningkatkan Kerja Sama Tim',
+        description: 'dengan kegiatan yang rutin dilakukan dapat meningkatkan kerja sama tim',
       },
     ],
-    gallery: [
+    gallery: [ //bagian untuk taruk foto di galery
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Mahasiswa kerja di depan komputer',
+        src: '/images/program/daily_aktivity/foto1.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Dokumentasi proses digitalisasi',
+        src: '/images/program/daily_aktivity/foto2.jpg',
+        caption: '',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Pelayanan kepada pengguna',
+        src: '/images/program/daily_aktivity/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Suasana rapat atau diskusi internal',
+        src: '/images/program/daily_aktivity/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto5.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto6.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto7.jpg',
+        caption: '',
       },
     ],
   };
@@ -400,14 +408,14 @@ const DailyActivityDetail = () => {
                 <div className="space-y-4">
                   {[
                     {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'learning-trip',
                     },
                     {
                       title: 'Aktivitas Unit',
