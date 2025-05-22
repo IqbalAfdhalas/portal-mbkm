@@ -1,15 +1,13 @@
-// src/components/sections/KatalogMBKM.tsx
+// src/components/sections/KenaliKami.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiGrid, FiList } from 'react-icons/fi';
 import ProfileCard from '@/components/ui/ProfileCard';
 import ProfileListItem from '@/components/ui/ProfileListItem';
 import StatisticsCard from '@/components/ui/StatisticsCard';
 import { profileData } from '@/constants/profileData';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
-
 
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
@@ -24,7 +22,7 @@ type Batch = '2024' | '2025' | 'Semua';
 type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
 type ViewMode = 'grid' | 'list';
 
-const KatalogMBKM = () => {
+const KenaliKami = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
   const [selectedBatch, setSelectedBatch] = useState<Batch>('Semua');
@@ -247,7 +245,7 @@ const KatalogMBKM = () => {
 
   return (
     <section
-      id="katalog-mbkm"
+      id="kenali-kami"
       className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
     >
       <div className="container mx-auto max-w-screen-xl px-4">
@@ -511,4 +509,4 @@ const KatalogMBKM = () => {
   );
 };
 
-export default KatalogMBKM;
+export default KenaliKami;
