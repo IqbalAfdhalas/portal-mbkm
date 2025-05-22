@@ -455,6 +455,62 @@ const demoImages = [
     year: "2025",
     date: "11 febuari 2025"
   },
+  {
+    id: 57,
+    src: "/images/semua_gambar/galeri57.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 58,
+    src: "/images/semua_gambar/galeri58.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 59,
+    src: "/images/semua_gambar/galeri59.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 60,
+    src: "/images/semua_gambar/galeri60.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 61,
+    src: "/images/semua_gambar/galeri61.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 62,
+    src: "/images/semua_gambar/galeri62.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
+  {
+    id: 63,
+    src: "/images/semua_gambar/galeri63.jpg",
+    title: "Pelatihan Pengembangan Kompetensi",
+    category: "Event",
+    year: "2025",
+    date: "11 febuari 2025"
+  },
   
 ];
 
