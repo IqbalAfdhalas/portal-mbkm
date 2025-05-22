@@ -41,233 +41,70 @@ const scaleIn = {
 const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={fadeInUp}
-      className="text-center mb-12"
-    >
-      <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary-DEFAULT dark:text-blue-400 mb-3">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-          {subtitle}
-        </p>
-      )}
-      <div className="w-20 h-1 bg-gradient-to-r from-primary-DEFAULT to-primary-light rounded-full mx-auto mt-4"></div>
-    </motion.div>
-  );
-};
 
-const TeamMemberCard = ({ name, role, photo }: { name: string; role: string; photo: string }) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={scaleIn}
-      className="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 text-center group transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:translate-y-[-5px]"
-    >
-      <div className="relative w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden shadow-md">
-        <Image
-          src={photo}
-          alt={name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-      <h3 className="text-xl font-semibold text-primary-DEFAULT dark:text-blue-400 mb-1">{name}</h3>
-      <p className="text-gray-600 dark:text-gray-300">{role}</p>
-    </motion.div>
-  );
-};
-
-const PartnerLogo = ({ logo, name }: { logo: string; name: string }) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  return (
-    <motion.div 
-      ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={fadeInUp}
-      className="flex items-center justify-center p-4 bg-white dark:bg-dark-surface rounded-lg shadow-sm hover:shadow-md transition-all duration-300 h-24 hover:translate-y-[-3px]"
-    >
-      <Image src={logo} alt={name} width={120} height={60} className="object-contain max-h-16" />
-    </motion.div>
-  );
-};
-
-// Timeline Item Component
-const TimelineItem = ({
-  period,
-  title,
-  description,
-  index,
-  isLast,
-}: {
-  period: string;
-  title: string;
-  description: string;
-  index: number;
-  isLast: boolean;
-}) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={fadeInUp}
-      className="relative flex items-start"
-    >
-      {!isLast && (
-        <div className="absolute left-6 top-6 bottom-0 w-0.5 bg-gradient-to-b from-primary-DEFAULT to-primary-light dark:from-blue-500 dark:to-blue-700"></div>
-      )}
-      <div className="z-10 flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary-DEFAULT to-primary-light dark:from-blue-600 dark:to-blue-400 flex items-center justify-center shadow-md">
-        <span className="text-white text-xs font-bold">{index + 1}</span>
-      </div>
-      <div className="ml-6">
-        <span className="block text-sm font-medium text-secondary-DEFAULT dark:text-secondary-light">
-          {period}
-        </span>
-        <h3 className="text-lg font-heading font-semibold mt-1 text-primary-DEFAULT dark:text-blue-400">
-          {title}
-        </h3>
-        <p className="mt-1 text-gray-600 dark:text-gray-300 mb-8">{description}</p>
-      </div>
-    </motion.div>
-  );
-};
-
-// Card data for struktur program
-const programStructureCards = [
-  {
-    title: 'Persiapan',
-    description: 'Tahap persiapan meliputi seleksi peserta, orientasi program, dan pengenalan lingkungan kerja di ANRI.',
-    icon: '📝',
-  },
-  {
-    title: 'Implementasi',
-    description: 'Pelaksanaan magang di ANRI dengan penugasan proyek nyata sesuai bidang keahlian mahasiswa.',
-    icon: '🚀',
-  },
-  {
-    title: 'Evaluasi',
-    description: 'Proses penilaian berkala terhadap kinerja mahasiswa dan efektivitas program magang.',
-    icon: '📊',
-  },
-  {
-    title: 'Pengembangan',
-    description: 'Pendalaman keahlian melalui pelatihan dan workshop khusus bidang kearsipan digital.',
-    icon: '💡',
-  },
-];
-
-// Timeline data
-const timelineItems = [
-  {
-    period: 'Januari - Februari',
-    title: 'Pendaftaran & Seleksi',
-    description: 'Pembukaan pendaftaran program dan proses seleksi peserta.',
-    
-  },
-  {
-    period: 'Maret',
-    title: 'Orientasi Program',
-    description: 'Pengenalan pada lingkungan kerja dan budaya organisasi ANRI.',
-  },
-  {
-    period: 'April - Juni',
-    title: 'Implementasi Program',
-    description: 'Pelaksanaan magang dengan bimbingan mentor profesional.',
-  },
-  {
-    period: 'Juli',
-    title: 'Evaluasi Tengah',
-    description: 'Penilaian progress dan pemberian feedback untuk perbaikan.',
-  },
-  {
-    period: 'Agustus - Oktober',
-    title: 'Pengembangan Proyek',
-    description: 'Pengerjaan proyek utama dan pendalaman keahlian spesifik.',
-  },
-  {
-    period: 'November - Desember',
-    title: 'Finalisasi & Sertifikasi',
-    description: 'Penyelesaian proyek akhir dan pemberian sertifikasi.',
-  },
-];
-
-// Animated Card Component
-const AnimatedCard = ({
-  title,
-  description,
-  icon,
-  index,
-}: {
-  title: string;
-  description: string;
-  icon: string;
-  index: number;
-}) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={scaleIn}
-      className="bg-white dark:bg-dark-surface rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full hover:translate-y-[-5px]"
-    >
-      <div className="text-4xl mb-4">{icon}</div>
-      <h3 className="text-xl font-heading font-semibold mb-3 text-primary-DEFAULT dark:text-blue-400">
-        {title}
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300">{description}</p>
-    </motion.div>
-  );
-};
-
-export default function TentangPage() {
-  return (
-    <main>
-      {/* Hero Section - Modern, Professional Design */}
-      <section className="relative w-full h-72 md:h-96 lg:h-[500px] mb-16">
-        <Image
-          src="/images/serah_terima.jpg"
-          alt="MBKM BAST ANRI"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 flex items-center">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-3xl"
-            >
-              <h1 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
-                Program MBKM BAST di Arsip Nasional Republik Indonesia
-              </h1>
-              <p className="text-lg md:text-xl text-white/90">
-                Pengalaman belajar praktis di bidang kearsipan untuk mahasiswa seluruh Indonesia
-              </p>
-            </motion.div>
-          </div>
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      {/* Hero Section with Animated Particles - MADE LARGER */}
+      <section
+        className={`relative overflow-hidden ${currentTheme.hero} text-white py-32 px-4 transition-all duration-500`}
+      >
+        {/* Interactive Animated Particles Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(15)].map((_, i) => (
+            <MotionDiv
+              key={i}
+              className={`absolute rounded-full ${currentTheme.particles}`}
+              style={{
+                width: `${Math.random() * 100 + 50}px`,
+                height: `${Math.random() * 100 + 50}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [Math.random() * 30, -Math.random() * 30],
+                x: [Math.random() * 30, -Math.random() * 30],
+                scale: [1, Math.random() * 0.3 + 0.8, 1],
+              }}
+              transition={{
+                repeat: Infinity,
+                repeatType: 'reverse',
+                duration: Math.random() * 8 + 5,
+              }}
+            />
+          ))}
         </div>
-      </section>
-      
-      {/* About Section - Refreshed Design */}
-      <section className="container mx-auto px-6 py-16 md:py-20">
-        <SectionHeader title="Tentang MBKM BAST ANRI" />
-        <div className="grid md:grid-cols-2 gap-14 items-center max-w-6xl mx-auto">
-          <motion.div
+
+        {/* Tech-inspired Decoration Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Circuit-like lines */}
+          <svg
+            className="absolute w-full h-full opacity-10"
+            viewBox="0 0 800 600"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M50,300 Q200,100 400,300 T750,300"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+            />
+            <path
+              d="M50,350 Q200,550 400,350 T750,350"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+            />
+            <circle cx="400" cy="300" r="8" fill="white" />
+            <circle cx="200" cy="300" r="5" fill="white" />
+            <circle cx="600" cy="300" r="5" fill="white" />
+            <circle cx="400" cy="350" r="8" fill="white" />
+            <circle cx="200" cy="350" r="5" fill="white" />
+            <circle cx="600" cy="350" r="5" fill="white" />
+          </svg>
+        </div>
+
+        {/* Hero Content - MADE LARGER */}
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -285,103 +122,58 @@ export default function TentangPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            viewport={{ once: true }}
-            className="space-y-5 text-base leading-relaxed"
-          >
-            <h3 className="text-2xl md:text-3xl font-semibold text-primary-DEFAULT dark:text-blue-400 font-heading">
-              Sejarah & Profil Program
-            </h3>
-            <p className="text-gray-700 dark:text-gray-300">
-              Program Merdeka Belajar Kampus Merdeka (MBKM) Bidang Arsip Statis dan Tata Kelola (BAST) di Arsip Nasional Republik Indonesia (ANRI) merupakan inisiatif kolaboratif antara Kementerian Pendidikan dan Kebudayaan dengan ANRI untuk memberikan pengalaman belajar praktis kepada mahasiswa di bidang kearsipan.
-            </p>
-            <p className="text-gray-700 dark:text-gray-300">
-              Program ini dirancang untuk memberikan kesempatan kepada mahasiswa dari berbagai disiplin ilmu untuk mengembangkan kompetensi di bidang pengelolaan arsip statis, preservasi digital, dan sistem informasi kearsipan. Melalui program ini, mahasiswa mendapatkan pengalaman kerja nyata dan kredit semester yang dapat diakui oleh institusi pendidikan tinggi mereka.
-            </p>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Vision & Mission Section - Enhanced Professional Look */}
-      <section className="bg-gray-50 dark:bg-dark-DEFAULT py-16 md:py-20">
-        <div className="container mx-auto px-6">
-          <SectionHeader 
-            title="Visi & Misi" 
-            subtitle="Tujuan dan sasaran program MBKM BAST ANRI" 
-          />
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto"
-          >
-            {/* Vision */}
-            <motion.div 
-              variants={scaleIn} 
-              className="bg-white dark:bg-dark-surface rounded-2xl shadow-md p-8 border-t-4 border-primary-DEFAULT dark:border-blue-600 h-full hover:shadow-lg transition-all duration-300"
+            <MotionDiv
+              className="mt-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
-              <h3 className="text-2xl font-heading font-semibold mb-5 text-primary-DEFAULT dark:text-blue-400">
-                Visi
-              </h3>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                Menjadi program unggulan dalam pengembangan sumber daya manusia di bidang kearsipan digital yang inovatif, adaptif terhadap perkembangan teknologi, dan mampu menjawab tantangan era digital dalam preservasi dan akses arsip nasional.
-              </p>
-            </motion.div>
+              <button
+                className={`px-8 py-4 bg-white/20 backdrop-blur-md ${currentTheme.buttonHover} rounded-full text-white font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-white/20`}
+                onClick={() => {
+                  const tabsElement = document.getElementById('content-section');
+                  if (tabsElement) {
+                    const yOffset = -45; // offset jarak dari atas (misal navbar tingginya 80px)
+                    const y =
+                      tabsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-            {/* Mission */}
-            <motion.div 
-              variants={scaleIn} 
-              className="bg-white dark:bg-dark-surface rounded-2xl shadow-md p-8 border-t-4 border-secondary-DEFAULT dark:border-secondary-DEFAULT h-full hover:shadow-lg transition-all duration-300"
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                  }
+                }}
+              >
+                Pelajari Lebih Lanjut
+              </button>
+            </MotionDiv>
+          </MotionDiv>
+
+        </div>
+      </section>
+
+
+
+          {/* Main Content */}
+          <div className="md:w-2/3 lg:w-3/4" ref={contentRef}>
+            {/* Dynamic Tab Content with animated transitions */}
+            <MotionDiv
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className={`${currentTheme.contentBg} border ${currentTheme.accentBorder} shadow-lg ${currentTheme.cardShadow} rounded-3xl overflow-hidden transition-all duration-300`}
             >
-              <h3 className="text-2xl font-heading font-semibold mb-5 text-primary-DEFAULT dark:text-blue-400">
-                Misi
-              </h3>
-              <ul className="space-y-4 text-gray-700 dark:text-gray-300 list-none">
-                {[
-                  'Memberikan pengalaman praktis dalam pengelolaan arsip statis',
-                  'Membangun kompetensi digital dalam preservasi arsip',
-                  'Menumbuhkan kesadaran pentingnya arsip sebagai memori kolektif bangsa',
-                  'Mengembangkan inovasi dalam sistem informasi kearsipan',
-                ].map((point, i) => (
-                  <li key={i} className="flex items-start">
-                    <svg 
-                      className="w-5 h-5 text-secondary-DEFAULT mt-1 mr-3 flex-shrink-0" 
-                      fill="none" stroke="currentColor" 
-                      viewBox="0 0 24 24" 
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="px-6 py-12">
+                {/* Stylish graphic header for each tab */}
+                <div className="mb-8 relative">
+                  <div
+                    className={`absolute left-0 top-0 w-16 h-16 rounded-full ${currentTheme.hero} flex items-center justify-center text-white opacity-80`}
+                  >
+                    {activeTab === 'mbkm' && <Book className="w-6 h-6" />}
+                    {activeTab === 'collaboration' && <Handshake className="w-6 h-6" />}
+                    {activeTab === 'program-flow' && <Shuffle className="w-6 h-6" />}
+                    {activeTab === 'website' && <Monitor className="w-6 h-6" />}
+                  </div>
 
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-
-      {/* Program Structure Section - Streamlined */}
-      <section
-        aria-label="Struktur Program MBKM BAST ANRI"
-        className="container mx-auto px-6 py-16 md:py-20 max-w-6xl"
-      >
-        <SectionHeader 
-          title="Struktur Program" 
-          subtitle="Komponen utama dalam Program MBKM BAST ANRI" 
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
-          {programStructureCards.map((card, idx) => (
-            <AnimatedCard key={idx} index={idx} {...card} />
-          ))}
-        </div>
-      </section>
 
       {/* Timeline Section - More Professional */}
       <section
@@ -403,6 +195,45 @@ export default function TentangPage() {
               />
             ))}
 
+
+                {/* Tab content with enhanced presentation */}
+                <div className="relative">
+                  {/* Decorative tech elements in the background */}
+                  <div className="absolute top-0 right-0 -mt-10 -mr-10 opacity-5">
+                    <svg
+                      width="200"
+                      height="200"
+                      viewBox="0 0 200 200"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                      <circle
+                        cx="100"
+                        cy="100"
+                        r="40"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                      <path d="M100,20 L100,180" stroke="currentColor" strokeWidth="2" />
+                      <path d="M20,100 L180,100" stroke="currentColor" strokeWidth="2" />
+                    </svg>
+                  </div>
+
+                  <div className="relative z-10">
+                    <TabContent>{renderTabContent()}</TabContent>
+                  </div>
+                </div>
+              </div>
+            </MotionDiv>
+>
           </div>
         </div>
       </section>

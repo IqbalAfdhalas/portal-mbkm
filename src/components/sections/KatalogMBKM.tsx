@@ -8,6 +8,8 @@ import ProfileCard from '@/components/ui/ProfileCard';
 import ProfileListItem from '@/components/ui/ProfileListItem';
 import StatisticsCard from '@/components/ui/StatisticsCard';
 import { profileData } from '@/constants/profileData';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
+
 
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
@@ -189,17 +191,17 @@ const KatalogMBKM = () => {
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {paginatedData.map(profile => (
-              <motion.div key={profile.id} variants={itemVariants}>
+              <MotionDiv key={profile.id} variants={itemVariants}>
                 <ProfileCard profile={profile} />
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             {paginatedData.map(profile => (
-              <motion.div key={profile.id} variants={itemVariants}>
+              <MotionDiv key={profile.id} variants={itemVariants}>
                 <ProfileListItem profile={profile} />
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
         )}
@@ -265,7 +267,7 @@ const KatalogMBKM = () => {
         </div>
 
         {/* Statistics */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -290,10 +292,10 @@ const KatalogMBKM = () => {
             icon="briefcase"
             color="orange"
           />
-        </motion.div>
+        </MotionDiv>
 
         {/* Search & Filter */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -406,11 +408,11 @@ const KatalogMBKM = () => {
               )}
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Pembimbing Kampus */}
         {pembimbingKampus.length > 0 && (
-          <motion.div
+          <MotionDiv
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -426,12 +428,12 @@ const KatalogMBKM = () => {
             </div>
 
             {renderPaginatedProfiles(pembimbingKampus, 'Pembimbing Kampus')}
-          </motion.div>
+          </MotionDiv>
         )}
 
         {/* Mentor BAST ANRI */}
         {mentorBASTANRI.length > 0 && (
-          <motion.div
+          <MotionDiv
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -447,12 +449,12 @@ const KatalogMBKM = () => {
             </div>
 
             {renderPaginatedProfiles(mentorBASTANRI, 'Mentor BAST ANRI')}
-          </motion.div>
+          </MotionDiv>
         )}
 
         {/* Mahasiswa */}
         {mahasiswa.length > 0 && (
-          <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+          <MotionDiv initial="hidden" animate="visible" variants={containerVariants}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
                 MAHASISWA
@@ -463,12 +465,12 @@ const KatalogMBKM = () => {
             </div>
 
             {renderPaginatedProfiles(mahasiswa, 'Mahasiswa')}
-          </motion.div>
+          </MotionDiv>
         )}
 
         {/* No Results */}
         {filteredData.length === 0 && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-center py-16 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
@@ -504,7 +506,7 @@ const KatalogMBKM = () => {
                 Reset Filter
               </button>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </div>
     </section>

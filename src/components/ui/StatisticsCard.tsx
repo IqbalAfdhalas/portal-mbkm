@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { FiUsers, FiCalendar, FiClipboard, FiBookOpen, FiHome } from 'react-icons/fi';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface StatisticsCardProps {
   title: string;
@@ -86,7 +87,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ title, value, icon, col
   };
 
   return (
-    <motion.div
+    <MotionDiv
       whileHover="hover"
       variants={cardVariants}
       className={`
@@ -110,7 +111,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ title, value, icon, col
 
       {/* Progress indicator */}
       <div className="mt-4 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-        <motion.div
+        <MotionDiv
           initial={{ width: 0 }}
           animate={{ width: `${Math.min((value * 100) / 200, 100)}%` }}
           transition={{ duration: 1, delay: 0.3 }}
@@ -122,7 +123,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ title, value, icon, col
           `}
         />
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 

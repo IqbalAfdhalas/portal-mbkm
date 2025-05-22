@@ -8,7 +8,7 @@ import Program from '@/components/sections/Program';
 import Stats from '@/components/sections/Stats';
 import KatalogMBKM from '@/components/sections/KatalogMBKM';
 import Galery from '@/components/sections/Galery';
-import Forum from '@/components/sections/Forum';
+import PojokMBKM from '@/components/sections/PojokMBKM';
 import Faq from '@/components/sections/Faq';
 import Contact from '@/components/sections/Contact';
 import { scrollToId } from '@/lib/utils';
@@ -59,7 +59,7 @@ export default function HomePage() {
       <Stats />
       <KatalogMBKM />
       <Galery />
-      <Forum />
+      <PojokMBKM />
       <Faq />
       <Contact />
     </main>

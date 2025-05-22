@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 // Import data dari Program.tsx untuk memastikan konsistensi data
 const basePrograms = [
@@ -215,7 +216,7 @@ const Stats = () => {
       <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-indigo-400/10 animate-pulse blur-3xl"></div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
+        <MotionDiv
           className="text-center mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -232,11 +233,11 @@ const Stats = () => {
           <p className="text-blue-100 mt-2 max-w-2xl mx-auto">
             Data program dan aktivitas MBKM yang tersedia di Balai Arsip Statis dan Tsunami ANRI
           </p>
-        </motion.div>
+        </MotionDiv>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {statistics.map((stat, index) => (
-            <motion.div
+            <MotionDiv
               key={index}
               className="relative"
               initial={{ opacity: 0, y: 20 }}
@@ -275,7 +276,7 @@ const Stats = () => {
                   <p className="text-white/80 font-medium">{stat.label}</p>
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           ))}
         </div>
       </div>

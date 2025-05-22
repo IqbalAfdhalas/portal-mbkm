@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 type FormData = {
   name: string;
@@ -45,7 +46,7 @@ const Contact = () => {
   return (
     <section id="kontak" className="py-20 bg-gray-50 dark:bg-dark-surface">
       <div className="container mx-auto px-4">
-        <motion.div
+        <MotionDiv
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +63,7 @@ const Contact = () => {
             Silakan hubungi kami untuk informasi lebih lanjut tentang program MBKM BAST ANRI atau
             pertanyaan lainnya.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-dark-surface rounded-xl shadow-lg overflow-hidden">
@@ -95,7 +96,7 @@ const Contact = () => {
                       <div>
                         <h4 className="font-medium text-white">Alamat</h4>
                         <p className="text-blue-100 text-sm mt-1">
-                          Jl. Ampera Raya No.7, RT.9/RW.2, Kby. Lama Sel., Jakarta Selatan, 12560
+                          Jl. Tengku Hasan di Bakoi, Bakoy, Kec. Ingin Jaya, Kabupaten Aceh Besar, Aceh 23116
                         </p>
                       </div>
                     </div>
@@ -116,7 +117,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <h4 className="font-medium text-white">Telepon</h4>
-                        <p className="text-blue-100 text-sm mt-1">(021) 7805851</p>
+                        <p className="text-blue-100 text-sm mt-1">(0651) 7551698</p>
                       </div>
                     </div>
 
@@ -136,7 +137,7 @@ const Contact = () => {
                       </svg>
                       <div>
                         <h4 className="font-medium text-white">Email</h4>
-                        <p className="text-blue-100 text-sm mt-1">mbkm@anri.go.id</p>
+                        <p className="text-blue-100 text-sm mt-1">bast@anri.go.id</p>
                       </div>
                     </div>
                   </div>

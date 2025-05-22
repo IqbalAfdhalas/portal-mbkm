@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const PameranArsipDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,105 +30,80 @@ const PameranArsipDetail = () => {
     subtitle: 'Arsip Bukan Cuma Tumpukan Kertas!',
     description:
       'Di sini, arsip tampil beda! Lewat program pameran arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
-    icon: '/images/Pameran Arsip.png',
+    icon: '/images/program/logo_program/pameran_arsip.png',
     color: 'orange-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/pameran_arsip/vidio1.mp4',
     unitDescription:
-      'Pameran arsip menghadirkan koleksi arsip penting dalam bentuk yang menarik dan interaktif, memungkinkan pengunjung untuk belajar sejarah dari sumber aslinya.',
+      'Pameran Balai Arsip Statis dan Tsunami yang diselenggarakan oleh Arsip Nasional Republik Indonesia (ANRI) merupakan sebuah kegiatan yang bertujuan untuk memperkenalkan dan menyebarluaskan informasi mengenai arsip-arsip statis yang memiliki nilai sejarah, serta dokumentasi tentang bencana tsunami yang pernah terjadi di Indonesia. Pameran ini menjadi ajang penting untuk mempromosikan Balai Arsip Statis dan Tsunami (BAST) Arsip Nasional Republik Indonesia (ANRI) ',
     unitActivities:
-      'Pameran arsip BAST ANRI mengangkat berbagai tema sejarah nasional, menampilkan arsip-arsip bersejarah dalam format yang menarik dan inovatif. Pengunjung dapat menjelajahi arsip melalui media interaktif, mengikuti pameran keliling, dan berpartisipasi dalam berbagai kegiatan edukatif seperti workshop dan talkshow.',
+      'Ikut berpartisipasi pameran gini seru banget pengunjung banyak yang bertanya, bahkan ada yang baru tahu kalau dokumen-dokumen kayak gini bisa disimpan dan punya banyak nilai penting.',
     allUnits: [
       {
-        name: 'Tema Sejarah Nasional',
+        name: 'Pengenalan Arsip',
         description:
-          'Arsip-arsip yang dipamerkan diangkat dari momen penting dalam sejarah bangsa, memungkinkan pengunjung untuk belajar sejarah dari sumber aslinya langsung.',
+          'Interaksi antara pengunjung dan mahasiswa berlangsung secara aktif dan komunikatif. Para mahasiswa memberikan penjelasan mengenai cerita di balik arsip yang dipamerkan, sementara pengunjung menunjukkan antusiasme tinggi dengan mengajukan pertanyaan serta berdiskusi secara langsung. Kegiatan ini menciptakan suasana edukatif yang mendukung pemahaman publik terhadap pentingnya arsip sebagai sumber sejarah. Selain itu, BAST juga menyediakan Layanan Restorasi Arsip Keluarga (LARASKA) bagi masyarakat yang ingin memperbaiki arsip keluarga yang mengalami kerusakan.',
         icon: '/images/icons/history.svg',
-        activities: [
-          'Pameran arsip proklamasi kemerdekaan',
-          'Koleksi dokumen sejarah pembentukan negara',
-          'Arsip peristiwa-peristiwa penting nasional',
-          'Dokumentasi perjalanan bangsa dari masa ke masa',
-        ],
-        image: '/images/theme-history.jpg',
-      },
-      {
-        name: 'Media Arsip Interaktif',
-        description:
-          'Arsip tidak hanya dipajang secara konvensional, tetapi juga disajikan dalam format digital interaktif yang memungkinkan pengunjung untuk menjelajahi arsip secara lebih mendalam.',
-        icon: '/images/icons/interactive.svg',
-        activities: [
-          'Layar sentuh untuk menjelajahi arsip digital',
-          'Rekonstruksi sejarah berbasis augmented reality',
-          'Pengalaman arsip dengan teknologi multimedia',
-          'Visualisasi data arsip secara interaktif',
-        ],
-        image: '/images/interactive-archive.jpg',
-      },
-      {
-        name: 'Pameran Keliling',
-        description:
-          'BAST ANRI tidak hanya menyelenggarakan pameran di kantor, tetapi juga membawa pameran ke berbagai lokasi untuk menjangkau lebih banyak pengunjung di seluruh Indonesia.',
-        icon: '/images/icons/travelling.svg',
-        activities: [
-          'Pameran di institusi pendidikan (sekolah dan kampus)',
-          'Partisipasi dalam festival dan event budaya',
-          'Roadshow arsip ke berbagai daerah',
-          'Kolaborasi dengan museum dan pusat kebudayaan',
-        ],
-        image: '/images/travelling-exhibition.jpg',
-      },
-      {
-        name: 'Edukasi Publik',
-        description:
-          'Pameran tidak hanya berfokus pada display, tetapi juga dilengkapi dengan berbagai program edukatif untuk meningkatkan pemahaman dan apresiasi terhadap arsip.',
-        icon: '/images/icons/education.svg',
-        activities: [
-          'Workshop kearsipan untuk pengunjung',
-          'Sesi tanya jawab dengan arsiparis',
-          'Pemutaran film dan dokumenter berbasis arsip',
-          'Talkshow dengan sejarawan dan praktisi arsip',
-        ],
-        image: '/images/public-education.jpg',
+        image: '/images/program/pameran_arsip/foto6.jpg',
       },
     ],
     benefits: [
       {
         title: 'Belajar Sejarah dari Sumber Asli',
-        description: 'Melihat langsung dokumen sejarah asli, bukan sekadar narasi dari buku'
+        description: 'Melihat langsung dokumen sejarah asli, bukan sekadar narasi dari buku',
       },
       {
         title: 'Pengalaman Interaktif',
-        description: 'Mengeksplorasi arsip melalui teknologi modern yang menarik dan interaktif'
+        description: 'Mengeksplorasi arsip melalui teknologi modern yang menarik dan interaktif',
       },
       {
         title: 'Wawasan Beragam',
-        description: 'Mendapatkan perspektif baru tentang berbagai peristiwa sejarah nasional'
+        description: 'Mendapatkan perspektif baru tentang berbagai peristiwa sejarah nasional',
       },
       {
         title: 'Pengetahuan Kearsipan',
-        description: 'Memahami proses pelestarian dan pengelolaan arsip nasional'
+        description: 'Memahami proses pelestarian dan pengelolaan arsip nasional',
       },
       {
         title: 'Inspirasi Kreatif',
-        description: 'Mendapatkan inspirasi untuk proyek penelitian atau karya kreatif'
+        description: 'Mendapatkan inspirasi untuk proyek penelitian atau karya kreatif',
       },
     ],
     gallery: [
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Suasana pameran dengan pengunjung',
+        src: '/images/program/pameran_arsip/foto7.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Arsip yang dipajang di booth pameran',
+        src: '/images/program/pameran_arsip/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Pengunjung berinteraksi dengan media digital',
+        src: '/images/program/pameran_arsip/foto5.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Kegiatan workshop dalam pameran',
+        src: '/images/program/pameran_arsip/foto2.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto1.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto8.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto9.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/pameran_arsip/foto10.jpg',
+        caption: '',
       },
     ],
   };
@@ -154,7 +130,7 @@ const PameranArsipDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -202,7 +178,7 @@ const PameranArsipDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -232,7 +208,7 @@ const PameranArsipDetail = () => {
             {/* Decorative elements */}
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 opacity-20 blur-md"></div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -241,7 +217,7 @@ const PameranArsipDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -292,9 +268,9 @@ const PameranArsipDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -349,10 +325,6 @@ const PameranArsipDetail = () => {
               <p className="text-gray-700 dark:text-gray-300 mb-6">{program.unitActivities}</p>
 
               <div className="mt-8">
-                <h4 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-4">
-                  Yang Biasanya Ada di Pameran:
-                </h4>
-
                 <div className="space-y-2 mt-4">
                   {program.allUnits.map((unit, idx) => (
                     <div
@@ -404,14 +376,6 @@ const PameranArsipDetail = () => {
                               <p className="text-gray-700 dark:text-gray-300 mb-4">
                                 {unit.description}
                               </p>
-                              <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Kegiatan di {unit.name}:
-                              </h5>
-                              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {unit.activities.map((activity, actIdx) => (
-                                  <li key={actIdx}>{activity}</li>
-                                ))}
-                              </ul>
                             </div>
                           </div>
                         </div>
@@ -420,14 +384,14 @@ const PameranArsipDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -444,14 +408,14 @@ const PameranArsipDetail = () => {
                       slug: 'aktivitas-unit',
                     },
                     {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'Learning Trip',
                     },
                     {
                       title: 'Daily Activity',
@@ -604,116 +568,116 @@ const PameranArsipDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
-       {/* Gallery Section */}
-               <motion.div
-                 initial="hidden"
-                 animate={isLoaded ? 'visible' : 'hidden'}
-                 variants={fadeInUp}
-                 className="mt-12"
-               >
-                 <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
-                   Galeri Kegiatan
-                 </h2>
-                 <div className="relative">
-                   <Swiper
-                     modules={[Navigation]}
-                     navigation={{
-                       nextEl: '.custom-swiper-button-next',
-                       prevEl: '.custom-swiper-button-prev',
-                     }}
-                     spaceBetween={20}
-                     slidesPerView={1}
-                     breakpoints={{
-                       640: { slidesPerView: 1 },
-                       768: { slidesPerView: 2 },
-                       1024: { slidesPerView: 3 },
-                     }}
-                     className="relative"
-                   >
-                     {program.gallery.map((image, index) => (
-                       <SwiperSlide key={index}>
-                         <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
-                           <div className="relative w-full aspect-[16/9]">
-                             <Image
-                               src={image.src}
-                               alt={image.caption}
-                               fill
-                               className="object-cover w-full h-full cursor-pointer"
-                               onClick={() => handleImageClick(image.src)}
-                             />
-                           </div>
-                           <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
-                             {image.caption}
-                           </p>
-                         </div>
-                       </SwiperSlide>
-                     ))}
-       
-                     {/* 🔻 Panah kiri */}
-                     <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
-                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path
-                           strokeLinecap="round"
-                           strokeLinejoin="round"
-                           strokeWidth={2}
-                           d="M15 19l-7-7 7-7"
-                         />
-                       </svg>
-                     </div>
-       
-                     {/* 🔺 Panah kanan */}
-                     <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
-                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path
-                           strokeLinecap="round"
-                           strokeLinejoin="round"
-                           strokeWidth={2}
-                           d="M9 5l7 7-7 7"
-                         />
-                       </svg>
-                     </div>
-                   </Swiper>
-                 </div>
-               </motion.div>
-             </div>
-       
-             {/* Image Preview Modal */}
-             {previewImage && (
-               <div
-                 className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4"
-                 onClick={closeModal}
-               >
-                 <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
-                   <Image
-                     src={previewImage}
-                     alt="Preview"
-                     width={1200}
-                     height={800}
-                     className="max-h-[90vh] w-auto object-contain"
-                   />
-                   <button
-                     onClick={closeModal}
-                     className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
-                   >
-                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                       <path
-                         strokeLinecap="round"
-                         strokeLinejoin="round"
-                         strokeWidth={2}
-                         d="M6 18L18 6M6 6l12 12"
-                       />
-                     </svg>
-                   </button>
-                 </div>
-               </div>
-             )}
-           </div>
-         );
-       };
-       
-       export default PameranArsipDetail;
+        {/* Gallery Section */}
+        <MotionDiv
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={fadeInUp}
+          className="mt-12"
+        >
+          <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
+            Galeri Kegiatan
+          </h2>
+          <div className="relative">
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: '.custom-swiper-button-next',
+                prevEl: '.custom-swiper-button-prev',
+              }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="relative"
+            >
+              {program.gallery.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={image.src}
+                        alt={image.caption}
+                        fill
+                        className="object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(image.src)}
+                      />
+                    </div>
+                    <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
+                      {image.caption}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              {/* 🔻 Panah kiri */}
+              <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </div>
+
+              {/* 🔺 Panah kanan */}
+              <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </Swiper>
+          </div>
+        </MotionDiv>
+      </div>
+
+      {/* Image Preview Modal */}
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4"
+          onClick={closeModal}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
+            <Image
+              src={previewImage}
+              alt="Preview"
+              width={1200}
+              height={800}
+              className="max-h-[90vh] w-auto object-contain"
+            />
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PameranArsipDetail;

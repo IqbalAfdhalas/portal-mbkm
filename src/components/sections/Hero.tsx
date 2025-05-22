@@ -11,6 +11,8 @@ import CountUp from 'react-countup';
 import { useTheme } from 'next-themes';
 import { FaChevronDown } from 'react-icons/fa';
 import { scrollToId } from '@/lib/utils';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
+
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -152,7 +154,7 @@ const Hero = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-white/90 dark:bg-primary/80 backdrop-brightness-110" />
 
         {/* Animated gradient light */}
-        <motion.div
+        <MotionDiv
           className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] rounded-full bg-gradient-radial from-blue-300/20 via-transparent to-transparent"
           animate={{
             x: [0, 50, 0],
@@ -166,7 +168,7 @@ const Hero = () => {
           }}
         />
 
-        <motion.div
+        <MotionDiv
           className="absolute bottom-[-30%] right-[-30%] w-[150%] h-[150%] rounded-full bg-gradient-radial from-secondary/10 via-transparent to-transparent"
           animate={{
             x: [0, -30, 0],
@@ -184,7 +186,7 @@ const Hero = () => {
       {/* Animated stars/particles */}
       {isMounted &&
         particles.map(particle => (
-          <motion.div
+          <MotionDiv
             key={particle.id}
             className="absolute rounded-full bg-gray-400 dark:bg-white drop-shadow-md dark:drop-shadow"
             style={{
@@ -208,7 +210,7 @@ const Hero = () => {
         {/* Text content */}
         <div className="flex-1 text-gray-900 dark:text-white">
           {/* Badge */}
-          <motion.div
+          <MotionDiv
             className="inline-flex items-center px-4 py-1.5 rounded-full 
              bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
              text-white text-xs font-semibold tracking-wide 
@@ -222,7 +224,7 @@ const Hero = () => {
               <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
               MBKM x BAST ANRI
             </span>
-          </motion.div>
+          </MotionDiv>
 
           <motion.h1
             className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6"
@@ -257,7 +259,7 @@ const Hero = () => {
           </motion.p>
 
           {/* CTA Buttons */}
-          <motion.div
+          <MotionDiv
             className="flex flex-col sm:flex-row gap-4 md:gap-6"
             custom={3}
             variants={textVariants}
@@ -285,10 +287,10 @@ const Hero = () => {
               <FaBook className="text-xl" />
               <span>Tentang MBKM</span>
             </motion.button>
-          </motion.div>
+          </MotionDiv>
 
           {/* Stats preview */}
-          <motion.div
+          <MotionDiv
             ref={statsRef}
             className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-12"
             initial={{ opacity: 0 }}
@@ -310,11 +312,11 @@ const Hero = () => {
                 <p className="text-sm text-blue-800 dark:text-blue-100">{stat.label}</p>
               </div>
             ))}
-          </motion.div>
+          </MotionDiv>
         </div>
 
         {/* Image/illustration */}
-        <motion.div
+        <MotionDiv
           className="flex-1 w-full max-w-xl"
           style={{
             x: mousePosition.x * 20,
@@ -328,7 +330,7 @@ const Hero = () => {
             <div className="relative w-full max-w-sm mx-auto transform translate-y-16 -translate-x-4 transition-transform duration-500 hover:scale-105">
               {/* 💡 GLOW MASUK SINI */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                <motion.div
+                <MotionDiv
                   className={`${glowSize} blur-[100px] opacity-100 brightness-150 saturate-200 mix-blend-screen`}
                   style={{
                     background: glowGradients[glowIndex],
@@ -352,7 +354,7 @@ const Hero = () => {
               {/* Gambar poster */}
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
                 <Image
-                  src="/images/hero-illustration.png"
+                  src="/images/Beranda/beranda_ilustrasi.png"
                   alt="MBKM BAST ANRI"
                   width={600}
                   height={600}
@@ -363,7 +365,7 @@ const Hero = () => {
             </div>
 
             {/* Decoration circles */}
-            <motion.div
+            <MotionDiv
               className="absolute top-10 right-10 w-20 h-20 rounded-full bg-gradient-to-r from-secondary to-secondary-light opacity-70 blur-md"
               animate={{
                 scale: [1, 1.2, 1],
@@ -375,7 +377,7 @@ const Hero = () => {
                 ease: 'easeInOut',
               }}
             />
-            <motion.div
+            <MotionDiv
               className="absolute bottom-20 left-10 w-16 h-16 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 opacity-70 blur-md"
               animate={{
                 scale: [1, 1.3, 1],
@@ -388,7 +390,7 @@ const Hero = () => {
               }}
             />
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* Wave decoration at bottom */}
@@ -410,14 +412,14 @@ const Hero = () => {
         </svg>
       </div>
       {/* Scroll Down Arrows */}
-      <motion.div
+      <MotionDiv
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-0 text-gray-600 dark:text-white z-20"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
         {[0, 1, 2].map(i => (
-          <motion.div
+          <MotionDiv
             key={i}
             animate={{
               opacity: [0.3, 1, 0.3],
@@ -430,9 +432,9 @@ const Hero = () => {
             }}
           >
             <FaChevronDown className="text-xl" />
-          </motion.div>
+          </MotionDiv>
         ))}
-      </motion.div>
+      </MotionDiv>
     </section>
   );
 };

@@ -1,29 +1,24 @@
-//src/context/AuthContext.tsx
-"use client";
+// src/context/AuthContext.tsx
+'use client';
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
+  signOut as firebaseSignOut,
   sendPasswordResetEmail,
   updateProfile,
   User as FirebaseUser,
-} from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db, setAuthPersistence } from "@/lib/firebase";
-import toast from "react-hot-toast";
+  browserLocalPersistence,
+  browserSessionPersistence,
+  setPersistence,
+} from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
+import toast from 'react-hot-toast';
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined,
-);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // User type dengan tambahan custom fields
 export interface User extends FirebaseUser {
@@ -39,19 +34,22 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string, remember?: boolean) => Promise<void>;
-  register: (
-    email: string,
-    password: string,
-    displayName: string,
-  ) => Promise<void>;
+  register: (email: string, password: string, displayName: string) => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
-  updateUserProfile: (data: {
-    displayName?: string;
-    photoURL?: string;
-  }) => Promise<void>;
+  updateUserProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>;
   isAdmin: boolean;
 }
+
+/**
+ * Set the persistence for Firebase Authentication
+ * @param remember Whether to remember the user or not
+ */
+const setAuthPersistence = async (remember: boolean) => {
+  const persistenceType = remember ? browserLocalPersistence : browserSessionPersistence;
+
+  return setPersistence(auth, persistenceType);
+};
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -61,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Fungsi untuk mendapatkan data user tambahan dari Firestore
   const getUserAdditionalData = async (uid: string) => {
     try {
-      const userRef = doc(db, "users", uid);
+      const userRef = doc(db, 'users', uid);
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
@@ -69,15 +67,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       return null;
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('Error fetching user data:', error);
       return null;
     }
   };
 
   // Observer untuk auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("🔥 [Auth] Current user:", currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async currentUser => {
       if (currentUser) {
         try {
           // Ambil data tambahan user dari Firestore
@@ -87,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const enhancedUser = {
             ...currentUser,
             isAdmin: additionalData?.isAdmin || false,
-            role: additionalData?.role || "user",
+            role: additionalData?.role || 'user',
             metadata: {
               ...additionalData?.metadata,
               lastLogin: new Date().toISOString(),
@@ -98,7 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setIsAdmin(enhancedUser.isAdmin || false);
 
           // Update last login
-          const userRef = doc(db, "users", currentUser.uid);
+          const userRef = doc(db, 'users', currentUser.uid);
           await setDoc(
             userRef,
             {
@@ -106,10 +103,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 lastLogin: new Date().toISOString(),
               },
             },
-            { merge: true },
+            { merge: true }
           );
         } catch (error) {
-          console.error("Error enhancing user:", error);
+          console.error('Error enhancing user:', error);
           setUser(currentUser as User);
           setIsAdmin(false);
         }
@@ -125,34 +122,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // Login dengan email dan password
-  const login = async (
-    email: string,
-    password: string,
-    remember: boolean = false,
-  ) => {
+  const login = async (email: string, password: string, remember: boolean = false) => {
     setLoading(true);
     try {
       // Set persistence berdasarkan remember me
       await setAuthPersistence(remember);
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Login berhasil!");
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error('Login error:', error);
 
-      // Pesan error yang lebih user-friendly
-      let errorMessage = "Gagal masuk. Silakan coba lagi.";
-      if (
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/wrong-password"
-      ) {
-        errorMessage = "Email atau password tidak valid.";
-      } else if (error.code === "auth/too-many-requests") {
-        errorMessage = "Terlalu banyak percobaan. Coba lagi nanti.";
-      } else if (error.code === "auth/user-disabled") {
-        errorMessage = "Akun ini telah dinonaktifkan.";
-      }
+      // Pesan error yang user-friendly
+      const errorMessages: Record<string, string> = {
+        'auth/user-not-found': 'Email atau password salah',
+        'auth/wrong-password': 'Email atau password salah',
+        'auth/invalid-credential': 'Email atau password salah',
+        'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi nanti',
+        'auth/user-disabled': 'Akun ini telah dinonaktifkan',
+        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
+      };
 
-      toast.error(errorMessage);
+      const errorMessage = errorMessages[error.code] || 'Gagal login. Silakan coba lagi';
       throw error;
     } finally {
       setLoading(false);
@@ -160,50 +149,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Register user baru
-  const register = async (
-    email: string,
-    password: string,
-    displayName: string,
-  ) => {
+  const register = async (email: string, password: string, displayName: string) => {
     setLoading(true);
     try {
       // Buat user di Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // Update profile dengan displayName
       await updateProfile(userCredential.user, { displayName });
 
       // Tambahkan data tambahan ke Firestore
-      const userRef = doc(db, "users", userCredential.user.uid);
+      const userRef = doc(db, 'users', userCredential.user.uid);
       await setDoc(userRef, {
         email,
         displayName,
-        role: "user",
+        role: 'user',
         isAdmin: false,
         metadata: {
           createdAt: new Date().toISOString(),
           lastLogin: new Date().toISOString(),
         },
       });
-
-      toast.success("Registrasi berhasil!");
     } catch (error: any) {
-      console.error("Register error:", error);
+      console.error('Register error:', error);
 
       // Pesan error yang lebih user-friendly
-      let errorMessage = "Registrasi gagal. Silakan coba lagi.";
-      if (error.code === "auth/email-already-in-use") {
-        errorMessage = "Email sudah digunakan. Silakan gunakan email lain.";
-      } else if (error.code === "auth/weak-password") {
-        errorMessage = "Password terlalu lemah. Gunakan minimal 6 karakter.";
-      } else if (error.code === "auth/invalid-email") {
-        errorMessage = "Format email tidak valid.";
-      }
+      const errorMessages: Record<string, string> = {
+        'auth/email-already-in-use': 'Email sudah terdaftar. Silakan gunakan email lain',
+        'auth/invalid-email': 'Format email tidak valid',
+        'auth/weak-password': 'Password terlalu lemah. Gunakan minimal 6 karakter',
+        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
+      };
 
-      toast.error(errorMessage);
       throw error;
     } finally {
       setLoading(false);
@@ -213,11 +189,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Logout
   const logout = async () => {
     try {
-      await signOut(auth);
-      toast.success("Logout berhasil!");
+      await firebaseSignOut(auth);
     } catch (error: any) {
-      console.error("Logout error:", error);
-      toast.error("Gagal logout. Silakan coba lagi.");
+      console.error('Logout error:', error);
       throw error;
     }
   };
@@ -227,18 +201,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
-      toast.success("Email reset password telah dikirim!");
     } catch (error: any) {
-      console.error("Reset password error:", error);
+      console.error('Reset password error:', error);
 
-      let errorMessage = "Gagal mengirim email reset. Silakan coba lagi.";
-      if (error.code === "auth/user-not-found") {
-        errorMessage = "Email tidak terdaftar dalam sistem.";
-      } else if (error.code === "auth/invalid-email") {
-        errorMessage = "Format email tidak valid.";
-      }
+      const errorMessages: Record<string, string> = {
+        'auth/user-not-found': 'Email tidak terdaftar dalam sistem',
+        'auth/invalid-email': 'Format email tidak valid',
+        'auth/missing-email': 'Email harus diisi',
+        'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
+      };
 
-      toast.error(errorMessage);
+      const errorMessage =
+        errorMessages[error.code] || 'Gagal mengirim email reset. Silakan coba lagi';
       throw error;
     } finally {
       setLoading(false);
@@ -246,13 +220,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Update user profile
-  const updateUserProfile = async (data: {
-    displayName?: string;
-    photoURL?: string;
-  }) => {
+  const updateUserProfile = async (data: { displayName?: string; photoURL?: string }) => {
     if (!auth.currentUser) {
-      toast.error("Tidak ada user yang login.");
-      throw new Error("No authenticated user");
+      throw new Error('No authenticated user');
     }
 
     setLoading(true);
@@ -261,7 +231,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // Update juga di Firestore
       if (auth.currentUser.uid) {
-        const userRef = doc(db, "users", auth.currentUser.uid);
+        const userRef = doc(db, 'users', auth.currentUser.uid);
         await setDoc(userRef, data, { merge: true });
       }
 
@@ -273,11 +243,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           photoURL: data.photoURL || user.photoURL,
         });
       }
-
-      toast.success("Profil berhasil diperbarui!");
     } catch (error: any) {
-      console.error("Update profile error:", error);
-      toast.error("Gagal memperbarui profil. Silakan coba lagi.");
+      console.error('Update profile error:', error);
       throw error;
     } finally {
       setLoading(false);
@@ -306,7 +273,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

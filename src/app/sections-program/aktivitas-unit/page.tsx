@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const AktivitasUnitDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,13 +30,13 @@ const AktivitasUnitDetail = () => {
     subtitle: 'Ikut Serunya Aktivitas Unit di BAST ANRI!',
     description:
       'Lewat program ini, kamu akan ikut langsung dalam aktivitas harian di unit-unit kerja BAST ANRI. Bukan cuma duduk dan mengamati, tapi benar-benar terlibat seperti bagian dari tim! Setiap unit punya tugas dan pengalaman yang beda-beda — cocok banget buat kamu yang pengen belajar dari praktik nyata.',
-    icon: '/images/Aktivitas Unit.png',
+    icon: '/images/program/logo_program/aktivitas_unit.png',
     color: 'yellow-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/aktivitas_unit/vidio_unit.mp4',
     unitDescription:
       'Jelajahi aktivitas dari berbagai unit kerja di BAST ANRI — mulai dari penerimaan arsip, pengolahan, hingga pelayanan kepada masyarakat.',
     unitActivities:
-      'Kamu akan dilibatkan langsung dalam proses awal pengelolaan arsip. Mulai dari menyeleksi arsip yang diterima dari berbagai instansi, melakukan pencatatan metadata, hingga koordinasi pengambilan arsip dan verifikasi dokumen. Semuanya kamu rasakan langsung seolah menjadi bagian dari tim akuisisi.',
+      'Kalau ditanya pengalaman selama di unit, pastinya complex tapi joyfull. Kalau diceritain dari lantai tiga ada ruangan Akusisi, nah disana kalian bakal ngerasain ruangan tanpa sekat tapi nyaman banget. Lalu dilantai dua kalian bakal jumpain kelas Pengolahan, yang paling seru karena arsiparis nya selalu bikin rame. Kerja rumit tapi euphorianya  seru! Nyebrang lurus kedepan ada Preservasi, disini kita bisa belajar banyak hal, dari nge-restorasi arsip, reboksing, scan peta, serta ngerasain ambil arsip di roll o pack raksasa. Kami juga berkesempatan berkunjung ke Gedung BAST yang di Lampineung, yeay. Masuk ke layanan, langsung disuguhi “Konten, konten, konten terus” hal yang cukup tepat untuk describe kegiatan unit ini, diasah kritis mikirin ide terus, pokoknya kreatif is a must. Terakhir untuk pengalaman dari unit Tata Usaha/Record Center, jangan lupa sedia jaket sebelum kedinginan!',
     allUnits: [
       {
         name: 'Unit Akuisisi Arsip',
@@ -48,7 +49,7 @@ const AktivitasUnitDetail = () => {
           'Koordinasi pengambilan arsip dari instansi',
           'Verifikasi kelengkapan dokumen',
         ],
-        image: '/images/unit-acquisition.jpg',
+        image: '/images/program/aktivitas_unit/akuisisi.jpg',
       },
       {
         name: 'Unit Pengolahan Arsip',
@@ -61,7 +62,7 @@ const AktivitasUnitDetail = () => {
           'Menata arsip sesuai sistem klasifikasi',
           'Membuat indeks dan katalog arsip',
         ],
-        image: '/images/unit-processing.jpg',
+        image: '/images/program/aktivitas_unit/pengolahan.jpg',
       },
       {
         name: 'Unit Preservasi Arsip',
@@ -74,7 +75,7 @@ const AktivitasUnitDetail = () => {
           'Mendigitalisasi arsip untuk preservasi',
           'Mengelola kondisi ruang penyimpanan',
         ],
-        image: '/images/unit-preservation.jpg',
+        image: '/images/program/aktivitas_unit/preservasi.jpg',
       },
       {
         name: 'Unit Pelayanan Arsip',
@@ -87,7 +88,7 @@ const AktivitasUnitDetail = () => {
           'Menyediakan layanan akses informasi',
           'Memberikan pendampingan penelitian',
         ],
-        image: '/images/unit-service.jpg',
+        image: '/images/program/aktivitas_unit/layanan.jpg',
       },
       {
         name: 'Unit Tata Usaha',
@@ -100,7 +101,7 @@ const AktivitasUnitDetail = () => {
           'Mengelola dokumentasi internal',
           'Membantu koordinasi antar unit',
         ],
-        image: '/images/unit-administration.jpg',
+        image: '/images/program/aktivitas_unit/tata_usaha.jpg',
       },
     ],
     benefits: [
@@ -127,21 +128,66 @@ const AktivitasUnitDetail = () => {
     ],
     gallery: [
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Mahasiswa sedang mendigitalisasi arsip',
+        src: '/images/program/aktivitas_unit/foto1.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Rapat evaluasi kegiatan unit',
+        src: '/images/program/aktivitas_unit/foto2.jpg',
+        caption: '',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Proses pemindaian dokumen',
+        src: '/images/program/aktivitas_unit/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
+        src: '/images/program/aktivitas_unit/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto5.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto6.JPG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto7.jpg',
         caption: 'Suasana kerja di ruang pengolahan',
       },
+      {
+        src: '/images/program/aktivitas_unit/foto8.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto9.jpeg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto10.PNG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto11.PNG',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto12.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto13.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto14.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/aktivitas_unit/foto15.jpg',
+        caption: '',
+      },
+
     ],
   };
 
@@ -167,7 +213,7 @@ const AktivitasUnitDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -215,7 +261,7 @@ const AktivitasUnitDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -245,7 +291,7 @@ const AktivitasUnitDetail = () => {
             {/* Decorative elements */}
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 opacity-20 blur-md"></div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -254,7 +300,7 @@ const AktivitasUnitDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -305,9 +351,9 @@ const AktivitasUnitDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -433,14 +479,14 @@ const AktivitasUnitDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -451,15 +497,15 @@ const AktivitasUnitDetail = () => {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      {
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'learning-trip',
                     },
                     {
                       title: 'Daily Activity',
@@ -649,13 +695,13 @@ const AktivitasUnitDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
         {/* Gallery Section */}
-        <motion.div
+        <MotionDiv
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={fadeInUp}
@@ -724,7 +770,7 @@ const AktivitasUnitDetail = () => {
               </div>
             </Swiper>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* Image Preview Modal */}

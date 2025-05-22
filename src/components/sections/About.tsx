@@ -4,6 +4,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const About = () => {
   const features = [
@@ -35,7 +36,7 @@ const About = () => {
       className="py-20 bg-gray-50 dark:bg-gradient-to-b dark:from-[#2D3748] dark:to-[#1A202C]"
     >
       <div className="container mx-auto max-w-screen-xl px-4">
-        <motion.div
+        <MotionDiv
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -52,10 +53,10 @@ const About = () => {
             Program MBKM memberikan kesempatan bagi mahasiswa untuk mengasah kemampuan sesuai bakat
             dan minat dengan terjun langsung ke dunia kerja sebagai persiapan karir masa depan.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -72,9 +73,9 @@ const About = () => {
                 priority
               />
             </div>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -127,7 +128,7 @@ const About = () => {
                 </svg>
               </Link>
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
     </section>

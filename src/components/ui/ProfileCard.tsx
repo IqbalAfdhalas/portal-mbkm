@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiBookOpen, FiCalendar, FiBriefcase } from 'react-icons/fi';
-
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 import type { ProfileType } from '@/constants/profileData';
 
 interface ProfileCardProps {
@@ -120,7 +120,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
   };
 
   return (
-    <motion.div
+    <MotionDiv
       initial="initial"
       whileHover="hover"
       animate={isHovered ? 'hover' : 'initial'}
@@ -139,18 +139,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4">
-            <motion.div variants={badgeVariants} className="inline-block">
+            <MotionDiv variants={badgeVariants} className="inline-block">
               <span
                 className={`text-xs font-medium text-white ${colors.badge} px-3 py-1 rounded-full transition-colors duration-300 shadow-md`}
               >
                 {profile.peran}
               </span>
-            </motion.div>
+            </MotionDiv>
           </div>
         </div>
 
         {/* Profile Info */}
-        <motion.div
+        <MotionDiv
           className="p-5 flex flex-col flex-grow"
           initial="initial"
           animate="animate"
@@ -166,7 +166,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
           <div className="space-y-3 mt-1">
             {/* Conditional rendering based on role */}
             {profile.asalInstitusi && (
-              <motion.div
+              <MotionDiv
                 variants={infoItemVariants}
                 className="flex items-center text-sm text-gray-600 dark:text-gray-300 group"
               >
@@ -178,11 +178,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
                 <span className="line-clamp-1 group-hover:font-medium transition-all duration-300">
                   {profile.asalInstitusi}
                 </span>
-              </motion.div>
+              </MotionDiv>
             )}
 
             {profile.prodi && (
-              <motion.div
+              <MotionDiv
                 variants={infoItemVariants}
                 className="flex items-center text-sm text-gray-600 dark:text-gray-300 group"
               >
@@ -194,11 +194,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
                 <span className="group-hover:font-medium transition-all duration-300">
                   {getProgramName(profile.prodi)}
                 </span>
-              </motion.div>
+              </MotionDiv>
             )}
 
             {profile.angkatan && (
-              <motion.div
+              <MotionDiv
                 variants={infoItemVariants}
                 className="flex items-center text-sm text-gray-600 dark:text-gray-300 group"
               >
@@ -210,11 +210,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
                 <span className="group-hover:font-medium transition-all duration-300">
                   Angkatan {profile.angkatan}
                 </span>
-              </motion.div>
+              </MotionDiv>
             )}
 
             {profile.unit && (
-              <motion.div
+              <MotionDiv
                 variants={infoItemVariants}
                 className="flex items-center text-sm text-gray-600 dark:text-gray-300 group"
               >
@@ -226,14 +226,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
                 <span className="line-clamp-1 group-hover:font-medium transition-all duration-300">
                   Unit: {profile.unit}
                 </span>
-              </motion.div>
+              </MotionDiv>
             )}
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* Subtle glow overlay effect */}
-      <motion.div
+      <MotionDiv
         className="absolute inset-0 pointer-events-none rounded-xl opacity-0"
         animate={{ opacity: isHovered ? 0.6 : 0 }}
         transition={{ duration: 0.3 }}
@@ -242,7 +242,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
           background: `radial-gradient(circle at 50% 50%, ${colors.glow} 0%, transparent 70%)`,
         }}
       />
-    </motion.div>
+    </MotionDiv>
   );
 };
 

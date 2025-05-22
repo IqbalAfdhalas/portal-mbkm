@@ -251,9 +251,68 @@ export const profileData: ProfileType[] = [
   angkatan: '2025',
 },
 
+<<<<<<< HEAD
 //Tahun 2024 akhir
 //Tahun 2024 akhir Manajemen Informatika
     {
+=======
+  // Angkatan 2024
+  {
+    id: 'mhs009',
+    nama: 'Arrajula Tsaqufa',
+    peran: 'Mahasiswa',
+    foto: '/images/testing.jpg',
+    asalInstitusi: 'Universitas Syiah kuala',
+    prodi: 'IlmuKomunikasi',
+    angkatan: '2025',
+  },
+  {
+    id: 'mhs010',
+    nama: 'Utari Wulandari',
+    peran: 'Mahasiswa',
+    foto: '/images/ilustrasiPROFIL1.png',
+    asalInstitusi: 'Universitas Indonesia',
+    prodi: 'TehnikMesin',
+    angkatan: '2024',
+  },
+  {
+    id: 'mhs011',
+    nama: 'Vino Aditya',
+    peran: 'Mahasiswa',
+    foto: '/images/ilustrasiPROFIL.png',
+    asalInstitusi: 'Institut Teknologi Sepuluh Nopember',
+    prodi: 'ManajemenInformatika',
+    angkatan: '2025',
+  },
+  {
+    id: 'mhs012',
+    nama: 'Winda Sari',
+    peran: 'Mahasiswa',
+    foto: '/images/ilustrasiPROFIL1.png',
+    asalInstitusi: 'Universitas Gadjah Mada',
+    prodi: 'IlmuKomunikasi',
+    angkatan: '2024',
+  },
+  {
+    id: 'mhs013',
+    nama: 'Xavier Putra',
+    peran: 'Mahasiswa',
+    foto: '/images/ilustrasiPROFIL.png',
+    asalInstitusi: 'Universitas Padjadjaran',
+    prodi: 'ManajemenInformatika',
+    angkatan: '2024',
+  },
+  {
+    id: 'mhs014',
+    nama: 'Yasmin Aulia',
+    peran: 'Mahasiswa',
+    foto: '/images/ilustrasiPROFIL1.png',
+    asalInstitusi: 'Universitas Airlangga',
+    prodi: 'TehnikMesin',
+    angkatan: '2024',
+  },
+  {
+>>>>>>> origin
     id: 'mhs015',
     nama: ' Muhammad Ridho Agip Aldy',
     peran: 'Mahasiswa',

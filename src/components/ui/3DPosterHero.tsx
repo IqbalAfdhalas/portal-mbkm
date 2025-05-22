@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 // Configuration options
 const DAMPENING_FACTOR = 0.08; // Controls how smooth the mouse movement effect is
@@ -140,7 +141,7 @@ const ThreeDPosterHero = ({
         <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] bg-center opacity-10 dark:opacity-20"></div>
 
         {/* Dynamic colored orbs */}
-        <motion.div
+        <MotionDiv
           className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl"
           style={{
             background: 'radial-gradient(circle, rgba(79,70,229,0.15) 0%, rgba(79,70,229,0) 70%)',
@@ -148,8 +149,8 @@ const ThreeDPosterHero = ({
             y: mousePosition.y * -10,
           }}
           transition={{ type: 'spring', ...SPRING_CONFIG }}
-        ></motion.div>
-        <motion.div
+        ></MotionDiv>
+        <MotionDiv
           className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl"
           style={{
             background: 'radial-gradient(circle, rgba(236,72,153,0.12) 0%, rgba(236,72,153,0) 70%)',
@@ -157,11 +158,11 @@ const ThreeDPosterHero = ({
             y: mousePosition.y * 15,
           }}
           transition={{ type: 'spring', ...SPRING_CONFIG }}
-        ></motion.div>
+        ></MotionDiv>
 
         {/* Animated particles */}
         {Array.from({ length: 10 }).map((_, i) => (
-          <motion.div
+          <MotionDiv
             key={i}
             className="absolute rounded-full bg-white dark:bg-indigo-500/30 opacity-20 dark:opacity-30"
             style={{
@@ -187,7 +188,7 @@ const ThreeDPosterHero = ({
       <div className="container mx-auto max-w-screen-xl px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
           {/* Text content */}
-          <motion.div
+          <MotionDiv
             className="flex-1 relative z-10"
             style={{
               y: yContentParallax,
@@ -196,7 +197,7 @@ const ThreeDPosterHero = ({
             {isVisible && (
               <>
                 {/* Decorator element */}
-                <motion.div
+                <MotionDiv
                   className="inline-block mb-4 px-4 py-2 bg-indigo-500/10 backdrop-blur-sm rounded-full border border-indigo-500/30 text-indigo-600 dark:text-indigo-300"
                   variants={fadeInUpVariants}
                   initial="hidden"
@@ -207,7 +208,7 @@ const ThreeDPosterHero = ({
                     <span className="inline-block w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
                     {subtitle}
                   </span>
-                </motion.div>
+                </MotionDiv>
 
                 <motion.h1
                   className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight mb-6"
@@ -229,7 +230,7 @@ const ThreeDPosterHero = ({
                   {description}
                 </motion.p>
 
-                <motion.div
+                <MotionDiv
                   className="flex flex-wrap gap-4"
                   variants={fadeInUpVariants}
                   initial="hidden"
@@ -280,13 +281,13 @@ const ThreeDPosterHero = ({
                       </span>
                     </Link>
                   )}
-                </motion.div>
+                </MotionDiv>
               </>
             )}
-          </motion.div>
+          </MotionDiv>
 
           {/* 3D Poster */}
-          <motion.div
+          <MotionDiv
             className="flex-1 relative"
             style={{
               y: yPosterParallax,
@@ -296,7 +297,7 @@ const ThreeDPosterHero = ({
             transition={{ type: 'spring', ...SPRING_CONFIG }}
           >
             {isVisible && (
-              <motion.div
+              <MotionDiv
                 ref={posterRef}
                 className="relative w-full max-w-md mx-auto h-[600px] perspective-1200"
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -304,17 +305,17 @@ const ThreeDPosterHero = ({
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 {/* Poster frame with shadow */}
-                <motion.div
+                <MotionDiv
                   className="absolute inset-0 bg-black/10 dark:bg-black/30 rounded-3xl blur-xl"
                   style={{
                     translateY: 20,
                     translateX: 0,
                     scale: 0.9,
                   }}
-                ></motion.div>
+                ></MotionDiv>
 
                 {/* 3D Poster container with glassmorphism effect */}
-                <motion.div
+                <MotionDiv
                   className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/20 backdrop-blur-sm bg-white/10 dark:bg-gray-800/20"
                   style={{
                     rotateX: isMobile ? 0 : mousePosition.y * -MAX_ROTATION,
@@ -331,17 +332,17 @@ const ThreeDPosterHero = ({
                   <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
 
                   {/* Reflective highlights */}
-                  <motion.div
+                  <MotionDiv
                     className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 dark:via-white/10 dark:to-white/20"
                     style={{
                       opacity: 0.4,
                       translateX: mousePosition.x * 10,
                       translateY: mousePosition.y * 10,
                     }}
-                  ></motion.div>
+                  ></MotionDiv>
 
                   {/* Poster image */}
-                  <motion.div
+                  <MotionDiv
                     className="relative w-full h-full p-4"
                     animate={{
                       y: isMobile ? [0, -5, 0] : 0,
@@ -364,30 +365,30 @@ const ThreeDPosterHero = ({
                       {/* Bottom reflective highlight */}
                       <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white/20 to-transparent"></div>
                     </div>
-                  </motion.div>
+                  </MotionDiv>
 
                   {/* Decorative elements */}
                   <div className="absolute top-4 right-4 flex gap-2">
-                    <motion.div
+                    <MotionDiv
                       className="w-3 h-3 rounded-full bg-red-500"
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                    ></motion.div>
-                    <motion.div
+                    ></MotionDiv>
+                    <MotionDiv
                       className="w-3 h-3 rounded-full bg-yellow-500"
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                    ></motion.div>
-                    <motion.div
+                    ></MotionDiv>
+                    <MotionDiv
                       className="w-3 h-3 rounded-full bg-green-500"
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                    ></motion.div>
+                    ></MotionDiv>
                   </div>
-                </motion.div>
-              </motion.div>
+                </MotionDiv>
+              </MotionDiv>
             )}
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
     </section>

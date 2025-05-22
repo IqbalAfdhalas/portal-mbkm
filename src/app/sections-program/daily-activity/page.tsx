@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const DailyActivityDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,106 +29,83 @@ const DailyActivityDetail = () => {
     title: 'Daily Activity',
     subtitle: 'Kegiatan Sehari-hari yang Penuh Cerita!',
     description:
-      'Mau tahu apa aja yang dilakukan di BAST ANRI setiap hari? Nah, di sini kamu bisa lihat aktivitas harian para staf dan mahasiswa magang. Mulai dari yang administratif sampai yang teknis, semuanya seru buat diikuti. Program ini juga jadi cara kita mendokumentasikan keseharian yang kadang terlihat biasa, tapi sebenarnya penuh makna!',
-    icon: '/images/Daily Activity.png',
+      'Tau ga sih !! Kegiatan magang mahasiswa bukan hanya belajar saja tetapi juga ada kegiatan seru dan menarik seperti olahraga bareng dan kajian di selama bulan Ramadhan. Kegiatan ini bertujuan untuk meningkatkan kebugaran tubuh dan juga mempererat hubungan mahasiswa magang dengan para karyawan di anri.',
+    icon: '/images/program/logo_program/Daily Activity.png',
     color: 'purple-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/daily_aktivity/vidio.mp4',
     unitDescription:
-      'Program ini memperlihatkan aktivitas harian di BAST ANRI, mulai dari kegiatan administratif hingga teknis yang dilakukan oleh staf dan mahasiswa magang.',
+      'Program ini memperlihatkan aktivitas lainnya yang lebih asik dan menarik didalam BAST ANRI itu sendiri.',
     unitActivities:
-      'Kamu akan melihat dan mengikuti berbagai kegiatan rutin seperti pencatatan kegiatan harian, digitalisasi dokumen, pelayanan arsip publik, dan rapat evaluasi mingguan. Melalui program ini, kamu akan mendapatkan gambaran nyata tentang operasional harian di BAST ANRI.',
+      'BAST ANRI memiliki kegiatan rutin mingguan yang bertujuan untuk membangun kerja sama tim yang baik serta membangun lingkungan kerja yang sehat , berikut gambaran kegiatannya:',
     allUnits: [
       {
-        name: 'Pencatatan Kegiatan Harian',
+        name: 'Senam Rutin Mingguan',
         description:
-          'Setiap divisi di BAST ANRI memiliki agenda harian yang harus dicatat dan dilaporkan secara rutin. Proses ini penting untuk dokumentasi, evaluasi, dan perencanaan kegiatan mendatang.',
+          'Setiap hari jumat pagi mahasiswa magang mbkm usk melakukan senam pagi secara rutin bersama dengan para pegawai anri di depan halaman kantor. Kegiatan di mulai dari jam 8 dan berakhir sekitar jam 9, sebelum melakukan senam pagi para karyawan dan mahasiswa magang mbkm usk melakukan pemanasan dengan cara memutari kantor sebanyak 2 kali. Selama kegiatan senam berlangsung semua peserta senam mengikuti gerakan dari intruktor yang berganti setiap minggunya. Kegiatan senam rutin ini sangat baik untuk meningkatkan keakraban dan menjaga kesehatan tubuh.',
         icon: '/images/icons/daily-record.svg',
-        activities: [
-          'Membuat log aktivitas harian',
-          'Mengisi formulir laporan kegiatan',
-          'Mendokumentasikan perkembangan proyek',
-          'Melakukan rekapitulasi aktivitas mingguan',
-        ],
-        image: '/images/daily-record.jpg',
+        image: '/images/program/daily_aktivity/senam.jpg',
       },
       {
-        name: 'Digitalisasi Dokumen',
+        name: 'Badminton',
         description:
-          'Proses mengubah arsip fisik menjadi digital adalah salah satu kegiatan rutin yang penting. Kegiatan ini melibatkan penggunaan peralatan khusus dan penerapan standar tertentu untuk memastikan kualitas arsip digital.',
+          'Selain kegiatan senam terkadang mahasiswa magang dan karyawan anri melakukan aktivitas yang lain yaitu bermain badminton bersama. Kegiatan ini menggantikan kegiatan senam rutin agar tidak monoton dan lebih variatif. Kegiatan ini di lakukan dari jam 8 sampai 10 di lapangan gelanggang usk. Kegiatan yang baru membentuk semangat berolahraga menjadi lebih meningkatkan.',
         icon: '/images/icons/digitalization.svg',
-        activities: [
-          'Memindai dokumen fisik',
-          'Melakukan pengecekan kualitas hasil scan',
-          'Memberikan metadata pada dokumen digital',
-          'Menyimpan dokumen digital ke sistem',
-        ],
-        image: '/images/digitalization.jpg',
+        image: '/images/program/daily_aktivity/badminton.jpg',
       },
       {
-        name: 'Pelayanan Arsip Publik',
+        name: 'Kultum',
         description:
-          'BAST ANRI secara rutin melayani pengunjung yang membutuhkan akses ke arsip. Layanan ini mencakup bantuan pencarian, konsultasi, dan penyediaan akses ke dokumen yang dibutuhkan.',
+          'Selama bulan Ramadhan mahasiswa magang mbkm dan karyawan anri melakukan kegiatan kultum setelah sholat Dzuhur di musholla anri. Pemateri kultum di rolling setiap harinya kecuali hari rabu yang di isi oleh ustad yang telah di tentukan. Kegiatan ini di harapkan dapat meningkatkan semangat beribadah selama bulan puasa ramadlan.',
         icon: '/images/icons/public-service.svg',
-        activities: [
-          'Membantu pengunjung mencari arsip yang dibutuhkan',
-          'Memberikan informasi tentang prosedur akses',
-          'Memproses permintaan akses arsip',
-          'Melakukan pencatatan penggunaan arsip',
-        ],
-        image: '/images/public-service.jpg',
-      },
-      {
-        name: 'Rapat Evaluasi',
-        description:
-          'Setiap minggu diadakan diskusi untuk mengevaluasi kegiatan yang telah dilakukan dan merencanakan langkah selanjutnya. Forum ini penting untuk koordinasi antar unit dan perbaikan berkelanjutan.',
-        icon: '/images/icons/evaluation.svg',
-        activities: [
-          'Menyampaikan progres mingguan',
-          'Mendiskusikan tantangan yang dihadapi',
-          'Merumuskan solusi untuk masalah yang ada',
-          'Merencanakan kegiatan untuk minggu berikutnya',
-        ],
-        image: '/images/evaluation.jpg',
+        image: '/images/program/daily_aktivity/kultum.jpg',
       },
     ],
     benefits: [
       {
-        title: 'Pemahaman Proses',
-        description: 'Memahami alur kerja dan proses kearsipan dari perspektif praktis',
+        title: 'Meningkatkan Hubungan',
+        description: 'Meningkatkan hubungan antara mahasiswa Magang dan Karyawan BAST',
       },
       {
-        title: 'Keterampilan Teknis',
-        description: 'Mempelajari teknik-teknik spesifik dalam pengelolaan informasi dan arsip',
+        title: 'Meningkatkan Produktivitas Kerja',
+        description: 'Dengan berolahraga Jasmani dan Rohani menjadi sehat kerja pun lanjar',
       },
       {
-        title: 'Pengalaman Kerja',
-        description: 'Merasakan suasana kerja nyata dalam lingkungan institusi kearsipan',
+        title: 'Menumbuhkan Lingkungan yang FUN',
+        description: 'Olahraga yang asik membentuk lingkungan kerja yang asik juga ',
       },
       {
-        title: 'Wawasan Profesional',
-        description: 'Mendapatkan pemahaman tentang standar kerja profesional di bidang kearsipan',
-      },
-      {
-        title: 'Jaringan Profesional',
-        description: 'Membangun relasi dengan para profesional dan praktisi kearsipan',
+        title: 'Meningkatkan Kerja Sama Tim',
+        description: 'dengan kegiatan yang rutin dilakukan dapat meningkatkan kerja sama tim',
       },
     ],
-    gallery: [
+    gallery: [ //bagian untuk taruk foto di galery
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Mahasiswa kerja di depan komputer',
+        src: '/images/program/daily_aktivity/foto1.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Dokumentasi proses digitalisasi',
+        src: '/images/program/daily_aktivity/foto2.jpg',
+        caption: '',
       },
       {
-        src: '/images/8a009479-7725-4447-96e4-72ddba3b799a.jpg',
-        caption: 'Pelayanan kepada pengguna',
+        src: '/images/program/daily_aktivity/foto3.jpg',
+        caption: '',
       },
       {
-        src: '/images/hero-illustration.png',
-        caption: 'Suasana rapat atau diskusi internal',
+        src: '/images/program/daily_aktivity/foto4.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto5.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto6.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/daily_aktivity/foto7.jpg',
+        caption: '',
       },
     ],
   };
@@ -154,7 +132,7 @@ const DailyActivityDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -202,7 +180,7 @@ const DailyActivityDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -231,7 +209,7 @@ const DailyActivityDetail = () => {
             {/* Decorative elements */}
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 opacity-20 blur-md"></div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -240,7 +218,7 @@ const DailyActivityDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -291,9 +269,9 @@ const DailyActivityDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -403,14 +381,6 @@ const DailyActivityDetail = () => {
                               <p className="text-gray-700 dark:text-gray-300 mb-4">
                                 {unit.description}
                               </p>
-                              <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Kegiatan di {unit.name}:
-                              </h5>
-                              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {unit.activities.map((activity, actIdx) => (
-                                  <li key={actIdx}>{activity}</li>
-                                ))}
-                              </ul>
                             </div>
                           </div>
                         </div>
@@ -419,14 +389,14 @@ const DailyActivityDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -438,14 +408,14 @@ const DailyActivityDetail = () => {
                 <div className="space-y-4">
                   {[
                     {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'indigo-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'learning-trip',
                     },
                     {
                       title: 'Aktivitas Unit',
@@ -626,13 +596,13 @@ const DailyActivityDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
         {/* Gallery Section */}
-        <motion.div
+        <MotionDiv
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={fadeInUp}
@@ -701,7 +671,7 @@ const DailyActivityDetail = () => {
               </div>
             </Swiper>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
       {/* Image Preview Modal */}
       {previewImage && (
