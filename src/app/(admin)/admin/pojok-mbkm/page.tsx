@@ -27,6 +27,7 @@ import { Author } from '@/lib/types/journal';
 import { JournalForm, DeleteConfirmDialog } from '@/components/ui/JournalForm';
 import { useJournalCRUD } from '@/hooks/useJournalCRUD';
 import { getAllJournals, getAllAuthors } from '@/lib/firebaseJournals';
+import AuthorCategoryManagement from '@/components/ui/AuthorCategoryManagement';
 
 interface JournalFilterOptions {
   category?: 'daily-activity' | 'weekly-reflection' | 'project-update';
@@ -445,8 +446,13 @@ const EmptyState = ({
 
 // Main Admin Component
 export default function AdminPojokMBKMPage() {
+  const [showAuthorModal, setShowAuthorModal] = useState(false);
   const [journals, setJournals] = useState<Journal[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
+  const handleSaveAuthors = async (updatedAuthors: Author[]) => {
+    setAuthors(updatedAuthors);
+  };
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filteredJournals, setFilteredJournals] = useState<Journal[]>([]);
@@ -650,15 +656,14 @@ export default function AdminPojokMBKMPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Manajemen Jurnal MBKM
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 mt-1">
-                Kelola dan pantau jurnal kegiatan mahasiswa MBKM
-              </p>
-            </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowAuthorModal(true)}
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Plus size={20} className="mr-2" />
+              Kelola Author
+            </button>
             <button
               onClick={handleCreateNew}
               className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
@@ -703,6 +708,13 @@ export default function AdminPojokMBKMPage() {
           journalTitle={journalToDelete?.title || ''}
           loading={crudLoading}
         />
+        {showAuthorModal && (
+          <AuthorCategoryManagement
+            authors={authors}
+            onSave={handleSaveAuthors}
+            onClose={() => setShowAuthorModal(false)}
+          />
+        )}
       </div>
     </div>
   );
