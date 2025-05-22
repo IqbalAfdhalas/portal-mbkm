@@ -1,26 +1,19 @@
-<<<<<<< HEAD:src/app/tentang/page.tsx
-
-=======
 // src/app/(public)/sections-program/tentang/page.tsx
->>>>>>> origin/hero:src/app/(public)/tentang/page.tsx
+
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-
-<<<<<<< HEAD:src/app/tentang/page.tsx
-=======
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { TabContent } from '@/components/about-detail/TabContent';
 import { MBKMContent } from '@/components/about-detail/MBKMContent';
 import { CollaborationContent } from '@/components/about-detail/CollaborationContent';
 import { WebsiteContent } from '@/components/about-detail/WebsiteContent';
 import { Book, Building, Handshake, Shuffle, Monitor } from 'lucide-react';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
->>>>>>> origin/hero:src/app/(public)/tentang/page.tsx
+
 
 
 
