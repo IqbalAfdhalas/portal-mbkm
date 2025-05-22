@@ -1,9 +1,10 @@
 // components/ui/JournalForm.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { useJournalCRUD } from '@/hooks/useJournalCRUD';
+
 import {
   Save,
   ArrowLeft,
@@ -22,7 +23,7 @@ import { Journal, Author } from '@/lib/types/journal';
 interface JournalFormProps {
   journal?: Journal;
   authors: Author[];
-  onSubmit: (data: Partial<Journal>) => Promise<void>;
+  onSubmit?: (data: Partial<Journal>) => Promise<void>;
   onCancel: () => void;
   mode: 'create' | 'edit';
 }
@@ -46,9 +47,8 @@ export const JournalForm: React.FC<JournalFormProps> = ({
   onCancel,
   mode,
 }) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const { createJournal, updateJournal, loading, error, clearError } = useJournalCRUD();
 
   const [formData, setFormData] = useState<FormData>({
     title: journal?.title || '',
@@ -92,42 +92,57 @@ export const JournalForm: React.FC<JournalFormProps> = ({
 
     if (!validateForm()) return;
 
-    setLoading(true);
+    clearError();
+
     try {
-      await onSubmit({
+      const journalData = {
         ...formData,
         publishDate: new Date(formData.publishDate),
-        updatedAt: new Date(),
-        ...(mode === 'create' && {
-          createdAt: new Date(),
-          id: crypto.randomUUID(),
-        }),
-      });
+      };
+
+      // Langsung panggil prop onSubmit
+      if (onSubmit) {
+        await onSubmit(journalData);
+      }
+
+      onCancel();
     } catch (error) {
       console.error('Error saving journal:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
 
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = event => {
-        const newMedia = {
-          url: event.target?.result as string,
-          caption: '',
-        };
+    for (const file of files) {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
 
-        setFormData(prev => ({
-          ...prev,
-          media: [...prev.media, newMedia],
-        }));
-      };
-      reader.readAsDataURL(file);
-    });
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formDataUpload,
+        });
+
+        const data = await res.json();
+
+        if (data.url) {
+          const newMedia = {
+            url: data.url,
+            caption: '',
+          };
+
+          setFormData(prev => ({
+            ...prev,
+            media: [...prev.media, newMedia],
+          }));
+        } else {
+          console.error('Upload failed:', data.error);
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+      }
+    }
   };
 
   const removeMedia = (index: number) => {
@@ -186,6 +201,21 @@ export const JournalForm: React.FC<JournalFormProps> = ({
               </button>
             </div>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+                <button
+                  onClick={clearError}
+                  className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-200"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          )}
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -321,7 +351,6 @@ export const JournalForm: React.FC<JournalFormProps> = ({
                       </p>
                     </div>
 
-                    {/* Media Preview */}
                     {formData.media.length > 0 && (
                       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         {formData.media.map((item, index) => (
@@ -479,7 +508,8 @@ export const JournalForm: React.FC<JournalFormProps> = ({
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  disabled={loading}
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
                 >
                   Batal
                 </button>
@@ -570,117 +600,4 @@ export const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({
       </motion.div>
     </div>
   );
-};
-
-// hooks/useJournalCRUD.ts
-export const useJournalCRUD = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const createJournal = async (data: Partial<Journal>): Promise<Journal> => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const newJournal: Journal = {
-        id: crypto.randomUUID(),
-        title: data.title!,
-        summary: data.summary!,
-        content: data.content!,
-        date: data.publishDate!,
-        publishDate: data.publishDate!,
-        category: data.category!,
-        location: data.location,
-        authorId: data.authorId!,
-        authorName: 'Author Name', // Should be fetched based on authorId
-        authorImage: undefined,
-        media: data.media || [],
-        status: data.status!,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      return newJournal;
-    } catch (err) {
-      const errorMessage = 'Gagal membuat jurnal';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateJournal = async (id: string, data: Partial<Journal>): Promise<Journal> => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const updatedJournal: Journal = {
-        ...(data as Journal),
-        id,
-        updatedAt: new Date(),
-      };
-
-      return updatedJournal;
-    } catch (err) {
-      const errorMessage = 'Gagal mengupdate jurnal';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const deleteJournal = async (id: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Success - journal deleted
-    } catch (err) {
-      const errorMessage = 'Gagal menghapus jurnal';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getJournal = async (id: string): Promise<Journal | null> => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Return dummy data for now
-      // In real implementation, fetch from API
-      return null;
-    } catch (err) {
-      const errorMessage = 'Gagal mengambil data jurnal';
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return {
-    createJournal,
-    updateJournal,
-    deleteJournal,
-    getJournal,
-    loading,
-    error,
-  };
 };

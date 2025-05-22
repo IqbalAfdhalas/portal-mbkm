@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getJournalById, getAuthorById, getRelatedJournals } from '@/lib/data/dummyJournals';
+import { getJournalById, getAuthorById, getRelatedJournals } from '@/lib/firebaseJournals';
+import { Author } from '@/lib/types/journal';
 import { Journal } from '@/components/sections/PojokMBKM';
 import ReactMarkdown from 'react-markdown';
 import { motion } from 'framer-motion';
@@ -99,9 +100,16 @@ const JournalMedia = ({ media }: { media: Journal['media'] }) => {
   );
 };
 
-// Enhanced author info component
 const AuthorInfo = ({ authorId }: { authorId: string }) => {
-  const author = getAuthorById(authorId);
+  const [author, setAuthor] = useState<Author | null>(null);
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      const res = await getAuthorById(authorId);
+      setAuthor(res);
+    };
+    fetchAuthor();
+  }, [authorId]);
 
   if (!author) return null;
 
@@ -139,45 +147,7 @@ const AuthorInfo = ({ authorId }: { authorId: string }) => {
 
           {/* Social links */}
           <div className="mt-4 flex space-x-3">
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-            </a>
+            {/* ...social icons tadi, bisa kamu biarin persis kayak sebelumnya */}
           </div>
         </div>
       </div>
@@ -187,77 +157,43 @@ const AuthorInfo = ({ authorId }: { authorId: string }) => {
 
 // New component for related journals
 const RelatedJournals = ({ journalId, category }: { journalId: string; category: string }) => {
-  const relatedJournals = getRelatedJournals(journalId, category, 3);
+  const [relatedJournals, setRelatedJournals] = useState<Journal[]>([]);
 
-  if (!relatedJournals || relatedJournals.length === 0) return null;
+  useEffect(() => {
+    const fetchRelated = async () => {
+      const res = await getRelatedJournals(journalId, category, 3);
+      setRelatedJournals(res);
+    };
+    fetchRelated();
+  }, [journalId, category]);
 
-  const categoryLabel = {
-    'daily-activity': 'Daily Activity',
-    'weekly-reflection': 'Weekly Reflection',
-    'project-update': 'Project Update',
-  };
+  if (relatedJournals.length === 0) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md"
-    >
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">
-        Jurnal Terkait
-      </h3>
-
-      <div className="grid grid-cols-1 gap-6">
-        {relatedJournals.map((journal, index) => (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            key={journal.id}
-            className="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col"
-          >
-            <Link href={`/pojok-mbkm/${journal.id}`}>
-              <div className="flex flex-row h-32">
-                <div className="w-1/3 overflow-hidden relative">
-                  {journal.media && journal.media.length > 0 ? (
-                    <img
-                      src={journal.media[0].url}
-                      alt={journal.title}
-                      className="w-full h-full object-cover transform transition-transform duration-500 hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
-                      <FiBookOpen className="text-white text-4xl" />
-                    </div>
-                  )}
-                  <div className="absolute top-2 left-2">
-                    <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-blue-500 text-white">
-                      {categoryLabel[journal.category]}
-                    </span>
-                  </div>
-                </div>
-                <div className="w-2/3 p-4 flex flex-col justify-between">
-                  <h4 className="font-semibold text-gray-900 dark:text-white line-clamp-2 text-sm">
-                    {journal.title}
-                  </h4>
-                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-2">
-                    <FiCalendar className="mr-1" />
-                    <span>
-                      {new Date(journal.date).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+    <div className="mt-12">
+      <h3 className="text-2xl font-semibold mb-6">Jurnal Terkait</h3>
+      <div className="grid md:grid-cols-3 gap-6">
+        {relatedJournals.map(journal => (
+          <div key={journal.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <img
+              src={journal.media?.[0]?.url}
+              alt={journal.title}
+              className="w-full h-40 object-cover rounded mb-3"
+            />
+            <h4 className="text-lg font-semibold mb-1">{journal.title}</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+              {journal.summary}
+            </p>
+            <a
+              href={`/pojok-mbkm/${journal.id}`}
+              className="inline-block mt-3 text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              Baca
+            </a>
+          </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -490,10 +426,9 @@ export default function JournalDetailPage() {
     const fetchJournal = async () => {
       if (params?.id) {
         const journalId = Array.isArray(params.id) ? params.id[0] : params.id;
-        const foundJournal = getJournalById(journalId);
+        const foundJournal = await getJournalById(journalId); // <-- ini dia
 
-        // Simulate network delay for loading animation
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise(resolve => setTimeout(resolve, 800)); // loading simulasi
 
         if (foundJournal) {
           setJournal(foundJournal);
