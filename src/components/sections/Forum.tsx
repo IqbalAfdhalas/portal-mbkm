@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 // Tipe data untuk postingan forum
 type Post = {
@@ -40,26 +41,28 @@ const Forum = () => {
       id: '1',
       username: 'Admin MBKM',
       userPhotoURL: '/images/admin-avatar.jpg',
-      content: 'Pengumuman: Pendaftaran program MBKM semester genap tahun 2025 akan dibuka mulai tanggal 25 Mei 2025. Silakan persiapkan berkas-berkas yang diperlukan.',
+      content:
+        'Pengumuman: Pendaftaran program MBKM semester genap tahun 2025 akan dibuka mulai tanggal 25 Mei 2025. Silakan persiapkan berkas-berkas yang diperlukan.',
       createdAt: new Date('2025-05-15T10:00:00'),
       isAnnouncement: true,
       isPinned: true,
       likes: ['user1', 'user2', 'user3'],
       commentCount: 5,
-      tags: ['#Pengumuman', '#Pendaftaran']
+      tags: ['#Pengumuman', '#Pendaftaran'],
     },
     {
       id: '2',
       username: 'Mahasiswa123',
       userPhotoURL: '/images/student-avatar.jpg',
-      content: 'Halo teman-teman, ada yang sudah pernah mengikuti program MBKM di ANRI? Saya ingin tahu lebih banyak tentang pengalaman kalian selama magang di sana.',
+      content:
+        'Halo teman-teman, ada yang sudah pernah mengikuti program MBKM di ANRI? Saya ingin tahu lebih banyak tentang pengalaman kalian selama magang di sana.',
       createdAt: new Date('2025-05-17T14:30:00'),
       isAnnouncement: false,
       isPinned: false,
       likes: ['user4', 'user5'],
       commentCount: 3,
-      tags: ['#Diskusi', '#Pertanyaan']
-    }
+      tags: ['#Diskusi', '#Pertanyaan'],
+    },
   ];
 
   const sampleComments: Comment[] = [
@@ -69,10 +72,11 @@ const Forum = () => {
       parentId: null,
       username: 'Mahasiswa456',
       userPhotoURL: '/images/student-avatar2.jpg',
-      content: 'Terima kasih atas informasinya! Apakah ada dokumen khusus yang perlu disiapkan selain transkrip nilai?',
+      content:
+        'Terima kasih atas informasinya! Apakah ada dokumen khusus yang perlu disiapkan selain transkrip nilai?',
       createdAt: new Date('2025-05-15T10:15:00'),
       likes: ['user1', 'user2'],
-      isPinned: true
+      isPinned: true,
     },
     {
       id: 'c2',
@@ -80,11 +84,12 @@ const Forum = () => {
       parentId: null,
       username: 'AlumniMBKM',
       userPhotoURL: '/images/alumni-avatar.jpg',
-      content: 'Pengalaman saya selama magang di ANRI sangat bermanfaat. Kamu akan belajar banyak tentang pengelolaan arsip dan dokumentasi. Lingkungan kerjanya juga sangat supportif!',
+      content:
+        'Pengalaman saya selama magang di ANRI sangat bermanfaat. Kamu akan belajar banyak tentang pengelolaan arsip dan dokumentasi. Lingkungan kerjanya juga sangat supportif!',
       createdAt: new Date('2025-05-17T15:00:00'),
       likes: ['user3', 'user4', 'user5'],
-      isPinned: false
-    }
+      isPinned: false,
+    },
   ];
 
   // State untuk menampilkan komentar
@@ -97,7 +102,7 @@ const Forum = () => {
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     }).format(date);
   };
 
@@ -117,7 +122,11 @@ const Forum = () => {
 
   // Komponen untuk pin icon
   const PinnedIcon = () => (
-    <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+    <svg
+      className="w-4 h-4 text-gray-500 dark:text-gray-400"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+    >
       <path d="M9.828 5l-2-2H19v2H9.828zM17 7H7.828l-2-2H3v13h14V7zm-6 8H7v-2h4v2zm0-4H7V9h4v2z" />
     </svg>
   );
@@ -133,7 +142,7 @@ const Forum = () => {
       className="py-20 bg-white dark:bg-gradient-to-b dark:from-[#1E293B] dark:to-[#0F172A]"
     >
       <div className="container mx-auto max-w-screen-xl px-4">
-        <motion.div
+        <MotionDiv
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -147,12 +156,13 @@ const Forum = () => {
             Forum MBKM BAST ANRI
           </h2>
           <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-            Bergabunglah dalam diskusi dengan admin dan mahasiswa lain untuk berbagi informasi, pengalaman, dan pengetahuan seputar program MBKM BAST ANRI.
+            Bergabunglah dalam diskusi dengan admin dan mahasiswa lain untuk berbagi informasi,
+            pengalaman, dan pengetahuan seputar program MBKM BAST ANRI.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         <div className="max-w-3xl mx-auto">
-          <motion.div
+          <MotionDiv
             className="mb-6 flex justify-between items-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -188,12 +198,12 @@ const Forum = () => {
                 />
               </svg>
             </Link>
-          </motion.div>
+          </MotionDiv>
 
           {/* Post list */}
           <div className="space-y-6">
             {samplePosts.map((post, index) => (
-              <motion.div
+              <MotionDiv
                 key={post.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700"
                 initial={{ opacity: 0, y: 20 }}
@@ -242,8 +252,8 @@ const Forum = () => {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {post.tags.map(tag => (
-                      <span 
-                        key={tag} 
+                      <span
+                        key={tag}
                         className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full"
                       >
                         {tag}
@@ -271,7 +281,7 @@ const Forum = () => {
                         </svg>
                         <span>{post.likes.length}</span>
                       </button>
-                      <button 
+                      <button
                         className="flex items-center text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary-light"
                         onClick={() => toggleComments(post.id)}
                       >
@@ -304,8 +314,8 @@ const Forum = () => {
                     {sampleComments
                       .filter(comment => comment.postId === post.id)
                       .map(comment => (
-                        <div 
-                          key={comment.id} 
+                        <div
+                          key={comment.id}
                           className={`mb-3 p-3 ${comment.isPinned ? 'bg-blue-50 dark:bg-blue-900/20 rounded' : ''}`}
                         >
                           <div className="flex items-start space-x-2">
@@ -361,7 +371,7 @@ const Forum = () => {
                           </div>
                         </div>
                       ))}
-                    
+
                     {/* Comment input */}
                     <div className="mt-4 flex items-start space-x-2">
                       <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
@@ -387,18 +397,18 @@ const Forum = () => {
                     </div>
                   </div>
                 )}
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
 
-          <motion.div
+          <MotionDiv
             className="mt-10 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Link 
+            <Link
               href="/Forum"
               className="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
             >
@@ -418,7 +428,7 @@ const Forum = () => {
                 />
               </svg>
             </Link>
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
     </section>

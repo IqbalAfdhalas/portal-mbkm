@@ -4,6 +4,8 @@
 import { useState, useEffect } from 'react';
 import { Search, X, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
+
 
 // Demo data for gallery images
 const demoImages = [
@@ -511,22 +513,17 @@ const demoImages = [
     year: "2025",
     date: "11 febuari 2025"
   },
-  
 ];
 
 // Component for each gallery item
 const GaleryItem = ({ image, onClick }) => {
   return (
-    <div 
+    <div
       className="mb-4 break-inside-avoid cursor-pointer transform transition duration-200 hover:scale-105"
       onClick={() => onClick(image)}
     >
       <div className="relative overflow-hidden rounded-lg shadow-md">
-        <img 
-          src={image.src} 
-          alt={image.title} 
-          className="w-full object-cover"
-        />
+        <img src={image.src} alt={image.title} className="w-full object-cover" />
         <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-2">
           <div className="text-white text-sm font-medium truncate">{image.title}</div>
           <div className="flex items-center text-gray-300 text-xs">
@@ -542,12 +539,12 @@ const GaleryItem = ({ image, onClick }) => {
 // Lightbox component
 const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = e => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight' && hasNext) onNext();
       if (e.key === 'ArrowLeft' && hasPrev) onPrev();
     };
-    
+
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose, onNext, onPrev, hasNext, hasPrev]);
@@ -555,23 +552,25 @@ const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
       <div className="relative w-full max-w-4xl max-h-screen p-4">
-        <button 
+        <button
           className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
           onClick={onClose}
         >
           <X size={24} />
         </button>
-        
+
         <div className="flex flex-col bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
           <div className="flex-1 overflow-hidden">
+
             <img 
               src={image.src} 
               alt={image.title} 
               className="max-h-[70vh] mx-auto object-contain"
 
             />
+
           </div>
-          
+
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{image.title}</h3>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -587,26 +586,48 @@ const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="absolute top-1/2 -translate-y-1/2 flex w-full justify-between px-4">
           {hasPrev && (
-            <button 
+            <button
               className="bg-white/30 dark:bg-gray-900/50 hover:bg-white/50 dark:hover:bg-gray-900/70 rounded-full p-2 transition-colors"
               onClick={onPrev}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
           )}
-          
+
           {hasNext && (
-            <button 
+            <button
               className="ml-auto bg-white/30 dark:bg-gray-900/50 hover:bg-white/50 dark:hover:bg-gray-900/70 rounded-full p-2 transition-colors"
               onClick={onNext}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           )}
@@ -632,14 +653,15 @@ const Galery = () => {
   const filteredImages = demoImages.filter(image => {
     const matchesCategory = activeCategory === 'all' || image.category === activeCategory;
     const matchesYear = activeYear === 'all' || image.year === activeYear;
-    const matchesSearch = searchQuery === '' || 
-      image.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch =
+      searchQuery === '' ||
+      image.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       image.category.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesCategory && matchesYear && matchesSearch;
   });
 
-  const handleImageClick = (image) => {
+  const handleImageClick = image => {
     setSelectedImage(image);
     setActiveIndex(filteredImages.findIndex(img => img.id === image.id));
   };
@@ -664,12 +686,9 @@ const Galery = () => {
   };
 
   return (
-    <section
-      id="Galery"
-      className="py-20 bg-white dark:bg-gray-900"
-    >
+    <section id="Galery" className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto max-w-screen-xl px-4">
-        <motion.div
+        <MotionDiv
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -683,33 +702,37 @@ const Galery = () => {
             Galeri MBKM BAST ANRI
           </h2>
           <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-            Dokumentasi berbagai kegiatan pembelajaran, pelatihan, dan kolaborasi mahasiswa 
-            dalam program Merdeka Belajar Kampus Merdeka di Arsip Nasional Republik Indonesia.
+            Dokumentasi berbagai kegiatan pembelajaran, pelatihan, dan kolaborasi mahasiswa dalam
+            program Merdeka Belajar Kampus Merdeka di Arsip Nasional Republik Indonesia.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         <div className="flex flex-col gap-6">
           {/* Header & Search */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="relative">
+              className="relative"
+            >
               <input
                 type="text"
                 placeholder="Cari gambar..."
                 className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full py-2 pl-10 pr-4 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" size={18} />
-            </motion.div>
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+                size={18}
+              />
+            </MotionDiv>
           </div>
-          
+
           {/* Filters */}
-          <motion.div 
+          <MotionDiv
             className="flex flex-wrap gap-2 md:gap-4"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -722,8 +745,8 @@ const Galery = () => {
                 <button
                   key={category}
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                    activeCategory === category 
-                      ? 'bg-blue-600 text-white' 
+                    activeCategory === category
+                      ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                   }`}
                   onClick={() => setActiveCategory(category)}
@@ -732,15 +755,15 @@ const Galery = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="flex flex-wrap gap-2">
               <span className="text-gray-700 dark:text-gray-300 font-medium">Tahun:</span>
               {years.map(year => (
                 <button
                   key={year}
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                    activeYear === year 
-                      ? 'bg-blue-600 text-white' 
+                    activeYear === year
+                      ? 'bg-blue-600 text-white'
                       : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
                   }`}
                   onClick={() => setActiveYear(year)}
@@ -749,10 +772,10 @@ const Galery = () => {
                 </button>
               ))}
             </div>
-          </motion.div>
-          
+          </MotionDiv>
+
           {/* Image Counter */}
-          <motion.div 
+          <MotionDiv
             className="text-sm text-gray-500 dark:text-gray-400"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -763,10 +786,10 @@ const Galery = () => {
             {activeCategory !== 'all' && ` dalam kategori "${activeCategory}"`}
             {activeYear !== 'all' && ` tahun ${activeYear}`}
             {searchQuery && ` dengan pencarian "${searchQuery}"`}
-          </motion.div>
-          
+          </MotionDiv>
+
           {/* Gallery */}
-          <motion.div 
+          <MotionDiv
             className="relative max-h-[600px] overflow-y-auto custom-scrollbar"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -775,40 +798,43 @@ const Galery = () => {
           >
             {filteredImages.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-16 w-16 mb-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 <h3 className="text-lg font-medium">Tidak ada foto yang ditemukan</h3>
                 <p className="mt-1">Coba ubah filter atau kata kunci pencarian</p>
               </div>
             ) : viewMode === 'masonry' ? (
               <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-                {filteredImages.map((image) => (
-                  <GaleryItem 
-                    key={image.id} 
-                    image={image} 
-                    onClick={handleImageClick}
-                  />
+                {filteredImages.map(image => (
+                  <GaleryItem key={image.id} image={image} onClick={handleImageClick} />
                 ))}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredImages.map((image) => (
-                  <GaleryItem 
-                    key={image.id} 
-                    image={image} 
-                    onClick={handleImageClick}
-                  />
+                {filteredImages.map(image => (
+                  <GaleryItem key={image.id} image={image} onClick={handleImageClick} />
                 ))}
               </div>
             )}
-          </motion.div>
+          </MotionDiv>
         </div>
       </div>
-      
+
       {/* Lightbox */}
       {selectedImage && (
-        <Lightbox 
+        <Lightbox
           image={selectedImage}
           onClose={handleCloseLightbox}
           onPrev={handlePrevImage}
@@ -817,35 +843,35 @@ const Galery = () => {
           hasNext={activeIndex < filteredImages.length - 1}
         />
       )}
-      
+
       {/* Inject custom stylesheet for scrollbar */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
           height: 8px;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar-track {
           background: #f1f1f1;
         }
-        
+
         .dark .custom-scrollbar::-webkit-scrollbar-track {
-          background: #2D3748;
+          background: #2d3748;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: #888;
           border-radius: 4px;
         }
-        
+
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #4A5568;
+          background: #4a5568;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #555;
         }
-        
+
         .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #718096;
         }

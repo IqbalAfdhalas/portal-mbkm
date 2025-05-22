@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const PameranArsipDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -48,23 +49,23 @@ const PameranArsipDetail = () => {
     benefits: [
       {
         title: 'Belajar Sejarah dari Sumber Asli',
-        description: 'Melihat langsung dokumen sejarah asli, bukan sekadar narasi dari buku'
+        description: 'Melihat langsung dokumen sejarah asli, bukan sekadar narasi dari buku',
       },
       {
         title: 'Pengalaman Interaktif',
-        description: 'Mengeksplorasi arsip melalui teknologi modern yang menarik dan interaktif'
+        description: 'Mengeksplorasi arsip melalui teknologi modern yang menarik dan interaktif',
       },
       {
         title: 'Wawasan Beragam',
-        description: 'Mendapatkan perspektif baru tentang berbagai peristiwa sejarah nasional'
+        description: 'Mendapatkan perspektif baru tentang berbagai peristiwa sejarah nasional',
       },
       {
         title: 'Pengetahuan Kearsipan',
-        description: 'Memahami proses pelestarian dan pengelolaan arsip nasional'
+        description: 'Memahami proses pelestarian dan pengelolaan arsip nasional',
       },
       {
         title: 'Inspirasi Kreatif',
-        description: 'Mendapatkan inspirasi untuk proyek penelitian atau karya kreatif'
+        description: 'Mendapatkan inspirasi untuk proyek penelitian atau karya kreatif',
       },
     ],
     gallery: [
@@ -129,7 +130,7 @@ const PameranArsipDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -177,7 +178,7 @@ const PameranArsipDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -207,7 +208,7 @@ const PameranArsipDetail = () => {
             {/* Decorative elements */}
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 opacity-20 blur-md"></div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -216,7 +217,7 @@ const PameranArsipDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -267,9 +268,9 @@ const PameranArsipDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -324,7 +325,6 @@ const PameranArsipDetail = () => {
               <p className="text-gray-700 dark:text-gray-300 mb-6">{program.unitActivities}</p>
 
               <div className="mt-8">
-
                 <div className="space-y-2 mt-4">
                   {program.allUnits.map((unit, idx) => (
                     <div
@@ -384,14 +384,14 @@ const PameranArsipDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -568,116 +568,116 @@ const PameranArsipDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
-       {/* Gallery Section */}
-               <motion.div
-                 initial="hidden"
-                 animate={isLoaded ? 'visible' : 'hidden'}
-                 variants={fadeInUp}
-                 className="mt-12"
-               >
-                 <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
-                   Galeri Kegiatan
-                 </h2>
-                 <div className="relative">
-                   <Swiper
-                     modules={[Navigation]}
-                     navigation={{
-                       nextEl: '.custom-swiper-button-next',
-                       prevEl: '.custom-swiper-button-prev',
-                     }}
-                     spaceBetween={20}
-                     slidesPerView={1}
-                     breakpoints={{
-                       640: { slidesPerView: 1 },
-                       768: { slidesPerView: 2 },
-                       1024: { slidesPerView: 3 },
-                     }}
-                     className="relative"
-                   >
-                     {program.gallery.map((image, index) => (
-                       <SwiperSlide key={index}>
-                         <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
-                           <div className="relative w-full aspect-[16/9]">
-                             <Image
-                               src={image.src}
-                               alt={image.caption}
-                               fill
-                               className="object-cover w-full h-full cursor-pointer"
-                               onClick={() => handleImageClick(image.src)}
-                             />
-                           </div>
-                           <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
-                             {image.caption}
-                           </p>
-                         </div>
-                       </SwiperSlide>
-                     ))}
-       
-                     {/* 🔻 Panah kiri */}
-                     <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
-                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path
-                           strokeLinecap="round"
-                           strokeLinejoin="round"
-                           strokeWidth={2}
-                           d="M15 19l-7-7 7-7"
-                         />
-                       </svg>
-                     </div>
-       
-                     {/* 🔺 Panah kanan */}
-                     <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
-                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path
-                           strokeLinecap="round"
-                           strokeLinejoin="round"
-                           strokeWidth={2}
-                           d="M9 5l7 7-7 7"
-                         />
-                       </svg>
-                     </div>
-                   </Swiper>
-                 </div>
-               </motion.div>
-             </div>
-       
-             {/* Image Preview Modal */}
-             {previewImage && (
-               <div
-                 className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4"
-                 onClick={closeModal}
-               >
-                 <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
-                   <Image
-                     src={previewImage}
-                     alt="Preview"
-                     width={1200}
-                     height={800}
-                     className="max-h-[90vh] w-auto object-contain"
-                   />
-                   <button
-                     onClick={closeModal}
-                     className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
-                   >
-                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                       <path
-                         strokeLinecap="round"
-                         strokeLinejoin="round"
-                         strokeWidth={2}
-                         d="M6 18L18 6M6 6l12 12"
-                       />
-                     </svg>
-                   </button>
-                 </div>
-               </div>
-             )}
-           </div>
-         );
-       };
-       
-       export default PameranArsipDetail;
+        {/* Gallery Section */}
+        <MotionDiv
+          initial="hidden"
+          animate={isLoaded ? 'visible' : 'hidden'}
+          variants={fadeInUp}
+          className="mt-12"
+        >
+          <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
+            Galeri Kegiatan
+          </h2>
+          <div className="relative">
+            <Swiper
+              modules={[Navigation]}
+              navigation={{
+                nextEl: '.custom-swiper-button-next',
+                prevEl: '.custom-swiper-button-prev',
+              }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+              }}
+              className="relative"
+            >
+              {program.gallery.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={image.src}
+                        alt={image.caption}
+                        fill
+                        className="object-cover w-full h-full cursor-pointer"
+                        onClick={() => handleImageClick(image.src)}
+                      />
+                    </div>
+                    <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-2">
+                      {image.caption}
+                    </p>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              {/* 🔻 Panah kiri */}
+              <div className="custom-swiper-button-prev absolute top-1/2 left-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </div>
+
+              {/* 🔺 Panah kanan */}
+              <div className="custom-swiper-button-next absolute top-1/2 right-2 z-10 transform -translate-y-1/2 cursor-pointer bg-black/30 hover:bg-black/50 text-white p-2 rounded-full">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </Swiper>
+          </div>
+        </MotionDiv>
+      </div>
+
+      {/* Image Preview Modal */}
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4"
+          onClick={closeModal}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden">
+            <Image
+              src={previewImage}
+              alt="Preview"
+              width={1200}
+              height={800}
+              className="max-h-[90vh] w-auto object-contain"
+            />
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PameranArsipDetail;

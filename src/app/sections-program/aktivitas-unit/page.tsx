@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const AktivitasUnitDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -212,7 +213,7 @@ const AktivitasUnitDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -260,7 +261,7 @@ const AktivitasUnitDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -290,7 +291,7 @@ const AktivitasUnitDetail = () => {
             {/* Decorative elements */}
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 opacity-20 blur-md"></div>
-          </motion.div>
+          </MotionDiv>
         </div>
       </section>
 
@@ -299,7 +300,7 @@ const AktivitasUnitDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -350,9 +351,9 @@ const AktivitasUnitDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -478,14 +479,14 @@ const AktivitasUnitDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -694,13 +695,13 @@ const AktivitasUnitDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
         {/* Gallery Section */}
-        <motion.div
+        <MotionDiv
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={fadeInUp}
@@ -769,7 +770,7 @@ const AktivitasUnitDetail = () => {
               </div>
             </Swiper>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
 
       {/* Image Preview Modal */}

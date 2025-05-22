@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
+import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 const KunjunganLuarDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -159,7 +160,7 @@ const KunjunganLuarDetail = () => {
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
-            <motion.div
+            <MotionDiv
               key={i}
               className="absolute rounded-full bg-white/20"
               style={{
@@ -207,7 +208,7 @@ const KunjunganLuarDetail = () => {
 
         {/* Hero Content */}
         <div className="container mx-auto relative z-10">
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -232,9 +233,11 @@ const KunjunganLuarDetail = () => {
             </p>
 
             {/* Decorative elements */}
-            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br rom-green-300 to-emerald-400 opacity-20 blur-md"></div>
-            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br rom-green-300 to-emerald-400 opacity-20 blur-md"></div>
-          </motion.div>
+
+            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
+            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
+          </MotionDiv>
+
         </div>
       </section>
 
@@ -243,7 +246,7 @@ const KunjunganLuarDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Content - Description */}
           <div className="lg:col-span-2">
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -294,9 +297,9 @@ const KunjunganLuarDetail = () => {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </MotionDiv>
 
-            <motion.div
+            <MotionDiv
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
@@ -414,14 +417,14 @@ const KunjunganLuarDetail = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </MotionDiv>
           </div>
 
           {/* Right Sidebar */}
           <div className="lg:col-span-1 relative">
             <div className="sticky top-24">
               {/* Program Lainnya Section - Dengan Ikon Representatif */}
-              <motion.div
+              <MotionDiv
                 initial="hidden"
                 animate={isLoaded ? 'visible' : 'hidden'}
                 variants={fadeInUp}
@@ -548,13 +551,13 @@ const KunjunganLuarDetail = () => {
                     </Link>
                   ))}
                 </div>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>
 
         {/* Gallery Section */}
-        <motion.div
+        <MotionDiv
           initial="hidden"
           animate={isLoaded ? 'visible' : 'hidden'}
           variants={fadeInUp}
@@ -623,7 +626,10 @@ const KunjunganLuarDetail = () => {
               </div>
             </Swiper>
           </div>
-        </motion.div>
+
+=======
+        </MotionDiv>
+
       </div>
       {/* Image Preview Modal */}
       {previewImage && (

@@ -1,54 +1,41 @@
 // src/components/auth/ProtectedRoute.tsx
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-import LoadingScreen from "@/components/ui/LoadingScreen";
+'use client';
+
+import { useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
   requireAdmin?: boolean;
 }
 
-/**
- * ProtectedRoute component ensures that the user is authenticated
- * before rendering its children components.
- *
- * @param children - The components to render if user is authenticated
- * @param requireAdmin - Whether the route requires admin privileges
- */
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-  requireAdmin = false,
-}) => {
+const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps) => {
   const { user, loading, isAdmin } = useAuth();
   const router = useRouter();
-  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    // Wait for auth to initialize before checking
     if (!loading) {
       if (!user) {
-        // User not logged in, redirect to login
-        router.push(
-          "/auth/login?redirect=" +
-            encodeURIComponent(window.location.pathname),
-        );
+        router.push('/auth/login?redirect=' + encodeURIComponent(window.location.pathname));
       } else if (requireAdmin && !isAdmin) {
-        // User logged in but not admin, redirect to home
-        router.push("/unauthorized");
-      } else {
-        // User is authenticated (and is admin if required)
-        setIsChecking(false);
+        router.push('/unauthorized');
       }
     }
   }, [user, loading, isAdmin, requireAdmin, router]);
 
-  // Show loading screen while checking authentication
-  if (loading || isChecking) {
-    return <LoadingScreen />;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-primary-light border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
-  // Render children if authenticated
+  if (!user || (requireAdmin && !isAdmin)) {
+    return null;
+  }
+
   return <>{children}</>;
 };
 
