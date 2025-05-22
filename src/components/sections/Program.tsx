@@ -30,7 +30,7 @@ const ProgramPreview = () => {
       particleColor: '#fde68a',
     },
     {
-      title: 'Kunjungan ke Dalam BAST ANRI',
+      title: 'Eksplorasi BAST ANRI',
       icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
       description: 'Jelajahi dunia arsip lewat tur seru langsung di BAST ANRI!',
       features: [
