@@ -14,7 +14,7 @@ import {
   X,
   Filter,
 } from 'lucide-react';
-import { dummyJournals, getFilteredJournals } from '@/lib/data/dummyJournals';
+import { getAllJournals } from '@/lib/firebaseJournals';
 
 // TypeScript interfaces
 export interface Journal {
@@ -89,7 +89,7 @@ const JournalCard = ({ journal, index }: { journal: Journal; index: number }) =>
       className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 flex flex-col h-full"
     >
       {journal.media && journal.media.length > 0 && (
-        <div className="relative h-40 w-full overflow-hidden">
+        <div className="relative w-full aspect-[3/2] overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -263,10 +263,12 @@ const FilterDropdown = ({
 
 // Compact Filter Bar Component
 const FilterBar = ({
+  journals,
   filterOptions,
   setFilterOptions,
   isLoading,
 }: {
+  journals: Journal[];
   filterOptions: JournalFilterOptions;
   setFilterOptions: React.Dispatch<React.SetStateAction<JournalFilterOptions>>;
   isLoading: boolean;
@@ -309,8 +311,8 @@ const FilterBar = ({
   // Get unique authors from dummy data
   const authorOptions = [
     { value: undefined, label: 'Semua' },
-    ...Array.from(new Set(dummyJournals.map(journal => journal.authorId))).map(authorId => {
-      const journal = dummyJournals.find(j => j.authorId === authorId);
+    ...Array.from(new Set(journals.map(journal => journal.authorId))).map(authorId => {
+      const journal = journals.find(j => j.authorId === authorId);
       return {
         value: authorId,
         label: journal?.authorName || 'Unknown',
@@ -553,33 +555,29 @@ const PojokMBKM = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch data based on filters and pagination
+
   useEffect(() => {
     setIsLoading(true);
 
     const fetchData = async () => {
       try {
-        // Simulate network request
-        await new Promise(resolve => setTimeout(resolve, 300));
+        const allJournals = await getAllJournals();
 
-        const filteredJournals = getFilteredJournals(
-          filterOptions.category,
-          filterOptions.searchQuery,
-          filterOptions.authorId
-        );
+        // Filter published journals aja
+        const publishedJournals = allJournals.filter(journal => journal.status === 'published');
 
-        setTotalJournals(filteredJournals.length);
+        setTotalJournals(publishedJournals.length);
 
-        // Apply pagination
         const start = (pagination.page - 1) * pagination.limit;
         const end = start + pagination.limit;
-        setJournals(filteredJournals.slice(start, end));
+        setJournals(publishedJournals.slice(start, end));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [filterOptions, pagination]);
+  }, [pagination]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -600,8 +598,8 @@ const PojokMBKM = () => {
 
   // Get stats for header
   const getHeaderStats = () => {
-    const totalPublished = dummyJournals.filter(j => j.status === 'published').length;
-    const uniqueAuthors = new Set(dummyJournals.map(j => j.authorId)).size;
+    const totalPublished = journals.length;
+    const uniqueAuthors = new Set(journals.map(j => j.authorId)).size;
 
     return { totalPublished, uniqueAuthors };
   };
@@ -657,6 +655,7 @@ const PojokMBKM = () => {
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-6">
           <FilterBar
+            journals={journals}
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
             isLoading={isLoading}
