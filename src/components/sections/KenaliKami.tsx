@@ -12,11 +12,12 @@ import { MotionDiv } from '@/components/common/MotionClientOnly';
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
 type Program =
-  | 'ManajemenInformatika'
-  | 'IlmuKomunikasi'
+  | 'Manajemen Informatika'
+  | 'Ilmu Komunikasi'
   | 'Sejarah'
-  | 'BahasaInggris'
-  | 'TehnikMesin'
+  | 'Bahasa Inggris'
+  | 'Tehnik Mesin'
+  | 'Biologi'
   | 'Semua';
 type Batch = '2024' | '2025' | 'Semua';
 type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
@@ -148,10 +149,9 @@ const KenaliKami = () => {
   // Toggle view mode
   const toggleViewMode = (mode: ViewMode) => {
     setViewMode(mode);
-    setCurrentPage(1); // Reset to first page when changing view mode
   };
 
-  // Pagination functions
+  // Pagination functions - now role-specific
   const paginate = (data: typeof profileData, page: number) => {
     const startIndex = (page - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
@@ -172,14 +172,16 @@ const KenaliKami = () => {
     }
   };
 
-  const prevPage = () => {
+  const prevPage = (role: keyof PaginationState) => {
+    const currentPage = currentPages[role];
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // Render paginated cards
-  const renderPaginatedProfiles = (data: typeof profileData, role: string) => {
+  // Render paginated cards - now role-specific
+  const renderPaginatedProfiles = (data: typeof profileData, role: keyof PaginationState) => {
+    const currentPage = currentPages[role];
     const paginatedData = paginate(data, currentPage);
     const totalPages = Math.ceil(data.length / cardsPerPage);
 
@@ -207,7 +209,7 @@ const KenaliKami = () => {
         {data.length > cardsPerPage && (
           <div className="flex justify-center items-center mt-8 space-x-2">
             <button
-              onClick={prevPage}
+              onClick={() => prevPage(role)}
               disabled={currentPage === 1}
               className={`flex items-center justify-center w-10 h-10 rounded-full 
                 ${
@@ -255,10 +257,10 @@ const KenaliKami = () => {
             PROFIL UNGGULAN
           </span>
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
-            Profil MBKM BAST ANRI
+            Kenali Kami
           </h2>
           <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
-            Direktori lengkap seluruh anggota program MBKM BAST ANRI, termasuk mahasiswa, pembimbing
+            Profil lengkap seluruh anggota program MBKM BAST ANRI, termasuk mahasiswa, pembimbing
             kampus, dan mentor BAST ANRI dari berbagai program studi, angkatan, dan unit kerja.
           </p>
         </div>
@@ -365,11 +367,12 @@ const KenaliKami = () => {
                 className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Prodi</option>
-                <option value="ManajemenInformatika">Manajemen Informatika</option>
-                <option value="IlmuKomunikasi">Ilmu Komunikasi</option>
+                <option value="Manajemen Informatika">Manajemen Informatika</option>
+                <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
                 <option value="Sejarah">Sejarah</option>
-                <option value="BahasaInggris">Bahasa Inggris</option>
-                <option value="TehnikMesin">Tehnik Mesin</option>
+                <option value="Bahasa Inggris">Bahasa Inggris</option>
+                <option value="Tehnik Mesin">Tehnik Mesin</option>
+                <option value="Biologi">Biologi</option>
               </select>
 
               <select

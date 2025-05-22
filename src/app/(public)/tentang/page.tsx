@@ -1,6 +1,16 @@
-// src/app/(public)/sections-program/tentang/page.tsx
-'use client';
+<<<<<<< HEAD:src/app/tentang/page.tsx
 
+=======
+// src/app/(public)/sections-program/tentang/page.tsx
+>>>>>>> origin/hero:src/app/(public)/tentang/page.tsx
+'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+
+<<<<<<< HEAD:src/app/tentang/page.tsx
+=======
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,87 +20,44 @@ import { CollaborationContent } from '@/components/about-detail/CollaborationCon
 import { WebsiteContent } from '@/components/about-detail/WebsiteContent';
 import { Book, Building, Handshake, Shuffle, Monitor } from 'lucide-react';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
+>>>>>>> origin/hero:src/app/(public)/tentang/page.tsx
 
-export default function AboutDetailPage() {
-  const [activeTab, setActiveTab] = useState('mbkm');
-  const [mounted, setMounted] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const contentRef = useRef(null);
-  const { theme } = useTheme();
 
-  // Ensure hydration is complete before rendering theme-dependent elements
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
-  // Handle scroll to show/hide the scroll-to-top button
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'mbkm':
-        return <MBKMContent />;
-      case 'collaboration':
-        return <CollaborationContent />;
-      case 'website':
-        return <WebsiteContent />;
-      default:
-        return <MBKMContent />;
-    }
-  };
-
-  // Dynamic theme-based styling
-  const themeStyles = {
-    // Light theme colors
-    light: {
-      hero: 'bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-400',
-      particles: 'bg-white/20',
-      heading: 'bg-gradient-to-r from-white to-white/70',
-      buttonHover: 'hover:bg-white/30',
-      tabActive: 'bg-blue-500 hover:bg-blue-600',
-      tabInactive: 'bg-blue-100 hover:bg-blue-200 text-blue-800',
-      contentBg: 'bg-white',
-      cardBorder: 'border-blue-100',
-      cardShadow: 'shadow-blue-100/30',
-      accentBorder: 'border-blue-200',
-      scrollTop: 'bg-blue-500 hover:bg-blue-600',
-    },
-    // Dark theme colors
-    dark: {
-      hero: 'bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900',
-      particles: 'bg-white/10',
-      heading: 'bg-gradient-to-r from-blue-300 to-purple-300',
-      buttonHover: 'hover:bg-white/20',
-      tabActive: 'bg-blue-700 hover:bg-blue-800',
-      tabInactive: 'bg-gray-800 hover:bg-gray-700 text-blue-300',
-      contentBg: 'bg-gray-900',
-      cardBorder: 'border-gray-700',
-      cardShadow: 'shadow-blue-900/30',
-      accentBorder: 'border-blue-900',
-      scrollTop: 'bg-blue-700 hover:bg-blue-800',
-    },
-  };
-
-  // Setting current theme styles
-  const currentTheme = theme === 'dark' ? themeStyles.dark : themeStyles.light;
-
-  // If not mounted yet, show a simple skeleton to prevent theme flash
-  if (!mounted) {
-    return <div className="min-h-screen bg-gray-100 dark:bg-gray-900"></div>;
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
   }
+};
 
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const scaleIn = {
+  hidden: { scale: 0.9, opacity: 0 },
+  visible: { 
+    scale: 1, 
+    opacity: 1,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
+// Reusable Components
+const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   return (
+
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section with Animated Particles - MADE LARGER */}
       <section
@@ -155,24 +122,22 @@ export default function AboutDetailPage() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <MotionDiv
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            viewport={{ once: true }}
+            className="relative overflow-hidden rounded-2xl shadow-lg"
           >
-            <h1
-              className={`text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent ${currentTheme.heading}`}
-            >
-              Tentang MBKM x BAST ANRI
-            </h1>
-            <motion.p
-              className="text-xl md:text-2xl max-w-3xl leading-relaxed mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              Program magang MBKM di BAST ANRI yang bertujuan untuk memberikan kesempatan belajar
-              dan pengalaman kerja yang berharga bagi mahasiswa Indonesia.
-            </motion.p>
+            <Image
+              src="/images/about-anri.jpg"
+              alt="Gedung ANRI"
+              width={600}
+              height={400}
+              className="w-full h-auto object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          </motion.div>
+
 
             <MotionDiv
               className="mt-10"
@@ -197,49 +162,11 @@ export default function AboutDetailPage() {
               </button>
             </MotionDiv>
           </MotionDiv>
+
         </div>
       </section>
 
-      {/* Content Section with Left Sidebar Navigation */}
-      <section id="content-section" className="container mx-auto max-w-screen-xl px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Left Sidebar Navigation - NEW STICKY SIDEBAR */}
-          <div className="md:w-1/3 lg:w-1/4">
-            <div
-              className="sticky top-[80px]"
-              style={{ maxHeight: 'calc(100vh - 4rem)', overflowY: 'auto' }}
-            >
-              <div
-                className={`p-4 rounded-xl ${currentTheme.contentBg} border ${currentTheme.cardBorder} shadow-md ${currentTheme.cardShadow}`}
-              >
-                <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-200">
-                  Navigasi
-                </h3>
-                <div className="flex flex-col gap-2">
-                  {[
-                    { id: 'mbkm', label: 'MBKM', icon: Book },
-                    { id: 'collaboration', label: 'Magang di BAST ANRI', icon: Handshake },
-                    { id: 'website', label: 'Tentang Website', icon: Monitor },
-                  ].map(tab => (
-                    <motion.button
-                      key={tab.id}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 text-left ${
-                        activeTab === tab.id
-                          ? `${currentTheme.tabActive} text-white shadow-md`
-                          : `${currentTheme.tabInactive} border border-transparent`
-                      }`}
-                      onClick={() => setActiveTab(tab.id)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <tab.icon className="w-5 h-5" />
-                      <span>{tab.label}</span>
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+
 
           {/* Main Content */}
           <div className="md:w-2/3 lg:w-3/4" ref={contentRef}>
@@ -263,17 +190,27 @@ export default function AboutDetailPage() {
                     {activeTab === 'website' && <Monitor className="w-6 h-6" />}
                   </div>
 
-                  <h2 className="text-3xl font-bold ml-20 text-gray-800 dark:text-gray-100">
-                    {activeTab === 'mbkm'
-                      ? 'MBKM'
-                      : activeTab === 'collaboration'
-                        ? 'Magang di BAST ANRI'
-                        : activeTab === 'program-flow'
-                          ? 'Alur Program'
-                          : 'Tentang Website'}
-                  </h2>
-                  <div className={`h-1 w-40 ${currentTheme.hero} rounded-full mt-2 ml-20`}></div>
-                </div>
+
+      {/* Timeline Section - More Professional */}
+      <section
+        aria-label="Timeline Program MBKM BAST ANRI"
+        className="bg-gray-50 dark:bg-dark-DEFAULT py-16 md:py-20"
+      >
+        <div className="container mx-auto px-6 max-w-4xl">
+          <SectionHeader 
+            title="Timeline Program" 
+            subtitle="Urutan kegiatan dalam Program MBKM BAST ANRI" 
+          />
+          <div className="mt-10 pl-6 border-l-2 border-primary-DEFAULT dark:border-blue-600">
+            {timelineItems.map((item, idx) => (
+              <TimelineItem
+                key={idx}
+                index={idx}
+                isLast={idx === timelineItems.length - 1}
+                {...item}
+              />
+            ))}
+
 
                 {/* Tab content with enhanced presentation */}
                 <div className="relative">
@@ -312,9 +249,11 @@ export default function AboutDetailPage() {
                 </div>
               </div>
             </MotionDiv>
+>
           </div>
         </div>
       </section>
+
 
       {/* Scroll to Top Button - MODIFIED AS FLOATING BUTTON */}
       <AnimatePresence>
@@ -348,3 +287,58 @@ export default function AboutDetailPage() {
     </main>
   );
 }
+
+      {/* Tim Pengelola Section - Lighter, More Professional */}
+      <section
+        aria-label="Tim Pengelola Program MBKM BAST ANRI"
+        className="container mx-auto px-6 py-16 md:py-20 max-w-6xl"
+      >
+        <SectionHeader 
+          title="Tim Pengelola Program" 
+          subtitle="Para profesional yang mengelola program MBKM BAST ANRI" 
+        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-10">
+          <TeamMemberCard
+            name="ARRAJULA STAQUFA"
+            role="Koordinator Program"
+            photo="/images/team/rina.jpg"
+          />
+          <TeamMemberCard
+            name="Iqbal Afdhalas"
+            role="Mentor Arsip Digital"
+            photo="/images/team/budi.jpg"
+          />
+          <TeamMemberCard
+            name="Kevin putra zerian"
+            role="Manajer Pelatihan"
+            photo="/images/team/sari.jpg"
+          />
+          <TeamMemberCard
+            name="Abidah Ardelia"
+            role="Pengelola Dokumentasi"
+            photo="/images/team/agus.jpg"
+          />
+        </div>
+      </section>
+
+      {/* Partner & Kolaborator Section - Minimalist, Professional */}
+      <section
+        aria-label="Partner dan Kolaborator Program MBKM BAST ANRI"
+        className="bg-gray-50 dark:bg-dark-DEFAULT py-16 md:py-20"
+      >
+        <div className="container mx-auto px-6 max-w-6xl">
+          <SectionHeader 
+            title="Partner & Kolaborator" 
+            subtitle="Institusi yang bekerja sama mewujudkan program MBKM BAST ANRI" 
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 items-center mt-10 justify-center max-w-4xl mx-auto">
+            <PartnerLogo logo="/images/Logo_ANRI.png" name="ANRI" />
+            <PartnerLogo logo="/images/kemdikbud.png" name="Kemdikbud" />
+            <PartnerLogo logo="/images/logo_mbkm_white.png" name="Universitas Syiah Kuala" />
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
