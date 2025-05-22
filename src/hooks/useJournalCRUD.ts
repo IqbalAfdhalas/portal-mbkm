@@ -1,124 +1,178 @@
+import { useState } from 'react';
+import { db } from '@/lib/firebase';
 import {
   collection,
   addDoc,
-  doc,
   updateDoc,
   deleteDoc,
   getDoc,
-  getDocs,
+  doc,
   serverTimestamp,
-  query,
-  orderBy,
+  Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { useState } from 'react';
+
 import { Journal } from '@/lib/types/journal';
+import { getAuthorById } from '@/lib/firebaseJournals';
+
+const journalsCollection = collection(db, 'journals');
 
 export const useJournalCRUD = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const journalsRef = collection(db, 'journals');
-
   const createJournal = async (data: Partial<Journal>): Promise<Journal> => {
+    // Prevent multiple submissions
+    if (loading) {
+      throw new Error('Sedang memproses, harap tunggu...');
+    }
+
     setLoading(true);
     setError(null);
+
     try {
-      const docRef = await addDoc(journalsRef, {
+      if (!data.authorId) {
+        throw new Error('Author ID is required');
+      }
+
+      const authorData = await getAuthorById(data.authorId);
+      if (!authorData) {
+        throw new Error('Penulis tidak ditemukan');
+      }
+
+      const newJournalData = {
         ...data,
+        publishDate: data.publishDate
+          ? Timestamp.fromDate(new Date(data.publishDate))
+          : serverTimestamp(),
+        authorName: authorData.name,
+        authorImage: authorData.image || null,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      });
-      return { id: docRef.id, ...data } as Journal;
+      };
+
+      const docRef = await addDoc(journalsCollection, newJournalData);
+
+      // Ambil lagi datanya biar dapet Timestamp dari Firestore
+      const snapshot = await getDoc(docRef);
+
+      if (!snapshot.exists()) {
+        throw new Error('Jurnal tidak ditemukan setelah dibuat');
+      }
+
+      const journalData = snapshot.data() as Omit<Journal, 'id'>;
+
+      return {
+        id: docRef.id,
+        ...journalData,
+        publishDate:
+          journalData.publishDate instanceof Timestamp
+            ? journalData.publishDate.toDate()
+            : journalData.publishDate,
+        createdAt:
+          journalData.createdAt instanceof Timestamp
+            ? journalData.createdAt.toDate()
+            : journalData.createdAt,
+        updatedAt:
+          journalData.updatedAt instanceof Timestamp
+            ? journalData.updatedAt.toDate()
+            : journalData.updatedAt,
+      };
     } catch (err) {
-      const message = 'Gagal membuat jurnal';
-      setError(message);
-      throw new Error(message);
+      const errorMessage = err instanceof Error ? err.message : 'Gagal membuat jurnal';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   const updateJournal = async (id: string, data: Partial<Journal>): Promise<Journal> => {
+    // Prevent multiple submissions
+    if (loading) {
+      throw new Error('Sedang memproses, harap tunggu...');
+    }
+
     setLoading(true);
     setError(null);
+
     try {
+      if (!id) {
+        throw new Error('Journal ID is required');
+      }
+
       const docRef = doc(db, 'journals', id);
-      await updateDoc(docRef, {
+
+      type FirestoreUpdateData = {
+        [key: string]: any;
+      };
+
+      const updatedData: FirestoreUpdateData = {
         ...data,
         updatedAt: serverTimestamp(),
-      });
-      return { id, ...data } as Journal;
+      };
+
+      if (data.publishDate) {
+        updatedData.publishDate = Timestamp.fromDate(new Date(data.publishDate));
+      }
+
+      await updateDoc(docRef, updatedData);
+
+      // ambil snapshot baru
+      const snapshot = await getDoc(docRef);
+
+      if (!snapshot.exists()) {
+        throw new Error('Journal not found after update');
+      }
+
+      const journalData = snapshot.data() as Omit<Journal, 'id'>;
+      return {
+        id: snapshot.id,
+        ...journalData,
+      };
     } catch (err) {
-      const message = 'Gagal mengupdate jurnal';
-      setError(message);
-      throw new Error(message);
+      const errorMessage = err instanceof Error ? err.message : 'Gagal mengupdate jurnal';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   const deleteJournal = async (id: string): Promise<void> => {
+    // Prevent multiple submissions
+    if (loading) {
+      throw new Error('Sedang memproses, harap tunggu...');
+    }
+
     setLoading(true);
     setError(null);
+
     try {
+      if (!id) {
+        throw new Error('Journal ID is required');
+      }
+
       const docRef = doc(db, 'journals', id);
       await deleteDoc(docRef);
     } catch (err) {
-      const message = 'Gagal menghapus jurnal';
-      setError(message);
-      throw new Error(message);
+      const errorMessage = err instanceof Error ? err.message : 'Gagal menghapus jurnal';
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const getJournal = async (id: string): Promise<Journal | null> => {
-    setLoading(true);
+  const clearError = () => {
     setError(null);
-    try {
-      const docRef = doc(db, 'journals', id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() } as Journal;
-      }
-      return null;
-    } catch (err) {
-      const message = 'Gagal mengambil data jurnal';
-      setError(message);
-      throw new Error(message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getAllJournals = async (): Promise<Journal[]> => {
-    setLoading(true);
-    setError(null);
-    try {
-      const q = query(journalsRef, orderBy('createdAt', 'desc'));
-      const querySnapshot = await getDocs(q);
-      const result = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Journal[];
-      return result;
-    } catch (err) {
-      const message = 'Gagal mengambil daftar jurnal';
-      setError(message);
-      throw new Error(message);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return {
     createJournal,
     updateJournal,
     deleteJournal,
-    getJournal,
-    getAllJournals,
     loading,
     error,
+    clearError,
   };
 };

@@ -23,8 +23,10 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { Journal } from '@/components/sections/PojokMBKM';
-import { dummyJournals, getFilteredJournals, authors } from '@/lib/data/dummyJournals';
-import { JournalForm, DeleteConfirmDialog, useJournalCRUD } from '@/components/ui/JournalForm';
+import { Author } from '@/lib/types/journal';
+import { JournalForm, DeleteConfirmDialog } from '@/components/ui/JournalForm';
+import { useJournalCRUD } from '@/hooks/useJournalCRUD';
+import { getAllJournals, getAllAuthors } from '@/lib/firebaseJournals';
 
 interface JournalFilterOptions {
   category?: 'daily-activity' | 'weekly-reflection' | 'project-update';
@@ -102,9 +104,11 @@ const StatsCards = ({ journals }: { journals: Journal[] }) => {
 const FilterBar = ({
   filterOptions,
   setFilterOptions,
+  authors,
 }: {
   filterOptions: JournalFilterOptions;
   setFilterOptions: React.Dispatch<React.SetStateAction<JournalFilterOptions>>;
+  authors: Author[];
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -350,11 +354,22 @@ const JournalTable = ({
                       {getStatusBadge(journal.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {new Date(journal.publishDate).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
+                      {(() => {
+                        try {
+                          const date = new Date(journal.publishDate);
+                          // Check if date is valid
+                          if (isNaN(date.getTime())) {
+                            return <span className="text-red-500">Invalid Date</span>;
+                          }
+                          return date.toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          });
+                        } catch (error) {
+                          return <span className="text-red-500">Invalid Date</span>;
+                        }
+                      })()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex items-center space-x-2">
@@ -430,10 +445,12 @@ const EmptyState = ({
 
 // Main Admin Component
 export default function AdminPojokMBKMPage() {
-  const [journals, setJournals] = useState<Journal[]>(dummyJournals);
+  const [journals, setJournals] = useState<Journal[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [filteredJournals, setFilteredJournals] = useState<Journal[]>([]);
   const [filterOptions, setFilterOptions] = useState<JournalFilterOptions>({});
-  const [loading, setLoading] = useState(false);
 
   // Form state
   const [showForm, setShowForm] = useState(false);
@@ -446,79 +463,86 @@ export default function AdminPojokMBKMPage() {
 
   // CRUD hook
   const { createJournal, updateJournal, deleteJournal, loading: crudLoading } = useJournalCRUD();
-  const handleTestCreate = async () => {
+
+  const fetchJournals = async () => {
+    setLoading(true);
     try {
-      const newJournal = await createJournal({
-        title: 'Jurnal Tes Pertama',
-        summary: 'Ini jurnal tes pertama lewat Next.js dan Firestore',
-        content: 'Konten lengkap jurnal tes.',
-        category: 'daily-activity',
-        publishDate: new Date(),
-        status: 'draft',
-        authorId: 'tes123',
-        media: [],
-      });
-      console.log('Jurnal berhasil dibuat:', newJournal);
-    } catch (error) {
-      console.error('Gagal membuat jurnal:', error);
+      const result = await getAllJournals();
+      setJournals(result);
+    } catch (err) {
+      setError('Gagal mengambil data jurnal');
+      console.error('Error fetching journals:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const fetchAuthors = async () => {
+    try {
+      const result = await getAllAuthors();
+      setAuthors(result);
+    } catch (err) {
+      console.error('Error fetching authors:', err);
+      setError('Gagal mengambil data penulis');
+    }
+  };
+
+  useEffect(() => {
+    fetchJournals();
+    fetchAuthors();
+  }, []);
+
   // Filter journals based on filter options
   useEffect(() => {
-    setLoading(true);
+    const filtered = journals.filter(journal => {
+      // Apply filters
+      if (filterOptions.category && journal.category !== filterOptions.category) {
+        return false;
+      }
 
-    // Simulate loading
-    setTimeout(() => {
-      const filtered = journals.filter(journal => {
-        // Apply filters
-        if (filterOptions.category && journal.category !== filterOptions.category) {
+      if (filterOptions.status && journal.status !== filterOptions.status) {
+        return false;
+      }
+
+      if (filterOptions.authorId && journal.authorId !== filterOptions.authorId) {
+        return false;
+      }
+
+      if (filterOptions.searchQuery) {
+        const query = filterOptions.searchQuery.toLowerCase();
+        const inTitle = journal.title.toLowerCase().includes(query);
+        const inSummary = journal.summary.toLowerCase().includes(query);
+        const inContent = journal.content.toLowerCase().includes(query);
+        const inAuthor = journal.authorName.toLowerCase().includes(query);
+
+        if (!(inTitle || inSummary || inContent || inAuthor)) {
           return false;
         }
+      }
 
-        if (filterOptions.status && journal.status !== filterOptions.status) {
-          return false;
-        }
+      return true;
+    });
 
-        if (filterOptions.authorId && journal.authorId !== filterOptions.authorId) {
-          return false;
-        }
+    // Sort by latest
+    filtered.sort((a, b) => {
+      const dateA = new Date(b.updatedAt || b.publishDate).getTime();
+      const dateB = new Date(a.updatedAt || a.publishDate).getTime();
+      return dateA - dateB;
+    });
 
-        if (filterOptions.searchQuery) {
-          const query = filterOptions.searchQuery.toLowerCase();
-          const inTitle = journal.title.toLowerCase().includes(query);
-          const inSummary = journal.summary.toLowerCase().includes(query);
-          const inContent = journal.content.toLowerCase().includes(query);
-          const inAuthor = journal.authorName.toLowerCase().includes(query);
-
-          if (!(inTitle || inSummary || inContent || inAuthor)) {
-            return false;
-          }
-        }
-
-        return true;
-      });
-
-      // Sort by latest
-      filtered.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-
-      setFilteredJournals(filtered);
-      setLoading(false);
-    }, 300);
+    setFilteredJournals(filtered);
   }, [journals, filterOptions]);
 
   // Handle form submission
   const handleFormSubmit = async (data: Partial<Journal>) => {
     try {
       if (formMode === 'create') {
-        const newJournal = await createJournal(data);
-        setJournals(prev => [newJournal, ...prev]);
+        await createJournal(data);
       } else if (editingJournal) {
-        const updatedJournal = await updateJournal(editingJournal.id, data);
-        setJournals(prev =>
-          prev.map(journal => (journal.id === editingJournal.id ? updatedJournal : journal))
-        );
+        await updateJournal(editingJournal.id, data);
       }
+
+      await fetchJournals();
 
       // Close form
       setShowForm(false);
@@ -526,7 +550,6 @@ export default function AdminPojokMBKMPage() {
       setFormMode('create');
     } catch (error) {
       console.error('Error saving journal:', error);
-      // You can add toast notification here
     }
   };
 
@@ -563,14 +586,12 @@ export default function AdminPojokMBKMPage() {
 
     try {
       await deleteJournal(journalToDelete.id);
-      setJournals(prev => prev.filter(journal => journal.id !== journalToDelete.id));
+      await fetchJournals();
 
-      // Close dialog
       setShowDeleteDialog(false);
       setJournalToDelete(null);
     } catch (error) {
       console.error('Error deleting journal:', error);
-      // You can add toast notification here
     }
   };
 
@@ -586,6 +607,30 @@ export default function AdminPojokMBKMPage() {
       filterOptions.authorId ||
       filterOptions.searchQuery
   );
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            Terjadi Kesalahan
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              fetchJournals();
+              fetchAuthors();
+            }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Coba Lagi
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Show form if form state is active
   if (showForm) {
@@ -622,19 +667,17 @@ export default function AdminPojokMBKMPage() {
               Tambah Jurnal
             </button>
           </div>
-          <button
-            onClick={handleTestCreate}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg mb-4"
-          >
-            Test Create Jurnal (Firestore)
-          </button>
         </motion.div>
 
         {/* Stats */}
         <StatsCards journals={journals} />
 
         {/* Filters */}
-        <FilterBar filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+        <FilterBar
+          filterOptions={filterOptions}
+          setFilterOptions={setFilterOptions}
+          authors={authors}
+        />
 
         {/* Content */}
         {loading ? (
@@ -642,7 +685,12 @@ export default function AdminPojokMBKMPage() {
             <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
           </div>
         ) : filteredJournals.length > 0 ? (
-          <JournalTable journals={filteredJournals} onEdit={handleEdit} onDelete={handleDelete} />
+          <>
+            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+              Menampilkan {filteredJournals.length} dari {journals.length} jurnal
+            </div>
+            <JournalTable journals={filteredJournals} onEdit={handleEdit} onDelete={handleDelete} />
+          </>
         ) : (
           <EmptyState hasFilters={hasFilters} onCreateNew={handleCreateNew} />
         )}
