@@ -64,13 +64,7 @@ const About = () => {
           >
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image
-<<<<<<< HEAD
-
-                src="/images/about.jpg"
-
-=======
                 src="/images/Tentang/about.jpg"
->>>>>>> origin/hero
                 alt="Kegiatan mahasiswa dalam program MBKM"
                 fill
                 className="object-cover"
@@ -139,4 +133,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default About;

@@ -10,7 +10,6 @@ import StatisticsCard from '@/components/ui/StatisticsCard';
 import { profileData } from '@/constants/profileData';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 
-
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
 type Program =
@@ -25,6 +24,13 @@ type Batch = '2024' | '2025' | 'Semua';
 type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
 type ViewMode = 'grid' | 'list';
 
+// Interface for pagination state
+interface PaginationState {
+  'Pembimbing Kampus': number;
+  'Mentor BAST ANRI': number;
+  'Mahasiswa': number;
+}
+
 const KatalogMBKM = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
@@ -34,8 +40,13 @@ const KatalogMBKM = () => {
   const [filteredData, setFilteredData] = useState(profileData);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // Pagination - separate state for each role
+  const [currentPages, setCurrentPages] = useState<PaginationState>({
+    'Pembimbing Kampus': 1,
+    'Mentor BAST ANRI': 1,
+    'Mahasiswa': 1,
+  });
+
   const cardsPerPage = viewMode === 'grid' ? 8 : 10;
 
   // Calculate statistics
@@ -85,8 +96,23 @@ const KatalogMBKM = () => {
     }
 
     setFilteredData(result);
-    setCurrentPage(1); // Reset to first page after filtering
+    
+    // Reset all pagination when filters change
+    setCurrentPages({
+      'Pembimbing Kampus': 1,
+      'Mentor BAST ANRI': 1,
+      'Mahasiswa': 1,
+    });
   }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit]);
+
+  // Reset pagination when view mode changes
+  useEffect(() => {
+    setCurrentPages({
+      'Pembimbing Kampus': 1,
+      'Mentor BAST ANRI': 1,
+      'Mahasiswa': 1,
+    });
+  }, [viewMode]);
 
   const sortedData = [...filteredData].sort((a, b) => {
     const aYear = parseInt(a.angkatan || '0');
@@ -151,66 +177,84 @@ const KatalogMBKM = () => {
   // Toggle view mode
   const toggleViewMode = (mode: ViewMode) => {
     setViewMode(mode);
-    setCurrentPage(1); // Reset to first page when changing view mode
   };
 
-  // Pagination functions
+  // Pagination functions - now role-specific
   const paginate = (data: typeof profileData, page: number) => {
     const startIndex = (page - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
     return data.slice(startIndex, endIndex);
   };
 
-  const nextPage = (role: string) => {
-    const data =
-      role === 'Pembimbing Kampus'
-        ? pembimbingKampus
-        : role === 'Mentor BAST ANRI'
-          ? mentorBASTANRI
-          : mahasiswa;
+  const nextPage = (role: keyof PaginationState) => {
+    const data = 
+      role === 'Pembimbing Kampus' ? pembimbingKampus :
+      role === 'Mentor BAST ANRI' ? mentorBASTANRI :
+      mahasiswa;
 
     const totalPages = Math.ceil(data.length / cardsPerPage);
+    const currentPage = currentPages[role];
+    
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPages(prev => ({
+        ...prev,
+        [role]: currentPage + 1
+      }));
     }
   };
 
-  const prevPage = () => {
+  const prevPage = (role: keyof PaginationState) => {
+    const currentPage = currentPages[role];
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPages(prev => ({
+        ...prev,
+        [role]: currentPage - 1
+      }));
     }
   };
 
-  // Render paginated cards
-  const renderPaginatedProfiles = (data: typeof profileData, role: string) => {
+  // Render paginated cards - now role-specific
+  const renderPaginatedProfiles = (data: typeof profileData, role: keyof PaginationState) => {
+    const currentPage = currentPages[role];
     const paginatedData = paginate(data, currentPage);
     const totalPages = Math.ceil(data.length / cardsPerPage);
+    console.log(`Rendering page ${currentPage} with`, paginatedData.length, 'profiles');
 
-    return (
-      <>
-        {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {paginatedData.map(profile => (
-              <MotionDiv key={profile.id} variants={itemVariants}>
-                <ProfileCard profile={profile} />
-              </MotionDiv>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {paginatedData.map(profile => (
-              <MotionDiv key={profile.id} variants={itemVariants}>
-                <ProfileListItem profile={profile} />
-              </MotionDiv>
-            ))}
-          </div>
-        )}
+
+return (
+  <>
+    {viewMode === 'grid' ? (
+      <div
+        key={`grid-page-${currentPage}-${role}`} // 👈 Tambahkan ini!
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        {paginatedData.map(profile => (
+          <MotionDiv key={`${profile.id}-page-${currentPage}`} variants={itemVariants}>
+            <ProfileCard profile={profile} />
+          </MotionDiv>
+        ))}
+      </div>
+    ) : (
+      <div
+        key={`list-page-${currentPage}-${role}`} // 👈 Tambahkan ini juga!
+        className="flex flex-col gap-4"
+      >
+        {paginatedData.map(profile => (
+          <MotionDiv key={`${profile.id}-page-${currentPage}`} variants={itemVariants}>
+            <ProfileListItem profile={profile} />
+          </MotionDiv>
+        ))}
+      </div>
+    )}
+
+
+
 
         {/* Pagination controls */}
         {data.length > cardsPerPage && (
           <div className="flex justify-center items-center mt-8 space-x-2">
             <button
-              onClick={prevPage}
+              onClick={() => prevPage(role)}
               disabled={currentPage === 1}
               className={`flex items-center justify-center w-10 h-10 rounded-full 
                 ${
