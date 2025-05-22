@@ -13,6 +13,8 @@ import Faq from '@/components/sections/Faq';
 import Contact from '@/components/sections/Contact';
 import { scrollToId } from '@/lib/utils';
 
+
+
 export default function HomePage() {
   useEffect(() => {
     // Cek apakah ada target scroll di session storage

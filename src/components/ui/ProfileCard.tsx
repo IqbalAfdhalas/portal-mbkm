@@ -127,11 +127,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
       variants={cardVariants}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className={`rounded-xl overflow-hidden shadow-md transition-all duration-300 bg-gradient-to-br ${colors.gradient} h-full relative`}
+      className={`max-w-xs w-full rounded-xl overflow-hidden shadow-md transition-all duration-300 bg-gradient-to-br ${colors.gradient} h-full relative`}
     >
       <div className="flex flex-col h-full">
         {/* 4:3 aspect ratio for image container */}
-        <div className="relative pt-[75%] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+        <div className="relative aspect-[3/4] bg-gray-200 dark:bg-gray-700 overflow-hidden">
           <motion.img
             variants={imageVariants}
             src={profile.foto || '/api/placeholder/400/300'}
