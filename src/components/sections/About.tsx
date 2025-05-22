@@ -63,7 +63,9 @@ const About = () => {
           >
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image
+
                 src="/images/about.jpg"
+
                 alt="Kegiatan mahasiswa dalam program MBKM"
                 fill
                 className="object-cover"
