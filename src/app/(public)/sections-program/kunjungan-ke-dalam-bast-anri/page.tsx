@@ -26,17 +26,17 @@ const KunjunganKeDalamDetail = () => {
   }, []);
 
   const program = {
-    title: 'Kunjungan ke Dalam BAST ANRI',
+    title: 'Eksplorasi BAST ANRI',
     subtitle: 'Yuk, Intip Serunya Jelajah Arsip di Dalam BAST ANRI!',
     description:
       'Program ini terbuka untuk sekolah, universitas, atau organisasi yang ingin mengenal lebih dekat dunia kearsipan. Dalam kunjungan ini, peserta akan diajak keliling BAST ANRI, melihat langsung ruang-ruang arsip, mengenal proses pengelolaan arsip, dan ngobrol langsung dengan para arsiparis. Cocok buat yang penasaran dunia arsip dari balik layar!',
     icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
     color: 'indigo-500',
-    video: '/images/WhatsApp Video 2025-05-17 at 22.03.11_8ea9712d.mp4',
+    video: '/images/program/kunjungan_ke_dalam_bast_anri/vidio.mp4',
     tourDescription:
       'Jelajahi ruang-ruang arsip dan kenali jenis-jenis arsip yang dikelola BAST ANRI — pengalaman langsung melihat proses pengarsipan dari dekat.',
     tourActivities:
-      'Selama kunjungan, peserta akan diajak berkeliling ruang penyimpanan arsip, mencoba simulasi pengarsipan sederhana, dan berinteraksi langsung dengan para arsiparis profesional. Kegiatan ini dirancang untuk memberikan pemahaman komprehensif tentang bagaimana arsip dikelola secara profesional.',
+      'Pengunjung akan diajak berkeliling ruang penyimpanan arsip, mencoba simulasi pengarsipan sederhana, dan berinteraksi langsung dengan para arsiparis profesional. Kegiatan ini dirancang untuk memberikan pemahaman secara eksploratif tentang bagaimana arsip dikelola secara profesional.',
     tourFeatures: [
       {
         name: 'Tur Ruang Arsip',
@@ -60,7 +60,6 @@ const KunjunganKeDalamDetail = () => {
         activities: [
           'Sesi tanya jawab dengan arsiparis',
           'Mendengar pengalaman kerja arsiparis',
-          'Diskusi tentang karir di bidang kearsipan',
           'Tips dan trik pengelolaan arsip',
         ],
         image: '/images/foto_kedalam_bast_anri2.jpg',
@@ -83,31 +82,28 @@ const KunjunganKeDalamDetail = () => {
         title: 'Inspirasi Karir',
         description: 'Mengenal peluang karir di bidang kearsipan dan pengelolaan informasi',
       },
-      {
-        title: 'Jejaring Profesional',
-        description: 'Membangun kontak dengan para profesional di industri kearsipan',
-      },
+      
     ],
     gallery: [
       {
         src: '/images/program/kunjungan_ke_dalam_bast_anri/galeri_kegiatan-dalam_bast_anri1.jpg',
-        caption: 'Rombongan pengunjung saat tur',
+        caption: '',
       },
       {
         src: '/images/program/kunjungan_ke_dalam_bast_anri/galeri_kegiatan_dalam_bast_anri2.jpg',
-        caption: 'Suasana simulasi pengarsipan',
+        caption: '',
       },
       {
         src: '/images/program/kunjungan_ke_dalam_bast_anri/galeri_kegiatan_dalam_bast_anri3.jpg',
-        caption: 'Pengunjung mendengarkan penjelasan staf',
+        caption: '',
       },
       {
         src: '/images/program/kunjungan_ke_dalam_bast_anri/galeri_kegiatan-dalam_bast_anri4.jpg',
-        caption: 'Interaksi aktif antara peserta dan arsiparis',
+        caption: '',
       },
       {
         src: '/images/program/kunjungan_ke_dalam_bast_anri/galeri_kegiatan-dalam_bast_anri5.jpg',
-        caption: 'Interaksi aktif antara peserta dan arsiparis',
+        caption: '',
       },
     ],
   };
@@ -301,7 +297,7 @@ const KunjunganKeDalamDetail = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-heading font-bold text-primary dark:text-white">
-                    Kunjungan ke Dalam BAST ANRI
+                    Eksplorasi BAST ANRI
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 italic">
                     {program.tourDescription}
@@ -424,9 +420,9 @@ const KunjunganKeDalamDetail = () => {
                       slug: 'aktivitas-unit',
                     },
                     {
-                      title: 'Kunjungan ke Luar BAST ANRI',
+                      title: 'Learning Trip BAST ANRI',
                       color: 'red-500',
-                      slug: 'kunjungan-ke-luar-bast-anri',
+                      slug: 'learning-trip',
                     },
                     {
                       title: 'Daily Activity',

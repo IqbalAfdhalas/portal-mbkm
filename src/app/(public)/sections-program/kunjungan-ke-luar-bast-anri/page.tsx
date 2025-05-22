@@ -26,76 +26,33 @@ const KunjunganLuarDetail = () => {
   }, []);
 
   const program = {
-    title: 'Kunjungan ke Luar BAST ANRI',
+    title: 'Learning Trip',
     subtitle: 'BAST ANRI Keliling? Bisa!',
     description:
-      'Kalau biasanya orang datang ke BAST ANRI, kali ini kita yang datang ke tempatmu! Lewat program ini, tim BAST ANRI melakukan kunjungan ke sekolah, kampus, atau instansi lain untuk berbagi pengetahuan seputar dunia arsip. Edukatif, interaktif, dan pastinya seru!',
+      'Kalau biasanya orang datang ke BAST ANRI, kali ini kita yang datang ke tempatmu! Lewat program ini, tim BAST ANRI melakukan kunjungan ke Kampus dan instansi lain untuk berbagi pengetahuan seputar dunia arsip. Edukatif, interaktif, dan pastinya seru!',
     icon: '/images/program/logo_program/Kunjungan_ke_Luar_BAST_ANRI.png',
-    color: 'red-500',
+    color: 'green-400',
     video: '/images/program/kunjungan_ke_luar_bast_anri/vidio1.mp4',
     activityDescription:
-      'Kegiatan kunjungan keluar kantor BAST ANRI bersama para mahasiswa peserta program MBKM ke Palang Merah Indonesia (PMI) Aceh menjadi momen yang sangat berharga dan penuh makna. Dalam kunjungan ini, para peserta mendapat kesempatan istimewa untuk mendengarkan secara langsung pengalaman para relawan PMI Aceh dalam menjalankan tugas-tugas kemanusiaan, khususnya saat menghadapi situasi duka akibat bencana Tsunami. Tidak hanya itu, para peserta juga memperoleh wawasan tentang pentingnya pengelolaan arsip kebencanaan, yang menjadi bagian tak terpisahkan dari upaya dokumentasi dan pembelajaran di masa depan.',
+      'Kunjungan BAST ANRI dan mahasiswa MBKM ke PMI Aceh memberikan wawasan tentang tugas relawan saat bencana dan pentingnya arsip kebencanaan.',
     mainActivity:
-      'Trip singkat ini sangat inspiratif, penuh makna dan memberi pengalaman baru. Kami dikenalin dengan para relawan PMI yang hebat, dan dengerin kisah mengharukan dibalik layer. Kami dikasih kesempatan merasakan momen trip singkat keluar kantor bersama kakak dan abang-abang yang sangat fun dan asik. Memorable untuk dikenang, informatif untuk diceritakan kembali. ',
+      'Hari ini sangat seruu, kami dikenali dengan para Relawan PMI Aceh yang hebat, dan mendengarkan kisah yang mengharukan di balik layer. Kami dikasi kesempatan untuk merasakan momen trip singkat keluar kantor Bersama kakak dan abang – abang yang sangan fun dan asik. Memorable untuk dikenang informatif untuk diceritakan Kembali. Tidak hanya itu, para peserta juga memperoleh wawasan tentang pentingnya pengelolaan arsip kebencanaan, yang menjadi bagian tak terpisahkan dari upaya dokumentasi dan pembelajaran di masa depan. ',
     allActivities: [
       {
-        name: 'Sosialisasi Kearsipan',
+        name: 'Kegiatan Kolaborasi, Edukasi dan Kebencanaan di UTU',
         description:
-          'Kegiatan yang bertujuan mengenalkan pentingnya arsip sejak dini dan bagaimana perannya dalam kehidupan sehari-hari. Tim BAST ANRI memberikan presentasi yang interaktif dan edukatif tentang nilai arsip bagi masyarakat dan bangsa.',
-        icon: '/images/icons/education.svg',
-        activities: [
-          'Presentasi tentang pentingnya arsip',
-          'Diskusi interaktif dengan peserta',
-          'Pemutaran video edukasi tentang arsip',
-          'Pengenalan jenis-jenis arsip penting',
-        ],
-        image: '/images/outreach-education.jpg',
-      },
-      {
-        name: 'Penyuluhan & Pelatihan',
-        description:
-          'Sesi pembelajaran bersama tentang cara mengelola arsip yang baik dan benar. Tim memberikan pelatihan praktis yang dapat langsung diterapkan oleh peserta dalam mengelola arsip pribadi maupun institusi.',
-        icon: '/images/icons/training.svg',
-        activities: [
-          'Pelatihan dasar pengelolaan arsip',
-          'Workshop penyusunan sistem arsip sederhana',
-          'Praktik pengamanan dokumen penting',
-          'Teknik digitalisasi arsip dasar',
-        ],
-        image: '/images/outreach-training.jpg',
-      },
-      {
-        name: 'Kerja Sama Penyelamatan Arsip',
-        description:
-          'Mengajak pihak luar untuk sama-sama menjaga dokumen penting dengan pendekatan kolaboratif. Tim BAST ANRI menawarkan program kerja sama untuk menyelamatkan dan melestarikan arsip bernilai sejarah.',
+          ' Pusat edukasi ini dirancang tidak hanya sebagai tempat penyimpanan arsip atau data, tetapi juga sebagai ruang interaktif untuk belajar, berdiskusi, dan memahami lebih dalam tentang mitigasi bencana. Melalui berbagai instalasi, dokumentasi, dan program-program edukatif, pengunjung diajak untuk melihat kembali peristiwa besar yang pernah mengguncang Aceh, sekaligus merenungkan pentingnya kesiapsiagaan di masa depan. Harapannya, pusat ini bisa menjadi titik temu antara ilmu pengetahuan, sejarah, dan aksi nyata, agar tragedi serupa tak kembali terulang tanpa kesiapan.',
         icon: '/images/icons/collaboration.svg',
         activities: [
-          'Identifikasi arsip bernilai sejarah',
-          'Perencanaan program penyelamatan bersama',
-          'Pemberian bantuan teknis preservasi',
-          'Perjanjian kerja sama pelestarian arsip',
+          '',
+          '',
+          '',
+          '',
         ],
-        image: '/images/outreach-collaboration.jpg',
-      },
-      {
-        name: 'Promosi Program Arsip',
-        description:
-          'Memperkenalkan program-program BAST ANRI lainnya agar semakin dikenal luas. Tim mempromosikan berbagai kegiatan dan layanan BAST ANRI yang dapat dimanfaatkan oleh masyarakat.',
-        icon: '/images/icons/promotion.svg',
-        activities: [
-          'Presentasi program-program BAST ANRI',
-          'Pembagian brosur dan materi promosi',
-          'Pendaftaran program kunjungan ke dalam BAST ANRI',
-          'Penawaran program kerja sama lanjutan',
-        ],
-        image: '/images/outreach-promotion.jpg',
+        image: '/images/program/kunjungan_ke_luar_bast_anri/foto25.jpg',
       },
     ],
     benefits: [
-      {
-        title: 'Jangkauan Lebih Luas',
-        description: 'Menjangkau masyarakat yang belum berkesempatan mengunjungi BAST ANRI',
-      },
       {
         title: 'Edukasi Langsung',
         description: 'Pembelajaran langsung dari para profesional arsip dalam suasana familiar',
@@ -127,7 +84,7 @@ const KunjunganLuarDetail = () => {
         caption: '',
       },
       {
-        src: '/images/program/kunjungan_ke_luar_bast_anri/foto4.jpg',
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto18.jpg',
         caption: '',
       },
       {
@@ -136,6 +93,46 @@ const KunjunganLuarDetail = () => {
       },
       {
         src: '/images/program/kunjungan_ke_luar_bast_anri/foto6.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto7.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto8.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto9.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto12.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto11.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto24.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto13.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto14.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto15.jpg',
+        caption: '',
+      },
+      {
+        src: '/images/program/kunjungan_ke_luar_bast_anri/foto25.jpg',
         caption: '',
       },
     ],
@@ -223,25 +220,24 @@ const KunjunganLuarDetail = () => {
             </div>
 
             {/* Judul dengan styling yang lebih menarik */}
-            <div className="relative inline-block mb-6">
+            <div className="relative inline-block mb-4">
               <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-red-200">
                 {program.title}
               </h1>
               <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-[#86efac] to-[#34d399] rounded-full opacity-70 blur-sm"></div>
             </div>
 
-            {/* Subjudul dengan styling yang lebih menarik */}
-            <div className="relative inline-block px-6 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-[#bbf7d0] to-white bg-clip-text text-transparent font-medium">
-                {program.subtitle}
-              </p>
-              <div className="absolute -inset-px bg-gradient-to-r from-[#86efac] to-[#34d399] rounded-lg opacity-20 blur-sm -z-10"></div>
-            </div>
+            {/* Subjudul pindah ke bawah */}
+            <p className="text-xl md:text-2xl italic bg-gradient-to-r from-[#bbf7d0] to-white bg-clip-text text-transparent font-medium mb-6">
+              {program.subtitle}
+            </p>
 
             {/* Decorative elements */}
+
             <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
             <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
           </MotionDiv>
+
         </div>
       </section>
 
@@ -256,14 +252,14 @@ const KunjunganLuarDetail = () => {
               variants={fadeInUp}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
             >
-              <h2 className="text-2xl font-heading font-bold text-primary dark:text-red-400 mb-4">
+              <h2 className="text-2xl font-heading font-bold text-primary dark:text-green-400 mb-4">
                 Deskripsi Program
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                 {program.description}
               </p>
 
-              <div className="h-1 w-20 bg-red-500 rounded-full mb-6"></div>
+              <div className="h-1 w-20 bg-green-400 rounded-full mb-6"></div>
 
               <h3 className="text-xl font-heading font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Manfaat Program
@@ -273,7 +269,7 @@ const KunjunganLuarDetail = () => {
                 {program.benefits.map((benefit, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg bg-red-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/30"
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-800/30"
                   >
                     <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
                       <svg
@@ -373,7 +369,7 @@ const KunjunganLuarDetail = () => {
                         className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
                         <div className="flex items-center">
-                          <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold mr-3">
+                          <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-white font-bold mr-3">
                             {idx + 1}
                           </div>
                           <span className="font-medium text-gray-800 dark:text-gray-200">
@@ -413,14 +409,6 @@ const KunjunganLuarDetail = () => {
                               <p className="text-gray-700 dark:text-gray-300 mb-4">
                                 {activity.description}
                               </p>
-                              <h5 className="font-medium text-gray-800 dark:text-gray-200 mb-2">
-                                Kegiatan {activity.name}:
-                              </h5>
-                              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400 space-y-1">
-                                {activity.activities.map((item, actIdx) => (
-                                  <li key={actIdx}>{item}</li>
-                                ))}
-                              </ul>
                             </div>
                           </div>
                         </div>
@@ -453,9 +441,9 @@ const KunjunganLuarDetail = () => {
                       slug: 'aktivitas-unit',
                     },
                     {
-                      title: 'Kunjungan ke Dalam BAST ANRI',
+                      title: 'Eksplorasi BAST ANRI',
                       color: 'blue-500',
-                      slug: 'kunjungan-ke-dalam-bast-anri',
+                      slug: 'eksplorasi-bast-anri',
                     },
                     {
                       title: 'Daily Activity',
@@ -638,7 +626,10 @@ const KunjunganLuarDetail = () => {
               </div>
             </Swiper>
           </div>
+
+=======
         </MotionDiv>
+
       </div>
       {/* Image Preview Modal */}
       {previewImage && (

@@ -30,7 +30,7 @@ const ProgramPreview = () => {
       particleColor: '#fde68a',
     },
     {
-      title: 'Kunjungan ke Dalam BAST ANRI',
+      title: 'Eksplorasi BAST ANRI',
       icon: '/images/Kunjungan ke Dalam BAST ANRI.png',
       description: 'Jelajahi dunia arsip lewat tur seru langsung di BAST ANRI!',
       features: [
@@ -46,7 +46,7 @@ const ProgramPreview = () => {
       particleColor: '#a5f3fc',
     },
     {
-      title: 'Kunjungan ke Luar BAST ANRI',
+      title: 'Learning Trip',
       icon: '/images/Kunjungan ke Luar BAST ANRI.png',
       description: 'Kami datang langsung ke tempatmu bawa semangat arsip!',
       features: [
@@ -79,7 +79,7 @@ const ProgramPreview = () => {
     },
     {
       title: 'Pameran Arsip',
-      icon: '/images/program//logo_program/pameran_arsip.jpg',
+      icon: '/images/program/logo_program/pameran_arsip.png',
       description: 'Lihat arsip tampil beda lewat pameran tematik dan interaktif!',
       features: [
         'Tema Sejarah Nasional',
