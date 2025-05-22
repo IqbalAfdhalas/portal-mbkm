@@ -1,15 +1,10 @@
-import {
-  getAuth,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-} from "firebase/auth";
-import { initializeApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getAnalytics, isSupported } from "firebase/analytics";
+// src/lib/firebase.ts
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-// Firebase config from environment variables
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -21,43 +16,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app;
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-// Initialize services
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-export const storage = getStorage(app);
-
-// Initialize analytics only on client-side with check for browser support
-export const initializeAnalytics = async () => {
-  if (typeof window !== "undefined") {
-    try {
-      const analyticsSupported = await isSupported();
-      if (analyticsSupported) {
-        return getAnalytics(app);
-      }
-    } catch (error) {
-      console.error("Analytics initialization error:", error);
-    }
-  }
-  return null;
-};
-
-// Helper function to set authentication persistence
-export const setAuthPersistence = async (remember: boolean) => {
-  const persistenceType = remember
-    ? browserLocalPersistence
-    : browserSessionPersistence;
-  return setPersistence(auth, persistenceType);
-};
-
-// Get current auth instance
-export const getCurrentAuth = () => auth;
-
-// Export app instance
-export default app;
+export { app, auth, db, storage };

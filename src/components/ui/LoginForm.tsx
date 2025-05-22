@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, User, Lock, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 interface LoginFormProps {
@@ -13,7 +13,7 @@ interface LoginFormProps {
 }
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
   rememberMe: boolean;
 }
@@ -30,7 +30,7 @@ const LoginForm = ({ onSuccess, redirect = '/' }: LoginFormProps) => {
     formState: { errors },
   } = useForm<LoginFormData>({
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
       rememberMe: false,
     },
@@ -39,7 +39,7 @@ const LoginForm = ({ onSuccess, redirect = '/' }: LoginFormProps) => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      await login(data.email, data.password, data.rememberMe);
+      await login(data.username, data.password, data.rememberMe);
       toast.success('Login berhasil!');
 
       if (onSuccess) {
@@ -52,9 +52,9 @@ const LoginForm = ({ onSuccess, redirect = '/' }: LoginFormProps) => {
 
       // Pesan error yang user-friendly
       const errorMessages: Record<string, string> = {
-        'auth/user-not-found': 'Email atau password salah',
-        'auth/wrong-password': 'Email atau password salah',
-        'auth/invalid-credential': 'Email atau password salah',
+        'auth/user-not-found': 'Username atau password salah',
+        'auth/wrong-password': 'Username atau password salah',
+        'auth/invalid-credential': 'Username atau password salah',
         'auth/too-many-requests': 'Terlalu banyak percobaan. Coba lagi nanti',
         'auth/user-disabled': 'Akun ini telah dinonaktifkan',
         'auth/network-request-failed': 'Masalah koneksi internet. Silakan periksa koneksi Anda',
@@ -82,39 +82,41 @@ const LoginForm = ({ onSuccess, redirect = '/' }: LoginFormProps) => {
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Email Input */}
+          {/* Username Input */}
           <div className="relative">
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              Email
+              Username
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+                <User className="h-5 w-5 text-gray-400" />
               </div>
               <input
-                id="email"
-                type="email"
-                autoComplete="email"
+                id="username"
+                type="text"
+                autoComplete="username"
                 className={`pl-10 w-full py-2 px-4 border ${
-                  errors.email
+                  errors.username
                     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
                     : 'border-gray-300 dark:border-gray-600 focus:ring-primary-light focus:border-primary-light'
                 } dark:bg-gray-800 dark:text-white rounded-md shadow-sm focus:outline-none focus:ring-2`}
-                placeholder="nama@example.com"
-                {...register('email', {
-                  required: 'Email harus diisi',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Format email tidak valid',
+                placeholder="Masukkan username"
+                {...register('username', {
+                  required: 'Username harus diisi',
+                  minLength: {
+                    value: 3,
+                    message: 'Username minimal 3 karakter',
                   },
                 })}
                 disabled={isLoading}
               />
             </div>
-            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
+            )}
           </div>
 
           {/* Password Input */}
