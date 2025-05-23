@@ -8,7 +8,7 @@ export interface CollaborationData {
   headerDescription: string;
   headerImageSrc: string;
   tags: string[];
-  stats: {
+  stats?: {
     value: string;
     label: string;
   }[];
@@ -55,12 +55,6 @@ export const collaborationData: CollaborationData = {
     'Kerjasama strategis antara program MBKM dan BAST ANRI untuk mengembangkan kompetensi mahasiswa di bidang kearsipan.',
   headerImageSrc: '/images/collaboration-illustration.png',
   tags: ['Kearsipan', 'Digitalisasi', 'Praktik Kerja', 'Penelitian', 'Tata Naskah'],
-  stats: [
-    { value: '50+', label: 'Perguruan Tinggi Mitra' },
-    { value: '200+', label: 'Alumni Program' },
-    { value: '15', label: 'Kota Pelaksanaan' },
-    { value: '4', label: 'Tahun Berjalan' },
-  ],
   accordionItems: [
     {
       id: 'latar-belakang',

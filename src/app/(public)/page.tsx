@@ -6,14 +6,11 @@ import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import Program from '@/components/sections/Program';
 import Stats from '@/components/sections/Stats';
-import KatalogMBKM from '@/components/sections/KatalogMBKM';
+import KenaliKami from '@/components/sections/KenaliKami';
 import Galery from '@/components/sections/Galery';
 import PojokMBKM from '@/components/sections/PojokMBKM';
 import Faq from '@/components/sections/Faq';
-import Contact from '@/components/sections/Contact';
 import { scrollToId } from '@/lib/utils';
-
-
 
 export default function HomePage() {
   useEffect(() => {
@@ -57,11 +54,10 @@ export default function HomePage() {
       <About />
       <Program />
       <Stats />
-      <KatalogMBKM />
+      <KenaliKami />
       <Galery />
       <PojokMBKM />
       <Faq />
-      <Contact />
     </main>
   );
 }

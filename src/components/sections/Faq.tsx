@@ -137,54 +137,34 @@ const Faq = () => {
   // FAQ data from the document
   const FaqItems = [
     {
-      question: 'Apa itu program magang MBKM BAST ANRI?',
+      question: 'Apa itu program MBKM BAST ANRI – USK Unggul?',
       answer:
-        'Program ini adalah bentuk pelaksanaan Merdeka Belajar Kampus Merdeka (MBKM) di lingkungan Arsip Nasional Republik Indonesia yang memberikan pengalaman kerja langsung bagi mahasiswa selama satu semester penuh (20 SKS). Mahasiswa akan belajar tentang tata kelola arsip modern dan praktik kearsipan digital di instansi pemerintah.',
+        'Program kolaborasi Merdeka Belajar Kampus Merdeka (MBKM) antara Balai Arsip Statis dan Tsunami (BAST ANRI) dengan Universitas Syiah Kuala (USK Unggul), memberi kesempatan mahasiswa USK belajar kearsipan modern, digitalisasi arsip, dan manajemen rekod di lingkungan Arsip Nasional RI.',
     },
     {
-      question: 'Magang di ANRI ngapain aja?',
+      question: 'Siapa saja yang berhak mengikuti program ini?',
       answer:
-        'Mahasiswa akan terlibat dalam beberapa kegiatan seperti digitalisasi arsip, pengembangan sistem kearsipan elektronik, dokumentasi kebijakan, pengelolaan arsip dinamis dan statis, serta proyek khusus sesuai latar belakang keilmuan. Selain itu, ada sesi mentoring mingguan dan kunjungan ke berbagai depot arsip ANRI.',
+        'Mahasiswa aktif USK semua fakultas, minimal semester 5, dengan IPK ≥ 3.00 serta memiliki Surat Rekomendasi dari fakultas dan program studi.',
     },
     {
-      question: 'Bagaimana cara mendaftar program ini?',
+      question: 'Berapa lama durasi magang dan beban SKS-nya?',
       answer:
-        'Pendaftaran dilakukan melalui portal MBKM kampus masing-masing. Setelah lolos seleksi administrasi, mahasiswa akan mengikuti wawancara online, dan jika diterima akan diarahkan untuk login ke portal BAST ANRI untuk melengkapi data dan memulai program.',
+        'Program berlangsung selama satu semester (6 bulan) dengan beban 20 SKS. Mahasiswa wajib menyelesaikan minimal 900 jam magang, termasuk tugas lapangan, proyek digitalisasi, dan laporan portofolio.',
     },
     {
-      question: 'Berapa lama durasi program magang MBKM di ANRI?',
+      question: 'Bagaimana mekanisme penilaian dan konversi SKS?',
       answer:
-        'Program berlangsung selama satu semester penuh (sekitar 6 bulan) dengan beban ekuivalen 20 SKS. Mahasiswa diharapkan menyelesaikan minimal 900 jam kegiatan yang terdiri dari magang langsung, pengerjaan proyek, dan dokumentasi portofolio.',
+        'Penilaian dilakukan oleh mentor ANRI dan dosen pembimbing USK berdasarkan kehadiran, logbook harian, laporan tengah, proyek akhir, dan penilaian sikap. Nilai akhir akan dikonversi menjadi 20 SKS sesuai ketentuan yang berlaku di Universitas Syiah Kuala.',
     },
     {
-      question: 'Saya lupa password untuk login ke portal, harus bagaimana?',
+      question: 'Apakah saya mendapat sertifikat setelah selesai program?',
       answer:
-        'Klik "Lupa Password" pada halaman login portal, lalu ikuti petunjuk untuk reset melalui email yang terdaftar. Email reset akan dikirim dalam waktu maksimal 5 menit. Jika masih mengalami kendala, hubungi admin di admin@bast-anri.go.id.',
+        'Ya, peserta yang menyelesaikan program akan mendapatkan sertifikat resmi dari BAST ANRI–USK sebagai bukti partisipasi dan penyelesaian program magang.',
     },
     {
-      question: 'Apakah saya mendapatkan sertifikat setelah selesai program?',
+      question: 'Bagaimana cara menghubungi admin atau mentor?',
       answer:
-        'Ya, setiap peserta yang menyelesaikan program dengan baik akan mendapatkan sertifikat resmi dari ANRI. Sertifikat akan diterbitkan dalam format digital dan fisik setelah program berakhir dan semua persyaratan terpenuhi, termasuk laporan akhir dan penilaian dari mentor.',
-    },
-    {
-      question: 'Apakah portal ini bisa diakses lewat HP?',
-      answer:
-        'Ya, portal MBKM BAST ANRI dirancang dengan responsif dan dapat diakses secara optimal baik melalui perangkat mobile maupun desktop. Semua fitur utama termasuk pengumpulan tugas, diskusi forum, dan pengisian logbook tersedia dalam versi mobile.',
-    },
-    {
-      question: 'Kapan tahap pendaftaran dibuka setiap tahunnya?',
-      answer:
-        'Pendaftaran dibuka dua kali setahun mengikuti semester akademik. Periode Gasal (Agustus-Januari) dibuka pendaftarannya pada Mei-Juni, sedangkan periode Genap (Februari-Juli) dibuka pendaftarannya pada November-Desember.',
-    },
-    {
-      question: 'Apakah ada tunjangan atau kompensasi untuk mahasiswa magang?',
-      answer:
-        'ANRI menyediakan uang transportasi harian bagi peserta program. Selain itu, peserta juga akan mendapatkan akses ke fasilitas kantor termasuk ruang kerja, perpustakaan arsip, dan kantin dengan subsidi. Untuk mahasiswa dari luar kota, ANRI tidak menyediakan akomodasi penginapan.',
-    },
-    {
-      question: 'Bagaimana proses penilaian dan konversi SKS di program ini?',
-      answer:
-        'Penilaian dilakukan oleh mentor ANRI dan dosen pendamping dari kampus dengan komponen: kehadiran (20%), logbook harian (20%), laporan tengah (20%), proyek akhir (30%), dan soft skills (10%). Hasil penilaian akan dikonversi menjadi 20 SKS sesuai kebijakan kampus masing-masing.',
+        'Untuk kendala teknis portal, silakan hubungi email portal@mbkm-usk.ac.id. Untuk konsultasi terkait kearsipan atau mentoring, dapat menghubungi BAST ANRI melalui email bast@anri.go.id.',
     },
   ];
 

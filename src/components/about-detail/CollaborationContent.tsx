@@ -127,26 +127,6 @@ export const CollaborationContent = () => {
             </div>
           </div>
         </div>
-
-        {/* Collaboration Stats with animated counters */}
-        {collaborationData.stats && (
-          <div className="p-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {collaborationData.stats.map((stat, index) => (
-                <MotionDiv
-                  key={index}
-                  className={`text-center p-4 rounded-lg ${currentTheme.statsCard}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                >
-                  <span className={`text-3xl font-bold ${currentTheme.icon}`}>{stat.value}</span>
-                  <p className={`text-sm mt-1 ${currentTheme.text}`}>{stat.label}</p>
-                </MotionDiv>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Secondary Navigation */}
