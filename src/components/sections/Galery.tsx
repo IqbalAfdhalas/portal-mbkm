@@ -6,512 +6,522 @@ import { Search, X, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 
-
 // Demo data for gallery images
 const demoImages = [
   {
     id: 1,
-    src: "/images/semua_gambar/galeri1.jpg",
-    title: "Kegiatan Magang BAST ANRI 2024",
-    category: "Kegiatan",
-    year: "2024",
-    date: "15 Maret 2024"
+    src: '/images/semua_gambar/galeri1.jpg',
+    title: 'Kegiatan Mengklasifikasi Arsip di Akuisisi',
+    category: 'Activity',
+    year: '2025',
+    date: '20 Maret 2025',
   },
   {
     id: 2,
-    src: "/images/semua_gambar/galeri2.jpg",
-    title: "Workshop Digitalisasi Arsip Nasional",
-    category: "Event",
-    year: "2024",
-    date: "2 Februari 2024"
+    src: '/images/semua_gambar/galeri2.jpg',
+    title: 'Black Friday',
+    category: 'Activity',
+    year: '2025',
+    date: '11 Apr 2025',
   },
   {
     id: 3,
-    src: "/images/semua_gambar/galeri3.jpg",
-    title: "Kunjungan Kepala ANRI",
-    category: "Dokumentasi",
-    year: "2023",
-    date: "10 Desember 2023"
+    src: '/images/semua_gambar/galeri3.jpg',
+    title: 'Pameran Mini Arsip di BAST',
+    category: 'Education',
+    year: '2025',
+    date: '22 Mei 2025',
   },
   {
     id: 4,
-    src: "/images/semua_gambar/galeri4.jpg",
-    title: "Presentasi Hasil Program MBKM",
-    category: "Kegiatan",
-    year: "2023",
-    date: "25 November 2023"
+    src: '/images/semua_gambar/galeri4.jpg',
+    title: 'Kegiatan Edukasi Kebencanaan',
+    category: 'Event',
+    year: '2025',
+    date: '8 Mei 2025',
   },
+
   {
     id: 5,
-    src: "/images/semua_gambar/galeri5.jpg",
-    title: "Pelatihan Pengelolaan Arsip",
-    category: "Event",
-    year: "2024",
-    date: "8 April 2024"
+    src: '/images/semua_gambar/galeri5.jpg',
+    title: 'Pameran Terbuka Arsip Tsunami',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
+
   {
     id: 6,
-    src: "/images/semua_gambar/galeri6.jpg",
-    title: "Seminar Nasional Kearsipan",
-    category: "Event",
-    year: "2023",
-    date: "5 Oktober 2023"
+    src: '/images/semua_gambar/galeri6.jpg',
+    title: 'Mahasiswa MBKM Sedang Menjelaskan',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
+
   {
     id: 7,
-    src: "/images/semua_gambar/galeri7.jpg",
-    title: "Orientasi Mahasiswa MBKM",
-    category: "Kegiatan",
-    year: "2024",
-    date: "22 Januari 2024"
+    src: '/images/semua_gambar/galeri7.jpg',
+    title: 'Foto Bersama Penyelenggara',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
+
   {
     id: 8,
-    src: "/images/semua_gambar/galeri8.jpg",
-    title: "Penutupan Program MBKM Batch 2023",
-    category: "Dokumentasi",
-    year: "2023",
-    date: "15 Desember 2023"
+    src: '/images/semua_gambar/galeri8.jpg',
+    title: 'Pemaparan Sejarah',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
+
   {
     id: 9,
-    src: "/images/semua_gambar/galeri9.jpg",
-    title: "Diskusi Panel Kearsipan Digital",
-    category: "Event",
-    year: "2024",
-    date: "12 Maret 2024"
+    src: '/images/semua_gambar/galeri9.jpg',
+    title: 'Ketertarikan dari Pengunjung',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
+
   {
     id: 10,
-    src: "/images/semua_gambar/galeri10.jpg",
-    title: "Kunjungan Studi di ANRI",
-    category: "Dokumentasi",
-    year: "2023",
-    date: "8 September 2023"
+    src: '/images/semua_gambar/galeri10.jpg',
+    title: 'Interaksi Bersama Pengunjung',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
   {
     id: 11,
-    src: "/images/semua_gambar/galeri11.jpg",
-    title: "Kolaborasi Lintas Institusi",
-    category: "Kegiatan",
-    year: "2024",
-    date: "5 April 2024"
+    src: '/images/semua_gambar/galeri11.jpg',
+    title: 'Pelayanan dari Pameran',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
   {
     id: 12,
-    src: "/images/semua_gambar/galeri12.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2024",
-    date: "28 Februari 2024"
+    src: '/images/semua_gambar/galeri12.jpg',
+    title: 'Berdiskusi Bersama Pengunjung',
+    category: 'Event',
+    year: '2024',
+    date: '11 November 2024',
   },
   {
     id: 13,
-    src: "/images/semua_gambar/galeri13.jpeg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2024",
-    date: "29 Februari 2024"
+    src: '/images/semua_gambar/galeri13.jpg',
+    title: 'Penyusunan Buku POCADI',
+    category: 'Activity',
+    year: '2024',
+    date: '20 November 2024',
   },
   {
     id: 14,
-    src: "/images/semua_gambar/galeri14.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2024",
-    date: "30 Februari 2024"
+    src: '/images/semua_gambar/galeri14.jpg',
+    title: 'Pertunjukan Laraska',
+    category: 'Event',
+    year: '2024',
+    date: '08 November 2024',
   },
   {
     id: 15,
-    src: "/images/semua_gambar/galeri14.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "31 Februari 2024"
+    src: '/images/semua_gambar/galeri15.jpg',
+    title: 'Pameran Arsip di Balai Meuseuraya Aceh',
+    category: 'Event',
+    year: '2024',
+    date: '08 November 2024',
   },
   {
     id: 16,
-    src: "/images/semua_gambar/galeri16.PNG",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "1 januari 2025"
+    src: '/images/semua_gambar/galeri16.png',
+    title: 'Penyusunan Box',
+    category: 'Activity',
+    year: '2024',
+    date: '14 April 2025',
   },
   {
     id: 17,
-    src: "/images/semua_gambar/galeri17.PNG",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "2 januari 2025"
+    src: '/images/semua_gambar/galeri17.png',
+    title: 'Klasifikasi Folder Arsip',
+    category: 'Activity',
+    year: '2024',
+    date: '11 April 2025',
   },
   {
     id: 18,
-    src: "/images/semua_gambar/galeri18.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "3 januari 2025"
+    src: '/images/semua_gambar/galeri18.jpg',
+    title: 'Kegiatan di Pengolahan',
+    category: 'Activity',
+    year: '2025',
+    date: '03 Maret 2025',
   },
   {
     id: 19,
-    src: "/images/semua_gambar/galeri19.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "4 januari 2025"
+    src: '/images/semua_gambar/galeri19.jpg',
+    title: 'Penataan Arsip',
+    category: 'Activity',
+    year: '2025',
+    date: '18 Maret 2025',
   },
   {
     id: 20,
-    src: "/images/semua_gambar/galeri20.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "5 januari 2025"
+    src: '/images/semua_gambar/galeri19.jpg',
+    title: 'Ruang Penyimpanan Arsip',
+    category: 'Activity',
+    year: '2025',
+    date: '17 April 2025',
   },
   {
     id: 21,
-    src: "/images/semua_gambar/galeri21.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "6 januari 2025"
+    src: '/images/semua_gambar/galeri21.jpg',
+    title: 'Ruang Penyimpanan Arsip di Lampineung',
+    category: 'Activity',
+    year: '2025',
+    date: '26 Maret 2025',
   },
   {
     id: 22,
-    src: "/images/semua_gambar/galeri22.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "7 januari 2025"
+    src: '/images/semua_gambar/galeri22.jpg',
+    title: 'Maulid Nabi Muhammad SAW 1446 H',
+    category: 'Event',
+    year: '2024',
+    date: '02 Oktober 2024',
   },
+
   {
     id: 23,
-    src: "/images/semua_gambar/galeri23.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "8 januari 2025"
+    src: '/images/semua_gambar/galeri23.jpg',
+    title: 'Behind The Scene',
+    category: 'Activity',
+    year: '2024',
+    date: '17 Oktober 2024',
   },
   {
     id: 24,
-    src: "/images/semua_gambar/galeri24.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "9 januari 2025"
+    src: '/images/semua_gambar/galeri24.jpg',
+    title: 'Munggahan ',
+    category: 'Event',
+    year: '2025',
+    date: '25 Februari 2025',
   },
   {
     id: 25,
-    src: "/images/semua_gambar/galeri25.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "10 januari 2025"
+    src: '/images/semua_gambar/galeri25.jpg',
+    title: 'Pengenalan dan Tour Kantor Arsip ',
+    category: 'Education',
+    year: '2025',
+    date: '25 April 2025',
   },
   {
     id: 26,
-    src: "/images/semua_gambar/galeri26.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 januari 2025"
+    src: '/images/semua_gambar/galeri26.jpg',
+    title: 'Kunjungan oleh Prof. Yuka Mizumoto  ',
+    category: 'Education',
+    year: '2025',
+    date: '12 Maret 2025',
   },
   {
     id: 27,
-    src: "/images/semua_gambar/galeri27.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "12 januari 2025"
+    src: '/images/semua_gambar/galeri27.jpg',
+    title: 'Buka Puasa Bersama  ',
+    category: 'Event',
+    year: '2025',
+    date: '15 Maret 2025',
   },
   {
     id: 28,
-    src: "/images/semua_gambar/galeri28.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "13 januari 2025"
+    src: '/images/semua_gambar/galeri28.jpg',
+    title: 'Mahasiswa MBKM Sedang Menjelaskan  ',
+    category: 'Activity',
+    year: '2025',
+    date: '06 Maret 2025',
   },
   {
     id: 29,
-    src: "/images/semua_gambar/galeri29.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "14 januari 2025"
+    src: '/images/semua_gambar/galeri29.jpg',
+    title: 'Mahasiswa Membenahi Arsip  ',
+    category: 'Activity',
+    year: '2025',
+    date: '09 Maret 2025',
   },
   {
     id: 30,
-    src: "/images/semua_gambar/galeri30.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "15 januari 2025"
+    src: '/images/semua_gambar/galeri30.jpg',
+    title: 'Membongkar Klip pada Arsip  ',
+    category: 'Activity',
+    year: '2025',
+    date: '13 Maret 2025',
   },
   {
     id: 31,
-    src: "/images/semua_gambar/galeri31.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "16 januari 2025"
+    src: '/images/semua_gambar/galeri31.jpg',
+    title: 'Black Friday  ',
+    category: 'Fun-Activity',
+    year: '2025',
+    date: '15 November 2024',
   },
   {
     id: 32,
-    src: "/images/semua_gambar/galeri32.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "17 januari 2025"
+    src: '/images/semua_gambar/galeri32.jpg',
+    title: 'Memotong Label untuk Penamaan pada Arsip  ',
+    category: 'Activity',
+    year: '2025',
+    date: '16 April 2025',
   },
   {
     id: 33,
-    src: "/images/semua_gambar/galeri33.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "18 januari 2025"
+    src: '/images/semua_gambar/galeri33.jpg',
+    title: 'Kunjungan dalam Rangka HUT PMI  ',
+    category: 'Activity',
+    year: '2025',
+    date: '05 Mei 2025',
   },
   {
     id: 34,
-    src: "/images/semua_gambar/galeri34.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "19 januari 2025"
+    src: '/images/semua_gambar/galeri34.jpg',
+    title: 'Foto Bersama di PMI  ',
+    category: 'Activity',
+    year: '2025',
+    date: '05 Mei 2025',
   },
   {
     id: 35,
-    src: "/images/semua_gambar/galeri35.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "20 januari 2025"
-  },
-  {
-    id: 36,
-    src: "/images/semua_gambar/galeri36.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "21 januari 2025"
-  },
-  {
-    id: 37,
-    src: "/images/semua_gambar/galeri37.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "22 januari 2025"
+    src: '/images/semua_gambar/galeri35.jpg',
+    title: 'Sesi Podcast Bersama Relawan  ',
+    category: 'Activity',
+    year: '2025',
+    date: '05 Mei 2025',
   },
   {
     id: 38,
-    src: "/images/semua_gambar/galeri38.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "23 januari 2025"
+    src: '/images/semua_gambar/galeri38.jpg',
+    title: 'Podcast POV Mahasiswa  ',
+    category: 'Activity',
+    year: '2025',
+    date: '05 Mei 2025',
   },
   {
     id: 39,
-    src: "/images/semua_gambar/galeri39.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "24 januari 2025"
-  },
-  {
-    id: 40,
-    src: "/images/semua_gambar/galeri40.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "25 januari 2025"
-  },
-  {
-    id: 41,
-    src: "/images/semua_gambar/galeri41.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "26 januari 2025"
-  },
-  {
-    id: 42,
-    src: "/images/semua_gambar/galeri42.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "27 januari 2025"
+    src: '/images/semua_gambar/galeri39.jpg',
+    title: 'Prasasti Jejak Bapak SBY  ',
+    category: 'Activity',
+    year: '2025',
+    date: '05 Mei 2025',
   },
   {
     id: 43,
-    src: "/images/semua_gambar/galeri43.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "28 januari 2025"
+    src: '/images/semua_gambar/galeri43.jpg',
+    title: 'Kunjungan Bapak Ihwan ke USK  ',
+    category: 'Event',
+    year: '2025',
+    date: '17 Maret 2025',
   },
+
   {
     id: 44,
-    src: "/images/semua_gambar/galeri44.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "30 januari 2025"
-  },
-  {
-    id: 45,
-    src: "/images/semua_gambar/galeri45.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "31 januari 2025"
-  },
-  {
-    id: 46,
-    src: "/images/semua_gambar/galeri46.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "1 febuari 2025"
-  },
-  {
-    id: 47,
-    src: "/images/semua_gambar/galeri47.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "2 febuari 2025"
-  },
-  {
-    id: 48,
-    src: "/images/semua_gambar/galeri48.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "3 febuari 2025"
-  },
-  {
-    id: 49,
-    src: "/images/semua_gambar/galeri49.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "4 febuari 2025"
-  },
-  {
-    id: 50,
-    src: "/images/semua_gambar/galeri50.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "5 febuari 2025"
-  },
-  {
-    id: 51,
-    src: "/images/semua_gambar/galeri51.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "6 febuari 2025"
-  },
-  {
-    id: 52,
-    src: "/images/semua_gambar/galeri52.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "7 febuari 2025"
-  },
-  {
-    id: 53,
-    src: "/images/semua_gambar/galeri53.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "8 febuari 2025"
-  },
-  {
-    id: 54,
-    src: "/images/semua_gambar/galeri54.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "9 febuari 2025"
+    src: '/images/semua_gambar/galeri43.jpg',
+    title: 'BapaK Ihwan sebagai Narasumber  ',
+    category: 'Event',
+    year: '2025',
+    date: '17 Maret 2025',
   },
   {
     id: 55,
-    src: "/images/semua_gambar/galeri55.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "10 febuari 2025"
+    src: '/images/semua_gambar/galeri55.jpg',
+    title: 'Peresmian Pusat Edukasi Tsunami Aceh di UTU  ',
+    category: 'Event',
+    year: '2024',
+    date: '10 Desember 2024',
   },
   {
     id: 56,
-    src: "/images/semua_gambar/galeri56.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    src: '/images/semua_gambar/galeri56.jpg',
+    title: 'Foto Bersama  ',
+    category: 'Event',
+    year: '2024',
+    date: '10 Desember 2024',
   },
+
   {
     id: 57,
-    src: "/images/semua_gambar/galeri57.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    src: '/images/semua_gambar/galeri57.jpg',
+    title: 'Black Friday  ',
+    category: 'Fun-Activity',
+    year: '2024',
+    date: '22 November 2024',
   },
   {
     id: 58,
-    src: "/images/semua_gambar/galeri58.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
-  },
-  {
-    id: 59,
-    src: "/images/semua_gambar/galeri59.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    src: '/images/semua_gambar/galeri58.jpg',
+    title: 'Black Friday  ',
+    category: 'Fun-Activity',
+    year: '2025',
+    date: '09 Mei 2025',
   },
   {
     id: 60,
-    src: "/images/semua_gambar/galeri60.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    src: '/images/semua_gambar/galeri60.jpg',
+    title: 'Rapat Project Akhir  ',
+    category: 'Activity',
+    year: '2025',
+    date: '09 Mei 2025',
   },
   {
     id: 61,
-    src: "/images/semua_gambar/galeri61.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    src: '/images/semua_gambar/galeri61.jpg',
+    title: 'Presentasi oleh Mahasiswa MBKM  ',
+    category: 'Activity',
+    year: '2025',
+    date: '09 Mei 2025',
   },
   {
-    id: 62,
-    src: "/images/semua_gambar/galeri62.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    id: 64,
+    src: '/images/semua_gambar/galeri64.jpg',
+    title: 'Kegiatan Mahasiswa di Unit Preservasi  ',
+    category: 'Activity',
+    year: '2024',
+    date: '17 September 2024',
   },
   {
-    id: 63,
-    src: "/images/semua_gambar/galeri63.jpg",
-    title: "Pelatihan Pengembangan Kompetensi",
-    category: "Event",
-    year: "2025",
-    date: "11 febuari 2025"
+    id: 65,
+    src: '/images/semua_gambar/galeri65.jpg',
+    title: 'Mendata Arsip  ',
+    category: 'Activity',
+    year: '2024',
+    date: '18 September 2024',
+  },
+  {
+    id: 69,
+    src: '/images/semua_gambar/galeri69.jpg',
+    title: 'Interaksi Bersama Panitian TDMRC  ',
+    category: 'Activity',
+    year: '2024',
+    date: '12 November 2024',
+  },
+  {
+    id: 71,
+    src: '/images/semua_gambar/galeri71.jpg',
+    title: 'Kunjungan oleh Direktur BNPB  ',
+    category: 'Activity',
+    year: '2024',
+    date: '11 Oktober 2024',
+  },
+
+  {
+    id: 73,
+    src: '/images/semua_gambar/galeri73.jpg',
+    title: 'Orientasi Materi kepada Mahasiswa MBKM  ',
+    category: 'Activity',
+    year: '2024',
+    date: '10 September 2024',
+  },
+  {
+    id: 74,
+    src: '/images/semua_gambar/galeri74.jpg',
+    title: 'Rapat Mahasiswa Bersama Bapak Ihwan  ',
+    category: 'Activity',
+    year: '2025',
+    date: '08 September 2025',
+  },
+  {
+    id: 75,
+    src: '/images/semua_gambar/galeri75.jpg',
+    title: 'Pelepasan Mahasiswa MBKM Angkatan 2  ',
+    category: 'Activity',
+    year: '2025',
+    date: '04 September 2025',
+  },
+  {
+    id: 76,
+    src: '/images/semua_gambar/galeri76.jpg',
+    title: 'Upacara Hari Korps Pegawai RI  ',
+    category: 'Activity',
+    year: '2024',
+    date: '29 November 2024',
+  },
+  {
+    id: 77,
+    src: '/images/semua_gambar/galeri77.jpg',
+    title: 'Kunjungan Barenbag Kemnaker RI  ',
+    category: 'Activity',
+    year: '2024',
+    date: '01 Oktober 2024',
+  },
+  {
+    id: 78,
+    src: '/images/semua_gambar/galeri78.jpg',
+    title: 'Studi Tiru di BAST  ',
+    category: 'Activity',
+    year: '2024',
+    date: '01 Oktober 2024',
+  },
+  {
+    id: 79,
+    src: '/images/semua_gambar/galeri79.jpg',
+    title: 'Implementation Agreement oleh BAST dan FMIPA USK  ',
+    category: 'Activity',
+    year: '2024',
+    date: '03 Oktober 2024',
+  },
+  {
+    id: 80,
+    src: '/images/semua_gambar/galeri80.jpg',
+    title: 'Menyambut Ramadan 1445 H  ',
+    category: 'Event',
+    year: '2024',
+    date: '07 Maret 2024',
+  },
+  {
+    id: 82,
+    src: '/images/semua_gambar/galeri82.jpg',
+    title: 'Sharing Session Bersama BNPB  ',
+    category: 'Activity',
+    year: '2024',
+    date: '08 Oktober 2024',
+  },
+
+  {
+    id: 83,
+    src: '/images/semua_gambar/galeri83.jpg',
+    title: 'Rangka Memperingati 20 Tahun Gempa dan Tsunami  ',
+    category: 'Event',
+    year: '2024',
+    date: '08 Oktober 2024',
+  },
+  {
+    id: 87,
+    src: '/images/semua_gambar/galeri87.jpg',
+    title: 'Pembekalan Dasar Kearsipan pada Mahasiswa MBKM  ',
+    category: 'Activity',
+    year: '2024',
+    date: '21 Februari 2024',
+  },
+  {
+    id: 88,
+    src: '/images/semua_gambar/galeri88.jpg',
+    title: 'Kunjungan dari Kanwil Kemenag Provinsi Aceh  ',
+    category: 'Activity',
+    year: '2024',
+    date: '18 Oktober 2024',
+  },
+  {
+    id: 89,
+    src: '/images/semua_gambar/galeri89.jpeg',
+    title: 'Kunjungan dari Kanwil Kemenag Provinsi Aceh  ',
+    category: 'Activity',
+    year: '2024',
+    date: '28 Oktober 2024',
+  },
+  {
+    id: 90,
+    src: '/images/semua_gambar/BAS05589.JPG',
+    title: 'Webinar Bersama CSEAS-KU  ',
+    category: 'Event',
+    year: '2024',
+    date: '05 November 2024',
   },
 ];
 
@@ -561,14 +571,11 @@ const Lightbox = ({ image, onClose, onPrev, onNext, hasNext, hasPrev }) => {
 
         <div className="flex flex-col bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
           <div className="flex-1 overflow-hidden">
-
-            <img 
-              src={image.src} 
-              alt={image.title} 
+            <img
+              src={image.src}
+              alt={image.title}
               className="max-h-[70vh] mx-auto object-contain"
-
             />
-
           </div>
 
           <div className="p-4 border-t border-gray-200 dark:border-gray-700">
@@ -646,7 +653,7 @@ const Galery = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('masonry'); // masonry or grid
 
-  const categories = ['all', 'Event', 'Kegiatan', 'Dokumentasi'];
+  const categories = ['all', 'Event', 'Activity']; //'Dokumentasi'
   const years = ['all', '2023', '2024', '2025'];
 
   // Filter images based on active filters and search query

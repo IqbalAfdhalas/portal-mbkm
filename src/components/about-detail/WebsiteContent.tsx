@@ -69,14 +69,6 @@ export const WebsiteContent: React.FC = () => {
     { id: 'technical', label: 'Teknis', icon: Settings },
   ];
 
-  // Placeholder stats for website metrics (can be replaced with actual data)
-  const websiteStats = [
-    { value: '2K+', label: 'Pengguna' },
-    { value: '24/7', label: 'Ketersediaan' },
-    { value: '100+', label: 'Dokumen' },
-    { value: '98%', label: 'Kepuasan' },
-  ];
-
   return (
     <div className="space-y-8">
       {/* Dynamic Header Section */}
@@ -151,24 +143,6 @@ export const WebsiteContent: React.FC = () => {
                 )}
               </MotionDiv>
             </div>
-          </div>
-        </div>
-
-        {/* Website Stats with animated counters */}
-        <div className="p-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {websiteStats.map((stat, index) => (
-              <MotionDiv
-                key={index}
-                className={`text-center p-4 rounded-lg ${currentTheme.statsCard}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-              >
-                <span className={`text-3xl font-bold ${currentTheme.icon}`}>{stat.value}</span>
-                <p className={`text-sm mt-1 ${currentTheme.text}`}>{stat.label}</p>
-              </MotionDiv>
-            ))}
           </div>
         </div>
       </div>

@@ -7,5 +7,4 @@ export const navigation = [
   { id: 'Galery', name: 'Galeri', href: '/#Galery' },
   { id: 'pojok-mbkm', name: 'Pojok MBKM', href: '/#pojok-mbkm' },
   { id: 'Faq', name: 'FAQ', href: '/#Faq' },
-  { id: 'kontak', name: 'Kontak', href: '/#contact' },
 ];

@@ -302,7 +302,7 @@ const JournalTable = ({
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                     className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 max-w-xs break-words">
                       <div className="flex items-start space-x-3">
                         {journal.media && journal.media.length > 0 ? (
                           <img
@@ -316,10 +316,10 @@ const JournalTable = ({
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white break-words">
                             {journal.title}
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                          <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-3">
                             {journal.summary}
                           </p>
                         </div>

@@ -12,7 +12,7 @@ export interface MBKMData {
   headerDescription: string;
   headerImageSrc: string;
   tags: string[];
-  stats: {
+  stats?: {
     value: string;
     label: string;
   }[];
@@ -44,17 +44,11 @@ export interface MBKMData {
 }
 
 export const mbkmData: MBKMData = {
-  headerTitle: 'Merdeka Belajar Kampus Merdeka (MBKM)',
+  headerTitle: 'MBKM USK UNGGUL',
   headerDescription:
     'Program pendidikan yang memberikan kebebasan dan otonomi kepada kampus dan mahasiswa untuk mengembangkan potensi sesuai minat dan bakat.',
-  headerImageSrc: '/images/ilustrasiMBKM.png',
+  headerImageSrc: '/images/Tentang/MBKM/ilustrasiMBKM.png',
   tags: ['Pendidikan', 'Magang', 'Penelitian', 'Wirausaha', 'Pengalaman Industri'],
-  stats: [
-    { value: '400+', label: 'Perguruan Tinggi' },
-    { value: '8', label: 'Bentuk Kegiatan' },
-    { value: '20-40', label: 'SKS Konversi' },
-    { value: '500+', label: 'Mitra Industri' },
-  ],
 
   // Tambahkan ini
   features: [
@@ -81,40 +75,42 @@ export const mbkmData: MBKMData = {
       id: 'latar-belakang',
       title: 'Latar Belakang Program',
       content: `
-    <div class="mb-4 text-justify">
-      <p class="mb-3">
-        Program <em>Merdeka Belajar – Kampus Merdeka (MBKM)</em> merupakan inisiatif transformasional dari 
-        <strong>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek)</strong> 
-        yang bertujuan membuka ruang belajar seluas-luasnya bagi Mahasiswa — tidak hanya terbatas di ruang kelas, 
-        tetapi juga di dunia nyata yang lebih dinamis dan kompleks.
-      </p>
+<div class="mb-4 text-justify">
+  <p class="mb-3">
+    <strong>Merdeka Belajar – Kampus Merdeka (MBKM)</strong> merupakan kebijakan strategis dari 
+    <strong>Kemendikbudristek</strong> yang memberikan ruang bagi Mahasiswa untuk belajar di luar program studi, baik di dalam 
+    maupun di luar kampus. Di <strong>Universitas Syiah Kuala (USK)</strong>, MBKM menjadi salah satu langkah nyata menuju 
+    <em>USK Unggul</em>, dengan menekankan penguatan kompetensi, relevansi pembelajaran, dan kesiapan Mahasiswa menghadapi dunia kerja nyata.
+  </p>
 
-      <p class="mb-3">
-        Gagasan <strong>MBKM</strong> lahir dari kesadaran bahwa sistem pendidikan tinggi di Indonesia perlu beradaptasi 
-        dengan perubahan zaman. Dunia kerja terus berkembang, sementara pembelajaran di kampus kerap belum sepenuhnya 
-        membekali Mahasiswa dengan pengalaman praktis dan keterampilan kontekstual yang dibutuhkan.
-      </p>
+  <p class="mb-3">
+    Melalui MBKM, Mahasiswa USK diberi kesempatan untuk terjun langsung ke dunia kerja dan masyarakat melalui berbagai program, 
+    seperti <em>magang</em>, <em>proyek kemanusiaan</em>, <em>studi independen</em>, dan <em>pertukaran pelajar</em>. 
+    Program ini menjadi wadah pembelajaran kontekstual yang mempertemukan teori dengan praktik. Mahasiswa tidak hanya diasah 
+    dari sisi akademik, tetapi juga dalam mentalitas, kemampuan beradaptasi, serta keterampilan pengambilan keputusan di lapangan.
+  </p>
 
-      <p class="mb-3">
-        Program ini hadir untuk menjembatani kesenjangan tersebut, dengan membuka jalur pembelajaran alternatif 
-        yang lebih fleksibel dan aplikatif.
-      </p>
+  <p class="mb-3">
+    Inisiatif ini sejalan dengan komitmen USK untuk mencetak lulusan unggul, berdaya saing tinggi, dan mampu menjawab 
+    tantangan global. Dengan mendorong Mahasiswa keluar dari zona nyaman dan menghadapi pengalaman belajar nyata, 
+    MBKM menjadi pondasi penting dalam membentuk karakter, pola pikir kritis, dan kompetensi profesional Mahasiswa USK.
+  </p>
 
-      <h4 class="font-semibold mb-2">🔎 Mengapa MBKM Diperlukan?</h4>
-      <ul class="list-disc pl-5 space-y-2 mb-4 text-sm">
-        <li><strong>Kesenjangan antara teori dan praktik</strong> — Lulusan sering kali belum siap menghadapi tantangan kerja nyata karena terbatasnya pengalaman di luar kampus.</li>
-        <li><strong>Perubahan dunia kerja yang cepat</strong> — Perkembangan teknologi dan industri menuntut pembaruan kompetensi secara terus-menerus.</li>
-        <li><strong>Kurikulum yang terlalu kaku</strong> — Mahasiswa cenderung terikat pada jalur studi sempit, sehingga tidak leluasa mengeksplorasi potensi lintas bidang.</li>
-        <li><strong>Minimnya ruang eksplorasi mandiri</strong> — Sistem belajar konvensional belum sepenuhnya memberi ruang untuk pengembangan karakter, kreativitas, dan inisiatif.</li>
-        <li><strong>Kurangnya koneksi ke dunia profesional</strong> — Banyak Mahasiswa belum memiliki akses langsung untuk membangun jejaring dengan praktisi industri atau lembaga profesional.</li>
-      </ul>
+  <h4 class="font-semibold mb-2">🔍 Mengapa MBKM Penting?</h4>
+  <ul class="list-disc pl-5 space-y-2 mb-4 text-sm">
+    <li><strong>Mengatasi kesenjangan teori dan praktik</strong> — Mahasiswa bisa langsung menghadapi tantangan dunia kerja.</li>
+    <li><strong>Mengikuti perkembangan industri</strong> — Dunia kerja terus berubah, dan Mahasiswa harus siap beradaptasi.</li>
+    <li><strong>Memberikan fleksibilitas kurikulum</strong> — Mahasiswa bisa mengeksplorasi lintas bidang sesuai minat dan bakat.</li>
+    <li><strong>Mendorong pengembangan soft skill</strong> — Seperti kepemimpinan, komunikasi, dan manajemen waktu di lingkungan nyata.</li>
+    <li><strong>Membangun koneksi profesional</strong> — Mahasiswa mendapat kesempatan menjalin relasi dengan praktisi, institusi, dan dunia usaha.</li>
+  </ul>
 
-      <p>
-        Melalui <strong>MBKM</strong>, Mahasiswa diajak untuk keluar dari zona nyaman, menghadapi dinamika lapangan secara langsung, 
-        dan mempersiapkan diri menghadapi dunia kerja secara lebih matang — bukan hanya secara akademik, tetapi juga secara mental dan sosial.
-      </p>
-    </div>
-  `,
+  <p class="mb-3">
+    Dengan pendekatan ini, diharapkan Mahasiswa USK tidak hanya unggul dalam aspek akademik, tetapi juga mampu tampil 
+    sebagai pribadi yang adaptif, visioner, dan siap berkontribusi bagi masyarakat serta pembangunan bangsa di masa depan.
+  </p>
+</div>
+`,
       isOpen: true,
     },
     {
@@ -144,10 +140,6 @@ export const mbkmData: MBKMData = {
           <p class="mb-3">Mekanisme Umum Program MBKM meliputi:</p>
           
           <ol class="list-decimal pl-5 space-y-3">
-            <li>
-              <p class="font-semibold">Delapan Bentuk Kegiatan Pembelajaran</p>
-              <p class="mt-1">Mahasiswa memiliki kesempatan untuk mengikuti kegiatan pembelajaran di luar program studi seperti magang, proyek di desa, pertukaran pelajar, penelitian, wirausaha, studi independen, proyek kemanusiaan, dan kegiatan mengajar di sekolah.</p>
-            </li>
             
             <li>
               <p class="font-semibold">Konversi SKS</p>
@@ -177,23 +169,32 @@ export const mbkmData: MBKMData = {
       id: 'faqs',
       title: 'Pertanyaan Umum',
       content: `
-        <div class="mb-4">
-          <div class="mb-4">
-            <p class="font-semibold">Bagaimana cara mendaftar program MBKM?</p>
-            <p class="mt-1">Pendaftaran dilakukan melalui platform MBKM resmi Kemendikbud di <a href="https://kampusmerdeka.kemdikbud.go.id/" class="text-blue-600 hover:underline">https://kampusmerdeka.kemdikbud.go.id/</a> dengan menggunakan akun yang terdaftar, serta menyesuaikan kembali dengan ketentuan dari prodi masing-masing.</p>
-          </div>
-          
-          <div class="mb-4">
-            <p class="font-semibold">Apakah semua mahasiswa dapat mengikuti program MBKM?</p>
-            <p class="mt-1">Program MBKM terbuka untuk semua mahasiswa program sarjana atau diploma yang telah menyelesaikan semester pertama dan memenuhi persyaratan yang ditentukan oleh perguruan tinggi masing-masing.</p>
-          </div>
-          
-          <div>
-            <p class="font-semibold">Berapa banyak SKS yang dapat dikonversi melalui program MBKM?</p>
-            <p class="mt-1">Mahasiswa dapat mengambil dan diakui SKS kegiatan pembelajaran di luar kampus sebanyak satu semester atau setara dengan 18 ~ 22 SKS.</p>
-          </div>
-        </div>
-      `,
+<div class="space-y-4">
+  <ul class="space-y-4 list-none">
+    <li>
+      <p class="font-semibold">❓ Bagaimana cara mendaftar program MBKM?</p>
+      <p class="ml-5 mt-1">– Pendaftaran dilakukan melalui platform resmi 
+        <a href="https://mbkmunggul.usk.ac.id/" target="_blank" class="text-blue-600 hover:underline">kampusmerdeka.kemdikbud.go.id</a>, 
+        menggunakan akun terdaftar, dan mengikuti ketentuan dari program studi masing-masing.
+      </p>
+    </li>
+
+    <li>
+      <p class="font-semibold">❓ Apakah semua mahasiswa dapat mengikuti program MBKM?</p>
+      <p class="ml-5 mt-1">– Program ini terbuka untuk Mahasiswa Sarjana atau Diploma yang sudah menyelesaikan semester pertama 
+        dan memenuhi persyaratan dari kampus asal.
+      </p>
+    </li>
+
+    <li>
+      <p class="font-semibold">❓ Berapa banyak SKS yang dapat dikonversi melalui program MBKM?</p>
+      <p class="ml-5 mt-1">– Mahasiswa dapat mengambil kegiatan pembelajaran di luar kampus sebanyak satu semester, setara 
+        <strong>18–22 SKS</strong>, sesuai kebijakan kampus dan program yang diikuti.
+      </p>
+    </li>
+  </ul>
+</div>
+`,
       isOpen: false,
     },
   ],

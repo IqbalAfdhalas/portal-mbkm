@@ -23,6 +23,10 @@ type Batch = '2024' | '2025' | 'Semua';
 type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
 type ViewMode = 'grid' | 'list';
 
+type PaginationState = {
+  [key: string]: number;
+};
+
 const KenaliKami = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
@@ -33,7 +37,12 @@ const KenaliKami = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPages, setCurrentPages] = useState<PaginationState>({
+    'Pembimbing Kampus': 1,
+    'Mentor BAST ANRI': 1,
+    Mahasiswa: 1,
+  });
+
   const cardsPerPage = viewMode === 'grid' ? 8 : 10;
 
   // Calculate statistics
@@ -83,7 +92,11 @@ const KenaliKami = () => {
     }
 
     setFilteredData(result);
-    setCurrentPage(1); // Reset to first page after filtering
+    setCurrentPages({
+      'Pembimbing Kampus': 1,
+      'Mentor BAST ANRI': 1,
+      Mahasiswa: 1,
+    }); // Reset to first page after filtering
   }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit]);
 
   const sortedData = [...filteredData].sort((a, b) => {
@@ -167,20 +180,19 @@ const KenaliKami = () => {
           : mahasiswa;
 
     const totalPages = Math.ceil(data.length / cardsPerPage);
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (currentPages[role] < totalPages) {
+      setCurrentPages(prev => ({ ...prev, [role]: prev[role] + 1 }));
     }
   };
 
-  const prevPage = (role: keyof PaginationState) => {
-    const currentPage = currentPages[role];
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+  const prevPage = (role: string) => {
+    if (currentPages[role] > 1) {
+      setCurrentPages(prev => ({ ...prev, [role]: prev[role] - 1 }));
     }
   };
 
   // Render paginated cards - now role-specific
-  const renderPaginatedProfiles = (data: typeof profileData, role: keyof PaginationState) => {
+  const renderPaginatedProfiles = (data: typeof profileData, role: string) => {
     const currentPage = currentPages[role];
     const paginatedData = paginate(data, currentPage);
     const totalPages = Math.ceil(data.length / cardsPerPage);

@@ -201,7 +201,7 @@ const AuthorManagement: React.FC<AuthorManagementProps> = ({ authors, onClose, o
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-y-auto max-h-[80vh]">
           {showForm ? (
             <div className="overflow-y-auto max-h-[70vh] p-6">
               <div className="mb-6">

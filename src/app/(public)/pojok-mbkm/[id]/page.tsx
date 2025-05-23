@@ -380,7 +380,27 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-md mb-8"
             >
-              <div className="prose dark:prose-invert prose-lg max-w-none prose-headings:text-gray-800 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300">
+              <div
+                className="prose dark:prose-invert prose-lg max-w-none 
+                prose-headings:text-gray-800 dark:prose-headings:text-white prose-headings:font-bold prose-headings:mb-6 prose-headings:mt-8 prose-headings:leading-tight first:prose-headings:mt-0
+                prose-h1:text-3xl prose-h1:mb-8 prose-h1:pb-3 prose-h1:border-b prose-h1:border-gray-200 dark:prose-h1:border-gray-700
+                prose-h2:text-2xl prose-h2:mb-6 prose-h2:mt-10 prose-h2:text-blue-800 dark:prose-h2:text-blue-300
+                prose-h3:text-xl prose-h3:mb-4 prose-h3:mt-8 prose-h3:text-gray-800 dark:prose-h3:text-gray-200
+                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:text-justify prose-p:leading-loose prose-p:mb-6 prose-p:hyphens-auto
+                prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
+                prose-em:text-gray-600 dark:prose-em:text-gray-400 prose-em:italic prose-em:font-medium
+                prose-ul:mb-6 prose-ul:space-y-2 prose-ol:mb-6 prose-ol:space-y-2
+                prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:leading-loose prose-li:pl-2
+                prose-ul>li:before:bg-blue-500 prose-ul>li:before:w-2 prose-ul>li:before:h-2
+                prose-ol>li:marker:text-blue-600 dark:prose-ol>li:marker:text-blue-400 prose-ol>li:marker:font-bold
+                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:my-8 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:rounded-r-lg prose-blockquote:italic prose-blockquote:text-blue-800 dark:prose-blockquote:text-blue-200
+                prose-code:bg-gray-100 dark:prose-code:bg-gray-700 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                prose-pre:bg-gray-100 dark:prose-pre:bg-gray-700 prose-pre:p-4 prose-pre:rounded-lg prose-pre:mb-6 prose-pre:overflow-x-auto
+                prose-hr:border-gray-300 dark:prose-hr:border-gray-600 prose-hr:my-10 prose-hr:border-t-2
+                prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-a:font-medium prose-a:transition-colors
+                prose-img:rounded-lg prose-img:shadow-md prose-img:mb-6 prose-img:mx-auto
+                [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+              >
                 <ReactMarkdown>{journal.content}</ReactMarkdown>
               </div>
             </motion.div>
