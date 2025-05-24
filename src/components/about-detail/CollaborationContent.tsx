@@ -66,7 +66,6 @@ export const CollaborationContent = () => {
   const navItems = [
     { id: 'overview', label: 'Ringkasan', icon: FileText },
     { id: 'programs', label: 'Program', icon: Award },
-    { id: 'testimonials', label: 'Testimoni', icon: Users },
   ];
 
   return (

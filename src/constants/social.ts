@@ -5,32 +5,23 @@ import {
   FaInstagram,
   FaYoutube,
   FaLinkedin,
-} from "react-icons/fa";
+  FaTiktok,
+} from 'react-icons/fa';
 
 export const social = [
   {
-    name: "Facebook",
-    href: "https://facebook.com/anri.go.id",
-    icon: FaFacebook,
-  },
-  {
-    name: "Twitter",
-    href: "https://twitter.com/anri_go_id",
-    icon: FaTwitter,
-  },
-  {
-    name: "Instagram",
-    href: "https://instagram.com/anri_go_id",
+    name: 'Instagram',
+    href: 'https://www.instagram.com/anri_bast?igsh=MW9nbmthbnBycjd4eg==',
     icon: FaInstagram,
   },
   {
-    name: "YouTube",
-    href: "https://youtube.com/c/anri_go_id",
-    icon: FaYoutube,
+    name: 'Tiktok',
+    href: 'https://www.tiktok.com/@bastanri?_t=ZS-8waizteQ1CC&_r=1',
+    icon: FaTiktok,
   },
   {
-    name: "LinkedIn",
-    href: "https://linkedin.com/company/anri-go-id",
-    icon: FaLinkedin,
+    name: 'YouTube',
+    href: 'https://youtube.com/@anribast?si=r9aS4-7sHuyObzYD',
+    icon: FaYoutube,
   },
 ];

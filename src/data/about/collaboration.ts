@@ -53,7 +53,7 @@ export const collaborationData: CollaborationData = {
   headerTitle: 'Kolaborasi MBKM x BAST ANRI',
   headerDescription:
     'Kerjasama strategis antara program MBKM dan BAST ANRI untuk mengembangkan kompetensi mahasiswa di bidang kearsipan.',
-  headerImageSrc: '/images/collaboration-illustration.png',
+  headerImageSrc: '/images/Tentang/Magang_di_BAST_Anri/collaboration-illustration.png',
   tags: ['Kearsipan', 'Digitalisasi', 'Praktik Kerja', 'Penelitian', 'Tata Naskah'],
   accordionItems: [
     {

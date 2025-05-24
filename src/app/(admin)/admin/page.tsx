@@ -18,7 +18,7 @@ export default function AdminDashboard() {
               <FileText className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Katalog</h2>
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Kenali Kami</h2>
               <p className="text-gray-600 dark:text-gray-300">
                 Kelola data mahasiswa, pembimbing, dan mentor
               </p>
@@ -26,10 +26,10 @@ export default function AdminDashboard() {
           </div>
           <div className="mt-6">
             <Link
-              href="/admin/katalog"
+              href="/admin/kenali-kami"
               className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             >
-              Kelola Katalog
+              Kelola data
             </Link>
           </div>
         </div>

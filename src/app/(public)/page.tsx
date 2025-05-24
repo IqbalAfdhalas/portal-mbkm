@@ -7,7 +7,7 @@ import About from '@/components/sections/About';
 import Program from '@/components/sections/Program';
 import Stats from '@/components/sections/Stats';
 import KenaliKami from '@/components/sections/KenaliKami';
-import Galery from '@/components/sections/Galery';
+import Gallery from '@/components/sections/Gallery';
 import PojokMBKM from '@/components/sections/PojokMBKM';
 import Faq from '@/components/sections/Faq';
 import { scrollToId } from '@/lib/utils';
@@ -55,7 +55,7 @@ export default function HomePage() {
       <Program />
       <Stats />
       <KenaliKami />
-      <Galery />
+      <Gallery />
       <PojokMBKM />
       <Faq />
     </main>

@@ -25,7 +25,7 @@ export const profileData: ProfileType[] = [
     peran: 'Pembimbing Kampus',
     foto: '/images/PP/Dosen/zakirah_foto.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
-    prodi: 'Manajemen Informatika',
+    prodi: 'Ilmu Komunikasi',
   },
   {
     id: 'pk002',
@@ -33,7 +33,7 @@ export const profileData: ProfileType[] = [
     peran: 'Pembimbing Kampus',
     foto: '/images/PP/Dosen/Novi Susilawati S.I.Kom., M.Ikom.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
-    prodi: 'Manajemen Informatika',
+    prodi: 'Ilmu Komunikasi',
   },
   {
     id: 'pk003',
@@ -122,7 +122,7 @@ export const profileData: ProfileType[] = [
     id: 'mn009',
     nama: 'Eka Husnul Hidayati, S.H',
     peran: 'Mentor BAST ANRI',
-    foto: '/images/Katalog/ilustrasiPROFIL1.png',
+    foto: '/images/PP/MNTR/kak_eka.jpg',
     unit: 'Pelayanan',
   },
 
