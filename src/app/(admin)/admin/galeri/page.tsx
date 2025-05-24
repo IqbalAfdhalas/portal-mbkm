@@ -403,7 +403,7 @@ export default function AdminGalleryPage() {
 
     try {
       setIsDeleting(true);
-      await deleteGalleryItem(deleteItem.id.toString(), deleteItem.src);
+      await deleteGalleryItem(deleteItem.id.toString());
 
       // Remove item from local state
       setItems(prev => prev.filter(item => item.id !== deleteItem.id));
@@ -621,6 +621,8 @@ export default function AdminGalleryPage() {
         editItem={editItem}
         availableCategories={availableCategories}
         availableYears={availableYears}
+        onCategoriesUpdate={loadItems}
+        onYearsUpdate={loadItems}
       />
 
       <DeleteConfirmDialog
