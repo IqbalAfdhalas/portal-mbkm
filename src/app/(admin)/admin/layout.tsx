@@ -56,11 +56,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
 
             <Link
-              href="/admin/katalog"
+              href="/admin/kenali-kami"
               className="flex items-center px-2 py-2 mb-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <FileText className="w-5 h-5 mr-3" />
-              <span>Katalog</span>
+              <span>Kenali kami</span>
             </Link>
 
             <Link

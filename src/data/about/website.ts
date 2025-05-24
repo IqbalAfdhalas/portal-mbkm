@@ -14,9 +14,9 @@ export interface WebsiteData {
 export const websiteData: WebsiteData = {
   headerTitle: 'Website MBKM BAST ANRI',
   headerDescription:
-    'Platform digital yang dikembangkan sebagai proyek kolaboratif mahasiswa MBKM untuk mendukung dan memfasilitasi program Merdeka Belajar Kampus Merdeka di Badan Arsip dan Perpustakaan Daerah.',
+    'Sebuah platform digital hasil kolaborasi mahasiswa USK Unggul yang berfungsi sebagai media dokumentasi kegiatan MBKM di lingkungan Balai Arsip Statis dan Tsunami (BAST) ANRI.',
   imageUrl: '/images/Tentang/Tentang Website/website-screenshot.png',
-  tags: ['Next.js', 'React', 'Tailwind CSS', 'PostgreSQL', 'MBKM Project'],
+  tags: ['Kolaborasi Mahasiswa', 'MBKM 2025', 'USK Unggul', 'BAST ANRI', 'MBKM Project'],
   features: [
     {
       title: 'Profil Peserta & Pembimbing',
@@ -64,19 +64,18 @@ export const websiteData: WebsiteData = {
       id: 'tujuan-website',
       title: 'Tujuan Website',
       content: `
-        <div class="mb-4">
-          <p class="mb-3">Website MBKM BAST ANRI dikembangkan dengan tujuan utama sebagai berikut:</p>
-          
-          <ul class="list-disc pl-5 space-y-2">
-            <li><span class="font-semibold">Digitalisasi Proses Administrasi</span> - Mengubah proses manual menjadi digital untuk efisiensi pengelolaan dokumen BAST dan laporan kegiatan.</li>
-            <li><span class="font-semibold">Pusat Informasi Terpadu</span> - Menyediakan informasi lengkap tentang program MBKM di BAST ANRI, termasuk panduan, jadwal, dan persyaratan.</li>
-            <li><span class="font-semibold">Monitoring dan Evaluasi</span> - Memfasilitasi pemantauan progres peserta dan evaluasi kinerja secara real-time dengan visualisasi data.</li>
-            <li><span class="font-semibold">Kolaborasi dan Komunikasi</span> - Menjembatani komunikasi antara mahasiswa, dosen pembimbing, dan pembimbing lapangan.</li>
-            <li><span class="font-semibold">Dokumentasi dan Arsip Digital</span> - Menyimpan dan mengelola dokumentasi kegiatan program untuk referensi masa depan.</li>
-            <li><span class="font-semibold">Peningkatan Kualitas Program</span> - Menyediakan data dan insights untuk perbaikan berkelanjutan program MBKM.</li>
-          </ul>
-        </div>
-      `,
+    <div class="mb-4">
+      <p class="mb-3">Website MBKM BAST ANRI dikembangkan dengan tujuan utama sebagai media informasi resmi terkait pelaksanaan program Merdeka Belajar Kampus Merdeka di lingkungan BAST ANRI.</p>
+      
+      <ul class="list-disc pl-5 space-y-2">
+        <li><span class="font-semibold">Pusat Informasi MBKM</span> - Menyediakan informasi lengkap tentang program MBKM di BAST ANRI, termasuk profil kegiatan, jadwal pelaksanaan, dan ketentuan program.</li>
+        <li><span class="font-semibold">Publikasi Kegiatan</span> - Menampilkan dokumentasi dan laporan kegiatan MBKM secara terbuka untuk publik dan civitas akademika.</li>
+        <li><span class="font-semibold">Media Sosialisasi</span> - Menjadi sarana untuk memperkenalkan program MBKM di BAST ANRI kepada mahasiswa, dosen pembimbing, serta pihak eksternal.</li>
+        <li><span class="font-semibold">Referensi Mahasiswa</span> - Memberikan gambaran umum tentang bentuk kegiatan, manfaat, dan pengalaman para peserta program MBKM sebelumnya.</li>
+        <li><span class="font-semibold">Transparansi Program</span> - Memberikan akses informasi yang mudah diakses mengenai program MBKM untuk mendukung keterbukaan informasi publik.</li>
+      </ul>
+    </div>
+  `,
       isOpen: false,
     },
 

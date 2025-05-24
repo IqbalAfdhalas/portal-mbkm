@@ -16,7 +16,11 @@ const Footer = () => {
           {/* Logo & About */}
           <div>
             <Link href="/" className="inline-block mb-4">
-              <img src="/images/logo_mbkm_white.png" alt="MBKM BAST ANRI" className="h-12 w-auto" />
+              <img
+                src="/images/logo/logo_mbkm_white.png"
+                alt="MBKM BAST ANRI"
+                className="h-12 w-auto"
+              />
             </Link>
             <p className="text-gray-300 text-sm mb-4 font-body">
               Program Merdeka Belajar Kampus Merdeka (MBKM) Badan Arsip dan Standardisasi Nasional
@@ -98,7 +102,8 @@ const Footer = () => {
                   />
                 </svg>
                 <span className="text-gray-300 font-body">
-                  Jl. Tengku Hasan di Bakoi, Bakoy, Kec. Ingin Jaya, Kabupaten Aceh Besar, Aceh 23116
+                  Jl. Tengku Hasan di Bakoi, Bakoy, Kec. Ingin Jaya, Kabupaten Aceh Besar, Aceh
+                  23116
                 </span>
               </li>
               <li className="flex items-start space-x-3 text-sm">

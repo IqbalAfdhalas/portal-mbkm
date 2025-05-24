@@ -298,9 +298,9 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             {[
-              { label: 'Kemitraan Kampus', value: 10 },
-              { label: 'Mahasiswa Magang', value: 200 },
-              { label: 'Kegiatan MBKM', value: 25 },
+              //{ label: 'Kemitraan Kampus', value: 10 },
+              { label: 'Mahasiswa Magang', value: 50 },
+              { label: 'Kegiatan MBKM', value: 10 },
             ].map((stat, index) => (
               <div
                 key={index}

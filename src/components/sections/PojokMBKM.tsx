@@ -42,7 +42,7 @@ interface JournalFilterOptions {
   category?: 'daily-activity' | 'weekly-reflection' | 'project-update';
   searchQuery?: string;
   authorId?: string;
-  // Can easily add more filter options here in the future
+  sortOrder?: 'newest' | 'oldest';
 }
 
 interface PaginationOptions {
@@ -275,6 +275,10 @@ const FilterBar = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const sortOptions = [
+    { value: 'newest', label: 'Terbaru' },
+    { value: 'oldest', label: 'Terlama' },
+  ];
 
   // Debounce search
   useEffect(() => {
@@ -365,7 +369,13 @@ const FilterBar = ({
           icon={<User size={14} />}
         />
 
-        {/* You can easily add more filter dropdowns here in the future */}
+        <FilterDropdown
+          label="Urutkan"
+          options={sortOptions}
+          value={filterOptions.sortOrder}
+          onChange={value => setFilterOptions(prev => ({ ...prev, sortOrder: value }))}
+          icon={<ChevronDown size={14} />}
+        />
       </div>
     </div>
   );
@@ -549,6 +559,7 @@ const JournalSkeletonGrid = () => {
 // Main PojokMBKM Component - Redesigned to match About.tsx style
 const PojokMBKM = () => {
   const [journals, setJournals] = useState<Journal[]>([]);
+  const [allJournals, setAllJournals] = useState<Journal[]>([]);
   const [filterOptions, setFilterOptions] = useState<JournalFilterOptions>({});
   const [pagination, setPagination] = useState<PaginationOptions>({ page: 1, limit: 6 });
   const [totalJournals, setTotalJournals] = useState(0);
@@ -561,23 +572,18 @@ const PojokMBKM = () => {
 
     const fetchData = async () => {
       try {
-        const allJournals = await getAllJournals();
+        const allJournalsData = await getAllJournals();
+        const publishedJournals = allJournalsData.filter(journal => journal.status === 'published');
 
-        // Filter published journals aja
-        const publishedJournals = allJournals.filter(journal => journal.status === 'published');
-
+        setAllJournals(publishedJournals); // simpan semua data published di sini
         setTotalJournals(publishedJournals.length);
-
-        const start = (pagination.page - 1) * pagination.limit;
-        const end = start + pagination.limit;
-        setJournals(publishedJournals.slice(start, end));
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [pagination]);
+  }, []);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -596,10 +602,20 @@ const PojokMBKM = () => {
     document.getElementById('pojok-mbkm')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const filteredJournals = allJournals.filter(journal => {
+    const matchCategory = !filterOptions.category || journal.category === filterOptions.category;
+    const matchAuthor = !filterOptions.authorId || journal.authorId === filterOptions.authorId;
+    const matchSearch =
+      !filterOptions.searchQuery ||
+      journal.title.toLowerCase().includes(filterOptions.searchQuery.toLowerCase());
+
+    return matchCategory && matchAuthor && matchSearch;
+  });
+
   // Get stats for header
   const getHeaderStats = () => {
-    const totalPublished = journals.length;
-    const uniqueAuthors = new Set(journals.map(j => j.authorId)).size;
+    const totalPublished = allJournals.length;
+    const uniqueAuthors = new Set(allJournals.map(j => j.authorId)).size;
 
     return { totalPublished, uniqueAuthors };
   };
@@ -655,7 +671,7 @@ const PojokMBKM = () => {
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4 mb-6">
           <FilterBar
-            journals={journals}
+            journals={allJournals}
             filterOptions={filterOptions}
             setFilterOptions={setFilterOptions}
             isLoading={isLoading}
@@ -664,11 +680,23 @@ const PojokMBKM = () => {
 
         {isLoading ? (
           <JournalSkeletonGrid />
-        ) : journals.length > 0 ? (
+        ) : filteredJournals.length > 0 ? (
           <>
-            <JournalGrid journals={journals} />
+            <JournalGrid
+              journals={filteredJournals
+                .sort((a, b) => {
+                  if (filterOptions.sortOrder === 'oldest') {
+                    return new Date(a.publishDate).getTime() - new Date(b.publishDate).getTime();
+                  }
+                  return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+                })
+                .slice(
+                  (pagination.page - 1) * pagination.limit,
+                  pagination.page * pagination.limit
+                )}
+            />
             <JournalPagination
-              totalItems={totalJournals}
+              totalItems={filteredJournals.length}
               itemsPerPage={pagination.limit}
               currentPage={pagination.page}
               onPageChange={handlePageChange}

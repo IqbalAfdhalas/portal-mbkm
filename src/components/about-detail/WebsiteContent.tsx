@@ -66,7 +66,6 @@ export const WebsiteContent: React.FC = () => {
   const navItems = [
     { id: 'overview', label: 'Ringkasan', icon: Book },
     { id: 'features', label: 'Fitur', icon: Zap },
-    { id: 'technical', label: 'Teknis', icon: Settings },
   ];
 
   return (
