@@ -137,7 +137,7 @@ const Lightbox = ({
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -146,7 +146,7 @@ const Lightbox = ({
       >
         {/* Header Bar */}
         <motion.div
-          className="absolute top-0 left-0 right-0 z-60 bg-gradient-to-b from-black/80 to-transparent p-4"
+          className="absolute top-0 left-0 right-0 z-60 bg-gradient-to-b from-black/60 to-transparent p-4"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -224,7 +224,7 @@ const Lightbox = ({
             {/* Navigation Buttons */}
             {hasPrev && (
               <motion.button
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200 backdrop-blur-sm"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 border border-white/20 text-white rounded-full p-3 transition-all duration-200 backdrop-blur-sm"
                 onClick={onPrev}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -238,7 +238,7 @@ const Lightbox = ({
 
             {hasNext && (
               <motion.button
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200 backdrop-blur-sm"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 border border-white/20 text-white rounded-full p-3 transition-all duration-200 backdrop-blur-sm"
                 onClick={onNext}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -254,7 +254,7 @@ const Lightbox = ({
 
         {/* Bottom Info Panel */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 z-60 bg-gradient-to-t from-black/90 to-transparent p-6"
+          className="absolute bottom-0 left-0 right-0 z-60 bg-gradient-to-t from-black/70 to-transparent p-6"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

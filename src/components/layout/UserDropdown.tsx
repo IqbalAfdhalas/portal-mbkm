@@ -15,7 +15,7 @@ interface UserDropdownProps {
 const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { logout, isAdmin } = useAuth();
+  const { signOut, isAdmin } = useAuth(); // Changed from 'logout' to 'signOut'
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -33,7 +33,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut(); // Changed from 'logout()' to 'signOut()'
       setIsOpen(false);
     } catch (error) {
       console.error('Logout error:', error);

@@ -16,31 +16,75 @@ export const setAuthCookies = async (token: string) => {
     sameSite: 'strict' as const,
   };
 
-  // Set cookies
-  cookies().set('authToken', token, options);
+  // ✅ DIPERBAIKI: Await cookies() untuk Next.js 15
+  const cookieStore = await cookies();
+  cookieStore.set('authToken', token, options);
 };
 
 /**
  * Removes authentication cookies on logout
  */
-export const clearAuthCookies = () => {
-  cookies().delete('authToken');
+export const clearAuthCookies = async () => {
+  // ✅ DIPERBAIKI: Await cookies() untuk Next.js 15
+  const cookieStore = await cookies();
+  cookieStore.delete('authToken');
+};
+
+/**
+ * Gets authentication token from cookies
+ */
+export const getAuthTokenFromCookies = async () => {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get('authToken');
+    return token?.value || null;
+  } catch (error) {
+    console.error('Error getting auth token from cookies:', error);
+    return null;
+  }
 };
 
 /**
  * Gets the current Firebase ID token
  * Can be used in combination with the middleware for server-side auth checking
  */
-export const getFirebaseIdToken = async () => {
+export const getFirebaseIdToken = async (): Promise<string | null> => {
   return new Promise(resolve => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       unsubscribe();
       if (user) {
-        const token = await user.getIdToken();
-        resolve(token);
+        try {
+          const token = await user.getIdToken();
+          resolve(token);
+        } catch (error) {
+          console.error('Error getting Firebase ID token:', error);
+          resolve(null);
+        }
       } else {
         resolve(null);
       }
     });
   });
+};
+
+/**
+ * Checks if user is authenticated by checking both cookies and Firebase auth state
+ */
+export const isAuthenticated = async (): Promise<boolean> => {
+  try {
+    // Check cookie first (faster)
+    const tokenFromCookie = await getAuthTokenFromCookies();
+    if (!tokenFromCookie) {
+      return false;
+    }
+
+    // Optionally verify with Firebase (more secure but slower)
+    // const firebaseToken = await getFirebaseIdToken();
+    // return !!firebaseToken;
+
+    return true;
+  } catch (error) {
+    console.error('Error checking authentication status:', error);
+    return false;
+  }
 };

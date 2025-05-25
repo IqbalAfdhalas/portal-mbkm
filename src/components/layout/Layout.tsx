@@ -1,11 +1,11 @@
 // src/components/layout/Layout.tsx
-"use client";
+'use client';
 
-import { ReactNode, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import { useTheme } from "next-themes";
+import { ReactNode, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Navbar from './Navbar';
+import Footer from './Footer';
+import { useTheme } from 'next-themes';
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,15 +23,13 @@ const Layout = ({ children }: LayoutProps) => {
   if (!mounted) return null;
 
   // Daftar halaman yang TIDAK perlu Navbar/Footer
-  const noLayoutRoutes = ["/auth/login", "/auth/register", "/unauthorized"];
-  const hideLayout = noLayoutRoutes.includes(pathname);
+  const noLayoutRoutes = ['/auth/login', '/auth/register', '/unauthorized'];
+  const hideLayout = pathname ? noLayoutRoutes.includes(pathname) : false;
 
   return (
     <div
       className={`min-h-screen flex flex-col ${
-        theme === "dark"
-          ? "dark bg-dark text-gray-100"
-          : "bg-white text-gray-800"
+        theme === 'dark' ? 'dark bg-dark text-gray-100' : 'bg-white text-gray-800'
       }`}
     >
       {!hideLayout && <Navbar />}

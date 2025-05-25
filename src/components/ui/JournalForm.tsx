@@ -581,8 +581,8 @@ export const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({
 
         <p className="text-sm text-gray-600 dark:text-gray-300 text-center mb-6">
           Apakah Anda yakin ingin menghapus jurnal{' '}
-          <span className="font-semibold">"{journalTitle}"</span>? Tindakan ini tidak dapat
-          dibatalkan.
+          <span className="font-semibold">&ldquo;{journalTitle}&rdquo;</span>? Tindakan ini tidak
+          dapat dibatalkan.
         </p>
 
         <div className="flex space-x-3">

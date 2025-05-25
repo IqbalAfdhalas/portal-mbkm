@@ -16,7 +16,7 @@ import {
   Timestamp,
   writeBatch,
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
+import { db } from '@/lib/firebase'; // ✅ DIPERBAIKI: Ganti dari '@/lib/firebase/config' ke '@/lib/firebase'
 import { Journal, Author, JournalFilterOptions, PaginationOptions } from '@/lib/types/journal';
 import { MediaService } from './mediaService';
 
