@@ -298,10 +298,7 @@ const ProgramPreview = () => {
                   className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 px-4"
                 >
                   <div
-                    className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden 
-                    hover:shadow-xl dark:hover:shadow-blue-900/20 transition-all duration-500
-                    hover:-translate-y-2 border border-transparent hover:border-blue-100 dark:hover:border-blue-900
-                    flex flex-col h-full"
+                    className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl dark:hover:shadow-blue-900/20 transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-blue-100 dark:hover:border-blue-900 flex flex-col h-full"
                     style={{
                       borderTopWidth: '4px',
                       borderTopColor: program.borderColor.replace('border-', ''),
@@ -360,7 +357,7 @@ const ProgramPreview = () => {
                       </h3>
 
                       <p className="text-gray-600 dark:text-gray-300 text-center mb-4 text-sm italic">
-                        "{program.description}"
+                        &ldquo;{program.description}&rdquo;
                       </p>
 
                       <div className="space-y-1 mb-4">
@@ -372,17 +369,7 @@ const ProgramPreview = () => {
                       <div className="text-center mt-auto">
                         <Link
                           href={`/sections-program/${slugify(program.title, { lower: true })}`}
-                          className={`
-                          group relative inline-flex items-center justify-center gap-1 
-                          px-4 py-2 rounded-lg overflow-hidden
-                          text-white text-sm font-medium
-                          shadow-md hover:shadow-lg
-                          transition-all duration-300 ease-in-out
-                          hover:-translate-y-1
-                          before:absolute before:inset-0 before:origin-left before:scale-x-0 hover:before:scale-x-100
-                          before:transition-transform before:duration-300 before:ease-out
-                          before:z-0
-                        `}
+                          className="group relative inline-flex items-center justify-center gap-1 px-4 py-2 rounded-lg overflow-hidden text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 ease-in-out hover:-translate-y-1 before:absolute before:inset-0 before:origin-left before:scale-x-0 hover:before:scale-x-100 before:transition-transform before:duration-300 before:ease-out before:z-0"
                           style={
                             {
                               '--before-gradient': `linear-gradient(to right, ${program.colorEnd}, ${program.colorStart})`,

@@ -1,8 +1,10 @@
 // src/hooks/useAuth.ts
-import { useContext } from 'react';
+'use client';
+import { useContext, useEffect, useState } from 'react';
 import {
   signOut as firebaseSignOut,
   signInWithEmailAndPassword as firebaseSignIn,
+  sendPasswordResetEmail, // Tambahkan import ini
   fetchSignInMethodsForEmail,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
@@ -14,6 +16,37 @@ import { db } from '@/lib/firebase';
 export function useAuth() {
   const { user, loading } = useAuthContext();
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [checkingAdmin, setCheckingAdmin] = useState<boolean>(true);
+
+  // Check if user is admin
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (user?.uid) {
+        try {
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setIsAdmin(userData.role === 'admin' || userData.isAdmin === true);
+          } else {
+            setIsAdmin(false);
+          }
+        } catch (error) {
+          console.error('Error checking admin status:', error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+      setCheckingAdmin(false);
+    };
+
+    if (!loading) {
+      checkAdminStatus();
+    }
+  }, [user, loading]);
 
   // Fungsi untuk login dengan username
   const login = async (username: string, password: string, rememberMe = false) => {
@@ -71,6 +104,17 @@ export function useAuth() {
     }
   };
 
+  // Fungsi untuk reset password
+  const resetPassword = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      return { success: true };
+    } catch (error: any) {
+      console.error('Reset password error:', error);
+      throw error; // Re-throw error agar bisa dihandle di component
+    }
+  };
+
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
@@ -86,10 +130,30 @@ export function useAuth() {
 
   return {
     user,
-    loading,
+    loading: loading || checkingAdmin,
+    isAdmin,
     login, // Fungsi login baru dengan username
     signIn, // Tetap dipertahankan untuk backward compatibility
     signOut,
+    resetPassword, // Tambahkan fungsi resetPassword
+    isAuthenticated: !!user,
+  };
+}
+
+// Hook untuk protected routes
+export function useProtectedRoute() {
+  const { user, loading } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login');
+    }
+  }, [user, loading, router]);
+
+  return {
+    user,
+    isChecking: loading,
     isAuthenticated: !!user,
   };
 }

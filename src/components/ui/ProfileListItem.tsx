@@ -92,11 +92,12 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
                 <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                   <FiBookOpen className="mr-1 text-primary-light flex-shrink-0" />
                   <span>
-                    {profile.prodi === 'ManajemenInformatika' && 'Manajemen Informatika'}
-                    {profile.prodi === 'IlmuKomunikasi' && 'Ilmu Komunikasi'}
+                    {profile.prodi === 'Manajemen Informatika' && 'Manajemen Informatika'}
+                    {profile.prodi === 'Ilmu Komunikasi' && 'Ilmu Komunikasi'}
                     {profile.prodi === 'Sejarah' && 'Sejarah'}
-                    {profile.prodi === 'BahasaInggris' && 'Bahasa Inggris'}
-                    {profile.prodi === 'TehnikMesin' && 'Tehnik Mesin'}
+                    {profile.prodi === 'Bahasa Inggris' && 'Bahasa Inggris'}
+                    {profile.prodi === 'Tehnik Mesin' && 'Tehnik Mesin'}
+                    {profile.prodi === 'Biologi' && 'Biologi'}
                   </span>
                 </div>
               )}
