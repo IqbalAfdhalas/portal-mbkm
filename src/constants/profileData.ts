@@ -60,7 +60,7 @@ export const profileData: ProfileType[] = [
     prodi: 'Tehnik Mesin',
   },
   {
-    id: 'pk004',
+    id: 'pk006',
     nama: 'Husaini, M.Sc.',
     peran: 'Pembimbing Kampus',
     foto: '/images/PP/Dosen/Husaini, M.Sc.jpeg',
@@ -70,18 +70,18 @@ export const profileData: ProfileType[] = [
 
   // Mentor BAST ANRI
   {
-    id: 'mn002',
-    nama: 'Indriani Putri, A.Md',
-    peran: 'Mentor BAST ANRI',
-    foto: '/images/PP/MNTR/Indriani Putri.jpeg',
-    unit: 'Tata Usaha',
-  },
-  {
     id: 'mn001',
     nama: 'Nova Sri Wahyuni, S.Kom ',
     peran: 'Mentor BAST ANRI',
     foto: '/images/PP/MNTR/bu_nova.jpg',
     unit: 'Preservasi',
+  },
+  {
+    id: 'mn002',
+    nama: 'Indriani Putri, A.Md',
+    peran: 'Mentor BAST ANRI',
+    foto: '/images/PP/MNTR/Indriani Putri.jpeg',
+    unit: 'Tata Usaha',
   },
   {
     id: 'mn004',
@@ -112,24 +112,24 @@ export const profileData: ProfileType[] = [
     unit: 'Preservasi',
   },
   {
-    id: 'mn0010',
-    nama: 'Renny Setyo Lestari, S.Sos',
-    peran: 'Mentor BAST ANRI',
-    foto: '/images/Katalog/ilustrasiPROFIL1.png',
-    unit: 'Pengolahan',
-  },
-  {
-    id: 'mn009',
+    id: 'mn008',
     nama: 'Eka Husnul Hidayati, S.H',
     peran: 'Mentor BAST ANRI',
     foto: '/images/PP/MNTR/kak_eka.jpg',
     unit: 'Pelayanan',
   },
+  {
+    id: 'mn009',
+    nama: 'Renny Setyo Lestari, S.Sos',
+    peran: 'Mentor BAST ANRI',
+    foto: '/images/Katalog/ilustrasiPROFIL1.png',
+    unit: 'Pengolahan',
+  },
 
   // Mahasiswa
   {
     id: 'mhs001',
-    nama: 'Syahira Addnini A ',
+    nama: 'Syahira Addnini A',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/islami.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -155,8 +155,8 @@ export const profileData: ProfileType[] = [
     angkatan: '2025',
   },
   {
-    id: 'mhs014',
-    nama: 'Cut Alita Salsabilla',
+    id: 'mhs004',
+    nama: 'Cut Alita Salbila',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/LITA25.JPEG',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -172,7 +172,6 @@ export const profileData: ProfileType[] = [
     prodi: 'Manajemen Informatika',
     angkatan: '2025',
   },
-
   {
     id: 'mhs006',
     nama: 'Kevin Putra Zerian',
@@ -191,7 +190,6 @@ export const profileData: ProfileType[] = [
     prodi: 'Manajemen Informatika',
     angkatan: '2025',
   },
-
   {
     id: 'mhs008',
     nama: 'M. Faiz Alfatih Aidil',
@@ -229,7 +227,7 @@ export const profileData: ProfileType[] = [
     angkatan: '2025',
   },
   {
-    id: 'mhs0012',
+    id: 'mhs012',
     nama: 'Indri Andriani',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/indri.jpg',
@@ -257,7 +255,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs015',
-    nama: '  Annisa',
+    nama: 'Annisa',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/nisa.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -266,7 +264,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs016',
-    nama: '  T.R.Zarir Rizqullah ',
+    nama: 'T.R.Zarir Rizqullah',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/zarir.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -275,7 +273,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs017',
-    nama: '  Akbar Sayyidina ',
+    nama: 'Akbar Sayyidina',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/akbar.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -284,11 +282,9 @@ export const profileData: ProfileType[] = [
   },
 
   // Angkatan 2024
-
-  // Tahun 2024 akhir Sosiologi
   {
     id: 'mhs020',
-    nama: 'Linda Puspita Sari ',
+    nama: 'Linda Puspita Sari',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -306,7 +302,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs022',
-    nama: '  Andia Haliza ',
+    nama: 'Andia Haliza',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -315,17 +311,16 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs023',
-    nama: 'Cut Miftahul Yuda ',
+    nama: 'Cut Miftahul Yuda',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-
   {
     id: 'mhs024',
-    nama: ' Zahratul Rizqa ',
+    nama: 'Zahratul Rizqa',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -334,17 +329,16 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs025',
-    nama: '  Al Husni Safri ',
+    nama: 'Al Husni Safri',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-
   {
     id: 'mhs026',
-    nama: '  Atiya Sururi Wahyudi ',
+    nama: 'Atiya Sururi Wahyudi',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -353,39 +347,34 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs027',
-    nama: '  Devy Mahbengi Sugito ',
+    nama: 'Devy Mahbengi Sugito',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-
-  //Tahun 24 Akhir Manajemen Informatika
-
   {
     id: 'mhs029',
-    nama: '   Dewina Alayda ',
+    nama: 'Dewina Alayda',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-
   {
     id: 'mhs031',
-    nama: ' Muhammad Hafizh Haykal',
+    nama: 'Muhammad Hafizh Haykal',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/afiz.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-
   {
     id: 'mhs033',
-    nama: '   Octa Ramadhana Alfareysi ',
+    nama: 'Octa Ramadhana Alfareysi',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/octa.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -394,17 +383,18 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs034',
-    nama: '   Muhammad Radit Febriansyah ',
+    nama: 'Muhammad Radit Febriansyah',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/radit.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
-  //Tahun 2024 Akhir Bahasa Inggris
+
+  // Bahasa Inggris 2024
   {
     id: 'mhs035',
-    nama: '   Ridha Sabilla Sinaga ',
+    nama: 'Ridha Sabilla Sinaga',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20240.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -413,7 +403,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs036',
-    nama: '   Kamila lathifah ',
+    nama: 'Kamila lathifah',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20241.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -422,7 +412,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs037',
-    nama: '  Putri Wulandari ',
+    nama: 'Putri Wulandari',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20242.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -431,7 +421,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs038',
-    nama: '   Athaya Zahra ',
+    nama: 'Athaya Zahra',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20243.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -440,7 +430,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs039',
-    nama: '   Helma Juwita',
+    nama: 'Helma Juwita',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20244.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -449,7 +439,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs040',
-    nama: '  Herin Nadhirah',
+    nama: 'Herin Nadhirah',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20245.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -458,7 +448,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs041',
-    nama: '   Rizcha Nurkhalida ',
+    nama: 'Rizcha Nurkhalida',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20246.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -467,18 +457,18 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs042',
-    nama: '   Saskia Khairilla A ',
+    nama: 'Saskia Khairilla A',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20247.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Bahasa Inggris',
     angkatan: '2024',
   },
-  //Tahun 2024 Akhir Ilmu Komunikasi
 
+  // Ilmu Komunikasi 2024
   {
     id: 'mhs043',
-    nama: '   Ribbahani ',
+    nama: 'Ribbahani',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20248.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -487,7 +477,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs044',
-    nama: '  Akmal Musopa S ',
+    nama: 'Akmal Musopa S',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/20249.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -496,7 +486,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs045',
-    nama: '  Syakila Nurazis ',
+    nama: 'Syakila Nurazis',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202410.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -505,7 +495,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs046',
-    nama: 'Salwa Fadli ',
+    nama: 'Salwa Fadli',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202411.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -514,7 +504,7 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs047',
-    nama: ' Farah Fauzi ',
+    nama: 'Farah Fauzi',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202412.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -523,27 +513,25 @@ export const profileData: ProfileType[] = [
   },
   {
     id: 'mhs048',
-    nama: '  Alya Kautsari ',
+    nama: 'Alya Kautsari',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202413.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Ilmu Komunikasi',
     angkatan: '2024',
   },
-  // Tahun 2024 Akhir Teknik
   {
     id: 'mhs049',
-    nama: '  Selpia Susanti  ',
+    nama: 'Selpia Susanti',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202414.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Ilmu Komunikasi',
     angkatan: '2024',
   },
-  // Tahun 2024 Akhir Manajemen
   {
     id: 'mhs050',
-    nama: '  Kanzun Hawari ',
+    nama: 'Kanzun Hawari',
     peran: 'Mahasiswa',
     foto: '/images/PP/MHS/202415.jpg',
     asalInstitusi: 'Universitas Syiah Kuala',
@@ -551,8 +539,9 @@ export const profileData: ProfileType[] = [
     angkatan: '2024',
   },
 
+  // Universitas lain
   {
-    id: 'mhs0100',
+    id: 'mhs080',
     nama: 'Utari Wulandari',
     peran: 'Mahasiswa',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
@@ -560,7 +549,6 @@ export const profileData: ProfileType[] = [
     prodi: 'Tehnik Mesin',
     angkatan: '2024',
   },
-
   {
     id: 'mhs083',
     nama: 'Winda Sari',
@@ -574,25 +562,25 @@ export const profileData: ProfileType[] = [
     id: 'mhs085',
     nama: 'Yasmin Aulia',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Airlangga',
     prodi: 'Tehnik Mesin',
     angkatan: '2024',
   },
   {
     id: 'mhs086',
-    nama: ' Muhammad Ridho Agip Aldy',
+    nama: 'Muhammad Ridho Agip Aldy',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
   {
     id: 'mhs087',
-    nama: ' Nasywa Zatiara ',
+    nama: 'Nasywa Zatiara',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
@@ -601,25 +589,25 @@ export const profileData: ProfileType[] = [
     id: 'mhs088',
     nama: 'NajmuRayyani',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
   {
     id: 'mhs089',
-    nama: ' Chairul Huda Lestari',
+    nama: 'Chairul Huda Lestari',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
   },
   {
-    id: 'mhs089',
-    nama: '  Dewina Alayda',
+    id: 'mhs090',
+    nama: 'Dewina Alayda',
     peran: 'Mahasiswa',
-    foto: '/images/ilustrasiPROFIL1.png',
+    foto: '/images/Katalog/ilustrasiPROFIL1.png',
     asalInstitusi: 'Universitas Syiah Kuala',
     prodi: 'Manajemen Informatika',
     angkatan: '2024',
