@@ -78,7 +78,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       size: file.size,
       mimetype: file.mimetype,
       filepath: file.filepath,
-      lastModifiedDate: file.lastModifiedDate,
+      // Hapus lastModified karena tidak tersedia di formidable File type
     });
 
     // Cek apakah file benar-benar ada
