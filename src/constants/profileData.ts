@@ -74,7 +74,7 @@ export const profileData: ProfileType[] = [
     nama: 'Nova Sri Wahyuni, S.Kom ',
     peran: 'Mentor BAST ANRI',
     foto: '/images/PP/MNTR/bu_nova.jpg',
-    unit: 'Preservasi',
+    unit: 'Tata Usaha',
   },
   {
     id: 'mn002',
@@ -123,7 +123,7 @@ export const profileData: ProfileType[] = [
     nama: 'Renny Setyo Lestari, S.Sos',
     peran: 'Mentor BAST ANRI',
     foto: '/images/Katalog/ilustrasiPROFIL1.png',
-    unit: 'Pengolahan',
+    unit: 'Pelayanan',
   },
 
   // Mahasiswa
