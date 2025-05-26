@@ -57,7 +57,7 @@ export const profileData: ProfileType[] = [
     peran: 'Pembimbing Kampus',
     foto: '/images/PP/Dosen/afdhal.jpeg',
     asalInstitusi: 'Universitas Syiah Kuala',
-    prodi: 'Tehnik Mesin',
+    prodi: 'Manajemen Informatika',
   },
   {
     id: 'pk006',
