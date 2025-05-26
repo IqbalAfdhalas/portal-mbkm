@@ -44,7 +44,7 @@ const DailyActivityDetail = () => {
         description:
           'Setiap hari jumat pagi mahasiswa magang mbkm usk melakukan senam pagi secara rutin bersama dengan para pegawai anri di depan halaman kantor. Kegiatan di mulai dari jam 8 dan berakhir sekitar jam 9, sebelum melakukan senam pagi para karyawan dan mahasiswa magang mbkm usk melakukan pemanasan dengan cara memutari kantor sebanyak 2 kali. Selama kegiatan senam berlangsung semua peserta senam mengikuti gerakan dari intruktor yang berganti setiap minggunya. Kegiatan senam rutin ini sangat baik untuk meningkatkan keakraban dan menjaga kesehatan tubuh.',
         icon: '/images/icons/daily-record.svg',
-        image: '/images/program/daily_aktivity/senam.jpg',
+        image: '/images/program/daily_aktivity/Senam.jpg',
       },
       {
         name: 'Badminton',
