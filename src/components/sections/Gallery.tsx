@@ -371,7 +371,7 @@ const Gallery = () => {
           </h2>
           <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
             Dokumentasi berbagai kegiatan pembelajaran, pelatihan, dan kolaborasi mahasiswa dalam
-            program Merdeka Belajar Kampus Merdeka di Arsip Nasional Republik Indonesia.
+            program MBKM di BAST ANRI.
           </p>
         </MotionDiv>
 
