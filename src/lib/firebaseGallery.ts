@@ -12,16 +12,19 @@ import {
   serverTimestamp,
   Timestamp,
   getDoc,
+  increment,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from './firebase';
 import type { GalleryImage } from '@/data/gallery/galeryData';
 
-// Extended interface for Firestore document
+// Extended interface for Firestore document - UPDATED WITH VIEWS
 export interface GalleryImageDoc extends Omit<GalleryImage, 'id'> {
   createdAt: Timestamp;
   updatedAt: Timestamp;
   cloudinaryPublicId?: string;
+  viewCount: number; // Total view count
+  lastViewedAt?: Timestamp; // Last time someone viewed this image
 }
 
 // Interface for form data
@@ -38,28 +41,176 @@ const COLLECTION_NAME = 'gallery';
 const CATEGORY_COLLECTION = 'galleryCategories';
 const YEAR_COLLECTION = 'galleryYears';
 
+// Session storage key untuk tracking viewed images
+const VIEWED_IMAGES_KEY = 'gallery_viewed_images';
+
 /**
- * Get all gallery items from Firestore
+ * STEP 2: INCREMENT VIEW COUNT FUNCTION
+ * Fungsi untuk menambah view count dengan session-based protection
+ *
+ * FIX: Memastikan imageId valid dan berbentuk string yang benar
+ */
+export const incrementViewCount = async (
+  imageId: string
+): Promise<{ success: boolean; viewCount?: number; message?: string }> => {
+  try {
+    // Validate imageId
+    if (!imageId || typeof imageId !== 'string' || imageId.trim() === '') {
+      throw new Error('Image ID tidak valid');
+    }
+
+    console.log('Incrementing view count for imageId:', imageId);
+
+    // 1. Check apakah user sudah pernah view image ini dalam session ini
+    const viewedImages = getViewedImagesFromSession();
+
+    if (viewedImages.includes(imageId)) {
+      console.log(`Image ${imageId} sudah pernah dilihat dalam session ini`);
+      return {
+        success: false,
+        message: 'Image sudah pernah dilihat dalam session ini',
+      };
+    }
+
+    // 2. Get reference ke document - FIX: Pastikan reference benar
+    const docRef = doc(db, COLLECTION_NAME, imageId);
+    console.log('Document reference created for:', docRef.path);
+
+    // 3. Check apakah document ada
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      console.error(`Document with ID ${imageId} tidak ditemukan`);
+      throw new Error('Image tidak ditemukan');
+    }
+
+    console.log('Document exists, current data:', docSnap.data());
+
+    // 4. Update view count di Firestore menggunakan increment
+    await updateDoc(docRef, {
+      viewCount: increment(1), // Atomic increment operation
+      lastViewedAt: serverTimestamp(), // Update waktu terakhir dilihat
+    });
+
+    console.log('View count incremented successfully');
+
+    // 5. Get updated document untuk mendapatkan view count terbaru
+    const updatedDoc = await getDoc(docRef);
+    const updatedData = updatedDoc.data() as GalleryImageDoc;
+    const newViewCount = updatedData.viewCount;
+
+    // 6. Simpan ke session storage bahwa user sudah view image ini
+    addImageToViewedSession(imageId);
+
+    console.log(
+      `Successfully incremented view count for image ${imageId}. New count: ${newViewCount}`
+    );
+
+    return {
+      success: true,
+      viewCount: newViewCount,
+      message: 'View count berhasil ditambah',
+    };
+  } catch (error) {
+    console.error('Error incrementing view count:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Gagal menambah view count',
+    };
+  }
+};
+
+/**
+ * Helper function: Get viewed images dari session storage
+ */
+const getViewedImagesFromSession = (): string[] => {
+  try {
+    // Check apakah kita di browser environment
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
+    const stored = sessionStorage.getItem(VIEWED_IMAGES_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error reading viewed images from session:', error);
+    return [];
+  }
+};
+
+/**
+ * Helper function: Add image ID ke session storage
+ */
+const addImageToViewedSession = (imageId: string): void => {
+  try {
+    // Check apakah kita di browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const viewedImages = getViewedImagesFromSession();
+
+    // Tambah image ID jika belum ada
+    if (!viewedImages.includes(imageId)) {
+      viewedImages.push(imageId);
+      sessionStorage.setItem(VIEWED_IMAGES_KEY, JSON.stringify(viewedImages));
+    }
+  } catch (error) {
+    console.error('Error saving viewed image to session:', error);
+  }
+};
+
+/**
+ * Helper function: Clear viewed images dari session (optional, untuk testing)
+ */
+export const clearViewedImagesSession = (): void => {
+  try {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(VIEWED_IMAGES_KEY);
+      console.log('Cleared viewed images session');
+    }
+  } catch (error) {
+    console.error('Error clearing viewed images session:', error);
+  }
+};
+
+/**
+ * Helper function: Get viewed images count untuk current session (optional, untuk debugging)
+ */
+export const getViewedImagesCount = (): number => {
+  return getViewedImagesFromSession().length;
+};
+
+/**
+ * Get all gallery items from Firestore - UPDATED TO INCLUDE VIEWS
+ * FIX: Pastikan collection reference benar
  */
 export const getGalleryItems = async (): Promise<GalleryImage[]> => {
   try {
+    console.log('Fetching gallery items from collection:', COLLECTION_NAME);
+
     const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
 
+    console.log('Query executed, document count:', querySnapshot.size);
+
     const items: GalleryImage[] = [];
-    querySnapshot.forEach(doc => {
-      const data = doc.data() as GalleryImageDoc;
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data() as GalleryImageDoc;
+      console.log('Processing document:', docSnap.id, data);
+
       items.push({
-        id: doc.id, // FIXED: Keep as string, don't convert to integer
+        id: docSnap.id, // FIX: Pastikan ID dari Firestore document
         src: data.src,
         title: data.title,
         caption: data.caption,
         category: data.category,
         year: data.year,
         date: data.date,
+        viewCount: data.viewCount || 0, // Include view count, default to 0
       });
     });
 
+    console.log('Successfully fetched gallery items:', items.length);
     return items;
   } catch (error) {
     console.error('Error getting gallery items:', error);
@@ -68,26 +219,38 @@ export const getGalleryItems = async (): Promise<GalleryImage[]> => {
 };
 
 /**
- * Get single gallery item by ID
+ * Get single gallery item by ID - UPDATED TO INCLUDE VIEWS
+ * FIX: Validasi imageId dan pastikan document reference benar
  */
 export const getGalleryItemById = async (id: string): Promise<GalleryImage | null> => {
   try {
+    // Validate ID
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      throw new Error('Invalid gallery item ID');
+    }
+
+    console.log('Fetching gallery item by ID:', id);
+
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       const data = docSnap.data() as GalleryImageDoc;
+      console.log('Gallery item found:', data);
+
       return {
-        id: docSnap.id, // FIXED: Keep as string
+        id: docSnap.id,
         src: data.src,
         title: data.title,
         caption: data.caption,
         category: data.category,
         year: data.year,
         date: data.date,
+        viewCount: data.viewCount || 0, // Include view count
       };
     }
 
+    console.log('Gallery item not found for ID:', id);
     return null;
   } catch (error) {
     console.error('Error getting gallery item by ID:', error);
@@ -157,7 +320,7 @@ export const deleteFromCloudinary = async (publicId: string): Promise<void> => {
 };
 
 /**
- * Add new gallery item
+ * Add new gallery item - UPDATED TO INCLUDE INITIAL VIEW COUNT
  */
 export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
   try {
@@ -171,7 +334,7 @@ export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
       publicId = uploadResult.publicId;
     }
 
-    // Prepare document data
+    // Prepare document data - UPDATED WITH VIEW COUNT
     const docData: GalleryImageDoc & { cloudinaryPublicId?: string } = {
       src: imageUrl,
       cloudinaryPublicId: publicId,
@@ -180,12 +343,16 @@ export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
       category: data.category,
       year: data.year,
       date: data.date,
+      viewCount: 0, // Initialize view count to 0
       createdAt: serverTimestamp() as Timestamp,
       updatedAt: serverTimestamp() as Timestamp,
     };
 
+    console.log('Adding new gallery item:', docData);
+
     // Add to Firestore
-    await addDoc(collection(db, COLLECTION_NAME), docData);
+    const docRef = await addDoc(collection(db, COLLECTION_NAME), docData);
+    console.log('Gallery item added with ID:', docRef.id);
   } catch (error) {
     console.error('Error adding gallery item:', error);
     throw new Error('Failed to add gallery item');
@@ -194,9 +361,17 @@ export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
 
 /**
  * Update existing gallery item
+ * FIX: Validasi ID dan pastikan document reference benar
  */
 export const updateGalleryItem = async (id: string, data: GalleryFormData): Promise<void> => {
   try {
+    // Validate ID
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      throw new Error('Invalid gallery item ID');
+    }
+
+    console.log('Updating gallery item with ID:', id);
+
     const docRef = doc(db, COLLECTION_NAME, id);
 
     let updateData: Partial<GalleryImageDoc> = {
@@ -215,8 +390,11 @@ export const updateGalleryItem = async (id: string, data: GalleryFormData): Prom
       updateData.cloudinaryPublicId = uploadResult.publicId;
     }
 
+    console.log('Update data:', updateData);
+
     // Update document
     await updateDoc(docRef, updateData);
+    console.log('Gallery item updated successfully');
   } catch (error) {
     console.error('Error updating gallery item:', error);
     throw new Error('Failed to update gallery item');
@@ -225,11 +403,17 @@ export const updateGalleryItem = async (id: string, data: GalleryFormData): Prom
 
 /**
  * Delete gallery item - IMPROVED VERSION
+ * FIX: Validasi ID dan pastikan document reference benar
  */
 export const deleteGalleryItem = async (id: string): Promise<void> => {
   console.log('Starting delete process for ID:', id);
 
   try {
+    // Validate ID
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      throw new Error('Invalid gallery item ID');
+    }
+
     // Get document first to get cloudinary public ID
     const docRef = doc(db, COLLECTION_NAME, id);
     const docSnap = await getDoc(docRef);

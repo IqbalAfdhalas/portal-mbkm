@@ -27,6 +27,7 @@ import {
   getAvailableCategories,
   getAvailableYears,
 } from '@/lib/firebaseGallery';
+import { useViewCounter } from '@/hooks/useViewCounter';
 
 // Loading Component
 const LoadingGrid = () => (
@@ -113,6 +114,10 @@ const GalleryItem: React.FC<GalleryItemProps> = ({ item, viewMode, onEdit, onDel
               <span className="flex items-center">
                 <Calendar className="w-3 h-3 mr-1" />
                 {item.date}
+              </span>
+              <span className="flex items-center">
+                <Eye className="w-3 h-3 mr-1" />
+                {item.viewCount || 0} views
               </span>
             </div>
           </div>
@@ -210,7 +215,13 @@ const GalleryItem: React.FC<GalleryItemProps> = ({ item, viewMode, onEdit, onDel
             <Calendar className="w-3 h-3 mr-1" />
             {item.date}
           </span>
-          <span>{item.year}</span>
+          <div className="flex items-center space-x-2">
+            <span className="flex items-center">
+              <Eye className="w-3 h-3 mr-1" />
+              {item.viewCount || 0}
+            </span>
+            <span>{item.year}</span>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -225,8 +236,14 @@ interface ImagePreviewModalProps {
 }
 
 const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ item, isOpen, onClose }) => {
-  if (!item) return null;
+  const { viewCount, incrementView, isLoading } = useViewCounter({
+    imageId: item?.id || '',
+    initialViewCount: item?.viewCount || 0,
+    autoIncrement: true, // Auto increment saat modal dibuka
+    delay: 1000, // 1 detik delay
+  });
 
+  if (!item) return null;
   return (
     <AnimatePresence>
       {isOpen && (
@@ -275,6 +292,10 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ item, isOpen, onC
                   <Calendar className="w-4 h-4 mr-1" />
                   {item.date}
                 </span>
+                <span className="flex items-center">
+                  <Eye className="w-4 h-4 mr-1" />
+                  {viewCount} views
+                </span>
                 <span>{item.year}</span>
               </div>
             </div>
@@ -314,6 +335,8 @@ export default function AdminGalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedYear, setSelectedYear] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'date' | 'views' | 'title'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableYears, setAvailableYears] = useState<string[]>([]);
 
@@ -340,7 +363,7 @@ export default function AdminGalleryPage() {
     }
   };
 
-  // Filter items
+  // Filter and sort items
   useEffect(() => {
     let filtered = items;
 
@@ -365,8 +388,34 @@ export default function AdminGalleryPage() {
       );
     }
 
+    // Sort items
+    filtered.sort((a, b) => {
+      let aValue: string | number;
+      let bValue: string | number;
+
+      switch (sortBy) {
+        case 'views':
+          aValue = a.viewCount || 0;
+          bValue = b.viewCount || 0;
+          break;
+        case 'title':
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+          break;
+        default: // 'date'
+          aValue = new Date(a.date).getTime();
+          bValue = new Date(b.date).getTime();
+      }
+
+      if (sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
     setFilteredItems(filtered);
-  }, [items, selectedCategory, selectedYear, searchQuery]);
+  }, [items, selectedCategory, selectedYear, searchQuery, sortBy, sortOrder]);
 
   // Load data on mount
   useEffect(() => {
@@ -423,6 +472,8 @@ export default function AdminGalleryPage() {
     setSearchQuery('');
     setSelectedCategory('all');
     setSelectedYear('all');
+    setSortBy('date');
+    setSortOrder('desc');
   };
 
   if (loading) {
@@ -559,7 +610,37 @@ export default function AdminGalleryPage() {
             </select>
           </div>
 
-          {(searchQuery || selectedCategory !== 'all' || selectedYear !== 'all') && (
+          <div className="flex-1">
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value as 'date' | 'views' | 'title')}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              <option value="date">Urutkan: Tanggal</option>
+              <option value="views">Urutkan: Views</option>
+              <option value="title">Urutkan: Judul</option>
+            </select>
+          </div>
+
+          <div className="flex-shrink-0">
+            <button
+              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              title={
+                sortOrder === 'asc'
+                  ? 'Urutan: A-Z / Lama-Baru / Rendah-Tinggi'
+                  : 'Urutan: Z-A / Baru-Lama / Tinggi-Rendah'
+              }
+            >
+              {sortOrder === 'asc' ? '↑' : '↓'}
+            </button>
+          </div>
+
+          {(searchQuery ||
+            selectedCategory !== 'all' ||
+            selectedYear !== 'all' ||
+            sortBy !== 'date' ||
+            sortOrder !== 'desc') && (
             <button
               onClick={clearFilters}
               className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

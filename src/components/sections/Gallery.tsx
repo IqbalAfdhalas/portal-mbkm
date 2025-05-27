@@ -7,8 +7,10 @@ import { MotionDiv } from '@/components/common/MotionClientOnly';
 import { AnimatePresence, motion } from 'framer-motion';
 import { getGalleryItems } from '@/lib/firebaseGallery';
 import type { GalleryImage } from '@/data/gallery/galeryData';
+import { GalleryViewCounter, DetailViewCounter } from '@/components/ui/ViewCounter';
+import { useAutoViewCounter } from '@/hooks/useViewCounter';
 
-// Component for each gallery item
+// Component for each gallery item - Updated with ViewCounter
 interface GalleryItemProps {
   image: GalleryImage;
   onClick: (image: GalleryImage) => void;
@@ -50,8 +52,15 @@ const GalleryItem = ({ image, onClick }: GalleryItemProps) => {
             Klik untuk memperbesar
           </div>
         </motion.div>
+
+        {/* View Counter - positioned at bottom right */}
+        <GalleryViewCounter
+          viewCount={image.viewCount || 0}
+          className="opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+        />
+
         <motion.div
-          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3"
+          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 pr-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -67,7 +76,7 @@ const GalleryItem = ({ image, onClick }: GalleryItemProps) => {
   );
 };
 
-// Improved Lightbox component
+// Lightbox component with ViewCounter integration
 interface LightboxProps {
   image: GalleryImage;
   onClose: () => void;
@@ -90,6 +99,9 @@ const Lightbox = ({
   totalImages,
 }: LightboxProps) => {
   const [isLoading, setIsLoading] = useState(true);
+
+  // Auto increment view count when lightbox opens
+  const { viewCount, isLoading: viewLoading } = useAutoViewCounter(image.id, image.viewCount || 0);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -158,6 +170,13 @@ const Lightbox = ({
               </span>
               <span className="text-xs opacity-75">•</span>
               <span className="text-xs opacity-75">{image.category}</span>
+              <span className="text-xs opacity-75">•</span>
+              {/* View counter in header */}
+              <DetailViewCounter
+                viewCount={viewCount}
+                isLoading={viewLoading}
+                className="text-white"
+              />
             </div>
 
             <div className="flex items-center space-x-2">
@@ -261,7 +280,15 @@ const Lightbox = ({
           onClick={e => e.stopPropagation()}
         >
           <div className="max-w-4xl mx-auto text-white">
-            <h3 className="text-xl font-semibold mb-2">{image.title}</h3>
+            <div className="flex items-start justify-between mb-2">
+              <h3 className="text-xl font-semibold flex-1">{image.title}</h3>
+              {/* Large view counter display */}
+              <DetailViewCounter
+                viewCount={viewCount}
+                isLoading={viewLoading}
+                className="text-gray-300 ml-4"
+              />
+            </div>
             {image.caption && (
               <p className="text-gray-300 mb-3 text-sm leading-relaxed">{image.caption}</p>
             )}
@@ -291,19 +318,28 @@ const Lightbox = ({
   );
 };
 
-// Main Gallery Component
+// Main Gallery Component with sorting options
 const Gallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeYear, setActiveYear] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'popular' | 'title'>('newest');
 
   useEffect(() => {
     const fetchData = async () => {
-      const galleryItems = await getGalleryItems();
-      setImages(galleryItems);
+      try {
+        setIsLoading(true);
+        const galleryItems = await getGalleryItems();
+        setImages(galleryItems);
+      } catch (error) {
+        console.error('Error fetching gallery items:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchData();
@@ -314,13 +350,27 @@ const Gallery = () => {
   const years = ['all', ...Array.from(new Set(images.map(item => item.year)))];
 
   // Filter images based on active filters and search query
-  const filteredImages = images.filter(
-    img =>
-      (activeCategory === 'all' || img.category === activeCategory) &&
-      (activeYear === 'all' || img.year === activeYear) &&
-      (img.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        img.caption?.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredImages = images
+    .filter(
+      img =>
+        (activeCategory === 'all' || img.category === activeCategory) &&
+        (activeYear === 'all' || img.year === activeYear) &&
+        (img.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          img.caption?.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'popular':
+          return (b.viewCount || 0) - (a.viewCount || 0);
+        case 'oldest':
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case 'title':
+          return a.title.localeCompare(b.title);
+        case 'newest':
+        default:
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+    });
 
   const handleImageClick = (image: GalleryImage) => {
     setSelectedImage(image);
@@ -352,6 +402,9 @@ const Gallery = () => {
     return category;
   };
 
+  // Get total views count
+  const totalViews = images.reduce((sum, img) => sum + (img.viewCount || 0), 0);
+
   return (
     <section id="gallery" className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto max-w-screen-xl px-4">
@@ -373,10 +426,22 @@ const Gallery = () => {
             Dokumentasi berbagai kegiatan pembelajaran, pelatihan, dan kolaborasi mahasiswa dalam
             program Merdeka Belajar Kampus Merdeka di Arsip Nasional Republik Indonesia.
           </p>
+
+          {/* Stats */}
+          <div className="flex justify-center gap-8 mt-6 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{images.length}</span>
+              <span>foto</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{totalViews.toLocaleString()}</span>
+              <span>total views</span>
+            </div>
+          </div>
         </MotionDiv>
 
         <div className="flex flex-col gap-6">
-          {/* Search */}
+          {/* Search and Sort */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <MotionDiv
               initial={{ opacity: 0, x: -20 }}
@@ -396,6 +461,29 @@ const Gallery = () => {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
                 size={18}
               />
+            </MotionDiv>
+
+            {/* Sort Options */}
+            <MotionDiv
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-2"
+            >
+              <span className="text-gray-700 dark:text-gray-300 font-medium">Urutkan:</span>
+              <select
+                value={sortBy}
+                onChange={e =>
+                  setSortBy(e.target.value as 'newest' | 'oldest' | 'popular' | 'title')
+                }
+                className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="newest">Terbaru</option>
+                <option value="oldest">Terlama</option>
+                <option value="popular">Terpopuler</option>
+                <option value="title">Judul A-Z</option>
+              </select>
             </MotionDiv>
           </div>
 
@@ -461,6 +549,9 @@ const Gallery = () => {
               ` dalam kategori "${getCategoryDisplayName(activeCategory)}"`}
             {activeYear !== 'all' && ` tahun ${activeYear}`}
             {searchQuery && ` dengan pencarian "${searchQuery}"`}
+            {sortBy === 'popular' && ' (diurutkan berdasarkan views terbanyak)'}
+            {sortBy === 'oldest' && ' (diurutkan dari yang terlama)'}
+            {sortBy === 'title' && ' (diurutkan berdasarkan judul A-Z)'}
           </MotionDiv>
 
           {/* Gallery */}
@@ -471,7 +562,34 @@ const Gallery = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {filteredImages.length === 0 ? (
+            {isLoading ? (
+              <motion.div
+                className="flex flex-col items-center justify-center py-16 text-gray-500 dark:text-gray-400"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="relative">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
+                  <div className="animate-ping absolute top-0 left-0 rounded-full h-16 w-16 border border-blue-300 opacity-20"></div>
+                </div>
+                <h3 className="text-lg font-medium mt-6 mb-2">Memuat galeri...</h3>
+                <p className="text-sm opacity-75">Mengambil data dari database</p>
+
+                {/* Loading skeleton cards */}
+                <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-4xl">
+                  {[...Array(12)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="bg-gray-200 dark:bg-gray-700 rounded-lg aspect-[3/4] animate-pulse"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.1 }}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            ) : filteredImages.length === 0 ? (
               <motion.div
                 className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400"
                 initial={{ opacity: 0, scale: 0.8 }}
