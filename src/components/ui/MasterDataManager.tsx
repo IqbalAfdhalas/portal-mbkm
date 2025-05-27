@@ -20,7 +20,7 @@ import {
   Prodi,
   Unit,
   MasterData,
-} from '@/lib/firebaseProfil';
+} from '@/lib/firebaseProfiles';
 
 interface MasterDataManagerProps {
   type: 'angkatan' | 'prodi' | 'unit';

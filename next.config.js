@@ -5,6 +5,12 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: [
+      'res.cloudinary.com', // Untuk gambar dari Cloudinary
+      'ui-avatars.com', // Untuk avatar generator
+    ],
+  },
 };
 
 module.exports = nextConfig;
