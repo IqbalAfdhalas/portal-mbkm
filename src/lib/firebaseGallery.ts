@@ -1,4 +1,4 @@
-// src/lib/firebaseGallery.ts - FIXED VERSION
+// src/lib/firebaseGallery.ts - OPTIMIZED VERSION
 import {
   collection,
   doc,
@@ -17,14 +17,16 @@ import {
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from './firebase';
 import type { GalleryImage } from '@/data/gallery/galeryData';
+import { performanceCache, CACHE_KEYS, CACHE_TTL } from './utils/performanceCache';
+import { firebaseOptimization } from './utils/firebaseOptimization';
 
-// Extended interface for Firestore document - UPDATED WITH VIEWS
+// Extended interface for Firestore document - WITH VIEWS
 export interface GalleryImageDoc extends Omit<GalleryImage, 'id'> {
   createdAt: Timestamp;
   updatedAt: Timestamp;
   cloudinaryPublicId?: string;
-  viewCount: number; // Total view count
-  lastViewedAt?: Timestamp; // Last time someone viewed this image
+  viewCount: number;
+  lastViewedAt?: Timestamp;
 }
 
 // Interface for form data
@@ -45,65 +47,63 @@ const YEAR_COLLECTION = 'galleryYears';
 const VIEWED_IMAGES_KEY = 'gallery_viewed_images';
 
 /**
- * STEP 2: INCREMENT VIEW COUNT FUNCTION
- * Fungsi untuk menambah view count dengan session-based protection
- *
- * FIX: Memastikan imageId valid dan berbentuk string yang benar
+ * OPTIMIZED: INCREMENT VIEW COUNT FUNCTION
+ * Session-based protection dengan error handling yang lebih baik
  */
 export const incrementViewCount = async (
   imageId: string
 ): Promise<{ success: boolean; viewCount?: number; message?: string }> => {
+  const metricsId = performanceCache.startMetrics(`incrementViewCount_${imageId}`);
+
   try {
     // Validate imageId
     if (!imageId || typeof imageId !== 'string' || imageId.trim() === '') {
       throw new Error('Image ID tidak valid');
     }
 
-    console.log('Incrementing view count for imageId:', imageId);
+    console.log('🔢 [ViewCount] Incrementing for imageId:', imageId);
 
-    // 1. Check apakah user sudah pernah view image ini dalam session ini
+    // 1. Check session-based protection
     const viewedImages = getViewedImagesFromSession();
-
     if (viewedImages.includes(imageId)) {
-      console.log(`Image ${imageId} sudah pernah dilihat dalam session ini`);
+      console.log(`👀 [ViewCount] Already viewed in session: ${imageId}`);
+      performanceCache.endMetrics(`incrementViewCount_${imageId}`, true);
       return {
         success: false,
         message: 'Image sudah pernah dilihat dalam session ini',
       };
     }
 
-    // 2. Get reference ke document - FIX: Pastikan reference benar
+    // 2. Warm up connection dan get document reference
+    await firebaseOptimization.warmupConnection();
     const docRef = doc(db, COLLECTION_NAME, imageId);
-    console.log('Document reference created for:', docRef.path);
 
-    // 3. Check apakah document ada
+    // 3. Verify document exists
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
-      console.error(`Document with ID ${imageId} tidak ditemukan`);
       throw new Error('Image tidak ditemukan');
     }
 
-    console.log('Document exists, current data:', docSnap.data());
-
-    // 4. Update view count di Firestore menggunakan increment
+    // 4. Atomic increment operation
     await updateDoc(docRef, {
-      viewCount: increment(1), // Atomic increment operation
-      lastViewedAt: serverTimestamp(), // Update waktu terakhir dilihat
+      viewCount: increment(1),
+      lastViewedAt: serverTimestamp(),
     });
 
-    console.log('View count incremented successfully');
-
-    // 5. Get updated document untuk mendapatkan view count terbaru
+    // 5. Get updated view count
     const updatedDoc = await getDoc(docRef);
     const updatedData = updatedDoc.data() as GalleryImageDoc;
     const newViewCount = updatedData.viewCount;
 
-    // 6. Simpan ke session storage bahwa user sudah view image ini
+    // 6. Update session tracking
     addImageToViewedSession(imageId);
 
-    console.log(
-      `Successfully incremented view count for image ${imageId}. New count: ${newViewCount}`
-    );
+    // 7. Invalidate related cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_BY_ID(imageId));
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_ITEMS);
+
+    console.log(`✅ [ViewCount] Successfully incremented: ${imageId} -> ${newViewCount}`);
+    performanceCache.endMetrics(`incrementViewCount_${imageId}`, false);
 
     return {
       success: true,
@@ -111,7 +111,8 @@ export const incrementViewCount = async (
       message: 'View count berhasil ditambah',
     };
   } catch (error) {
-    console.error('Error incrementing view count:', error);
+    console.error('❌ [ViewCount] Error:', error);
+    performanceCache.endMetrics(`incrementViewCount_${imageId}`, false);
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Gagal menambah view count',
@@ -124,15 +125,12 @@ export const incrementViewCount = async (
  */
 const getViewedImagesFromSession = (): string[] => {
   try {
-    // Check apakah kita di browser environment
-    if (typeof window === 'undefined') {
-      return [];
-    }
+    if (typeof window === 'undefined') return [];
 
     const stored = sessionStorage.getItem(VIEWED_IMAGES_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
-    console.error('Error reading viewed images from session:', error);
+    console.error('❌ [ViewCount] Session read error:', error);
     return [];
   }
 };
@@ -142,160 +140,210 @@ const getViewedImagesFromSession = (): string[] => {
  */
 const addImageToViewedSession = (imageId: string): void => {
   try {
-    // Check apakah kita di browser environment
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (typeof window === 'undefined') return;
 
     const viewedImages = getViewedImagesFromSession();
-
-    // Tambah image ID jika belum ada
     if (!viewedImages.includes(imageId)) {
       viewedImages.push(imageId);
       sessionStorage.setItem(VIEWED_IMAGES_KEY, JSON.stringify(viewedImages));
     }
   } catch (error) {
-    console.error('Error saving viewed image to session:', error);
+    console.error('❌ [ViewCount] Session write error:', error);
   }
 };
 
 /**
- * Helper function: Clear viewed images dari session (optional, untuk testing)
- */
-export const clearViewedImagesSession = (): void => {
-  try {
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem(VIEWED_IMAGES_KEY);
-      console.log('Cleared viewed images session');
-    }
-  } catch (error) {
-    console.error('Error clearing viewed images session:', error);
-  }
-};
-
-/**
- * Helper function: Get viewed images count untuk current session (optional, untuk debugging)
- */
-export const getViewedImagesCount = (): number => {
-  return getViewedImagesFromSession().length;
-};
-
-/**
- * Get all gallery items from Firestore - UPDATED TO INCLUDE VIEWS
- * FIX: Pastikan collection reference benar
+ * OPTIMIZED: Get all gallery items with progressive loading
  */
 export const getGalleryItems = async (): Promise<GalleryImage[]> => {
-  try {
-    console.log('Fetching gallery items from collection:', COLLECTION_NAME);
+  return performanceCache.cachedFetch(
+    CACHE_KEYS.GALLERY_ITEMS,
+    async () => {
+      console.log('📸 [Gallery] Fetching items from Firestore');
 
-    const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
-    const querySnapshot = await getDocs(q);
+      // Warm up connection first
+      await firebaseOptimization.warmupConnection();
 
-    console.log('Query executed, document count:', querySnapshot.size);
+      const q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'));
+      const querySnapshot = await getDocs(q);
 
-    const items: GalleryImage[] = [];
-    querySnapshot.forEach(docSnap => {
-      const data = docSnap.data() as GalleryImageDoc;
-      console.log('Processing document:', docSnap.id, data);
-
-      items.push({
-        id: docSnap.id, // FIX: Pastikan ID dari Firestore document
-        src: data.src,
-        title: data.title,
-        caption: data.caption,
-        category: data.category,
-        year: data.year,
-        date: data.date,
-        viewCount: data.viewCount || 0, // Include view count, default to 0
+      const items: GalleryImage[] = [];
+      querySnapshot.forEach(docSnap => {
+        const data = docSnap.data() as GalleryImageDoc;
+        items.push({
+          id: docSnap.id,
+          src: data.src,
+          title: data.title,
+          caption: data.caption,
+          category: data.category,
+          year: data.year,
+          date: data.date,
+          viewCount: data.viewCount || 0,
+        });
       });
-    });
 
-    console.log('Successfully fetched gallery items:', items.length);
-    return items;
-  } catch (error) {
-    console.error('Error getting gallery items:', error);
-    throw new Error('Failed to fetch gallery items');
-  }
-};
-
-/**
- * Get single gallery item by ID - UPDATED TO INCLUDE VIEWS
- * FIX: Validasi imageId dan pastikan document reference benar
- */
-export const getGalleryItemById = async (id: string): Promise<GalleryImage | null> => {
-  try {
-    // Validate ID
-    if (!id || typeof id !== 'string' || id.trim() === '') {
-      throw new Error('Invalid gallery item ID');
-    }
-
-    console.log('Fetching gallery item by ID:', id);
-
-    const docRef = doc(db, COLLECTION_NAME, id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data() as GalleryImageDoc;
-      console.log('Gallery item found:', data);
-
-      return {
-        id: docSnap.id,
-        src: data.src,
-        title: data.title,
-        caption: data.caption,
-        category: data.category,
-        year: data.year,
-        date: data.date,
-        viewCount: data.viewCount || 0, // Include view count
-      };
-    }
-
-    console.log('Gallery item not found for ID:', id);
-    return null;
-  } catch (error) {
-    console.error('Error getting gallery item by ID:', error);
-    throw new Error('Failed to fetch gallery item');
-  }
-};
-
-/**
- * Upload image to Cloudinary
- */
-export const uploadImage = async (file: File): Promise<{ url: string; publicId: string }> => {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string);
-
-  console.log('Cloudinary Cloud Name:', process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
-  console.log('Upload Preset:', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
-
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-    {
-      method: 'POST',
-      body: formData,
-    }
+      console.log(`✅ [Gallery] Fetched ${items.length} items`);
+      return items;
+    },
+    CACHE_TTL.MEDIUM
   );
+};
 
-  if (!res.ok) {
-    const errorData = await res.text();
-    console.error('Cloudinary upload error:', errorData);
-    throw new Error('Upload ke Cloudinary gagal');
-  }
+/**
+ * OPTIMIZED: Get gallery data with parallel loading
+ */
+export const getGalleryDataParallel = async (): Promise<{
+  items: GalleryImage[];
+  categories: string[];
+  years: string[];
+}> => {
+  return firebaseOptimization.executeParallel({
+    items: () => getGalleryItems(),
+    categories: () => getAvailableCategories(),
+    years: () => getAvailableYears(),
+  });
+};
 
-  const data = await res.json();
+/**
+ * OPTIMIZED: Get gallery data with progressive loading
+ */
+export const getGalleryDataProgressive = async (
+  onProgress?: (key: string, data: any) => void
+): Promise<{
+  items: GalleryImage[];
+  categories: string[];
+  years: string[];
+}> => {
+  const result = await firebaseOptimization.executeProgressive([
+    {
+      key: 'items',
+      priority: 'high',
+      queryFn: () => getGalleryItems(),
+      onComplete: onProgress,
+    },
+    {
+      key: 'categories',
+      priority: 'medium',
+      queryFn: () => getAvailableCategories(),
+      onComplete: onProgress,
+    },
+    {
+      key: 'years',
+      priority: 'low',
+      queryFn: () => getAvailableYears(),
+      onComplete: onProgress,
+    },
+  ]);
+
   return {
-    url: data.secure_url,
-    publicId: data.public_id,
+    items: result.items,
+    categories: result.categories,
+    years: result.years,
   };
 };
 
 /**
- * Delete image from Cloudinary - IMPROVED ERROR HANDLING
+ * OPTIMIZED: Get single gallery item by ID
+ */
+export const getGalleryItemById = async (id: string): Promise<GalleryImage | null> => {
+  if (!id || typeof id !== 'string' || id.trim() === '') {
+    throw new Error('Invalid gallery item ID');
+  }
+
+  return performanceCache.cachedFetch(
+    CACHE_KEYS.GALLERY_BY_ID(id),
+    async () => {
+      console.log(`🔍 [Gallery] Fetching item by ID: ${id}`);
+
+      // Warm up connection
+      await firebaseOptimization.warmupConnection();
+
+      const docRef = doc(db, COLLECTION_NAME, id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data() as GalleryImageDoc;
+        return {
+          id: docSnap.id,
+          src: data.src,
+          title: data.title,
+          caption: data.caption,
+          category: data.category,
+          year: data.year,
+          date: data.date,
+          viewCount: data.viewCount || 0,
+        };
+      }
+
+      console.log(`❌ [Gallery] Item not found: ${id}`);
+      return null;
+    },
+    CACHE_TTL.LONG
+  );
+};
+
+/**
+ * OPTIMIZED: Upload image to Cloudinary dengan retry mechanism
+ */
+export const uploadImage = async (
+  file: File,
+  maxRetries: number = 3
+): Promise<{ url: string; publicId: string }> => {
+  const metricsId = performanceCache.startMetrics('uploadImage');
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`☁️ [Upload] Attempt ${attempt}/${maxRetries}`);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string);
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.text();
+        throw new Error(`Upload failed: ${errorData}`);
+      }
+
+      const data = await res.json();
+      console.log(`✅ [Upload] Success on attempt ${attempt}`);
+      performanceCache.endMetrics('uploadImage', false);
+
+      return {
+        url: data.secure_url,
+        publicId: data.public_id,
+      };
+    } catch (error) {
+      console.error(`❌ [Upload] Attempt ${attempt} failed:`, error);
+
+      if (attempt === maxRetries) {
+        performanceCache.endMetrics('uploadImage', false);
+        throw new Error(`Upload gagal setelah ${maxRetries} percobaan`);
+      }
+
+      // Wait before retry (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+    }
+  }
+
+  throw new Error('Upload failed unexpectedly');
+};
+
+/**
+ * OPTIMIZED: Delete image from Cloudinary
  */
 export const deleteFromCloudinary = async (publicId: string): Promise<void> => {
+  const metricsId = performanceCache.startMetrics('deleteFromCloudinary');
+
   try {
-    console.log('Attempting to delete from Cloudinary:', publicId);
+    console.log(`🗑️ [Cloudinary] Deleting: ${publicId}`);
 
     const res = await fetch('/api/delete-cloudinary', {
       method: 'POST',
@@ -304,25 +352,26 @@ export const deleteFromCloudinary = async (publicId: string): Promise<void> => {
     });
 
     const data = await res.json();
-    console.log('Cloudinary delete response:', data);
 
     if (!res.ok) {
-      console.error('Cloudinary delete error:', data);
       throw new Error(data.message || 'Failed to delete image from Cloudinary');
     }
 
-    console.log('Successfully deleted from Cloudinary:', publicId);
+    console.log(`✅ [Cloudinary] Deleted: ${publicId}`);
+    performanceCache.endMetrics('deleteFromCloudinary', false);
   } catch (error) {
-    console.error('Error deleting image from Cloudinary:', error);
-    // Re-throw the error so it can be handled by the caller
+    console.error('❌ [Cloudinary] Delete error:', error);
+    performanceCache.endMetrics('deleteFromCloudinary', false);
     throw error;
   }
 };
 
 /**
- * Add new gallery item - UPDATED TO INCLUDE INITIAL VIEW COUNT
+ * OPTIMIZED: Add new gallery item dengan cache invalidation
  */
 export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
+  const metricsId = performanceCache.startMetrics('addGalleryItem');
+
   try {
     let imageUrl = '';
     let publicId = '';
@@ -334,7 +383,10 @@ export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
       publicId = uploadResult.publicId;
     }
 
-    // Prepare document data - UPDATED WITH VIEW COUNT
+    // Warm up connection
+    await firebaseOptimization.warmupConnection();
+
+    // Prepare document data
     const docData: GalleryImageDoc & { cloudinaryPublicId?: string } = {
       src: imageUrl,
       cloudinaryPublicId: publicId,
@@ -343,34 +395,43 @@ export const addGalleryItem = async (data: GalleryFormData): Promise<void> => {
       category: data.category,
       year: data.year,
       date: data.date,
-      viewCount: 0, // Initialize view count to 0
+      viewCount: 0,
       createdAt: serverTimestamp() as Timestamp,
       updatedAt: serverTimestamp() as Timestamp,
     };
 
-    console.log('Adding new gallery item:', docData);
+    console.log('➕ [Gallery] Adding new item:', data.title);
 
     // Add to Firestore
     const docRef = await addDoc(collection(db, COLLECTION_NAME), docData);
-    console.log('Gallery item added with ID:', docRef.id);
+
+    // Invalidate related cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_ITEMS);
+
+    console.log(`✅ [Gallery] Added with ID: ${docRef.id}`);
+    performanceCache.endMetrics('addGalleryItem', false);
   } catch (error) {
-    console.error('Error adding gallery item:', error);
+    console.error('❌ [Gallery] Add error:', error);
+    performanceCache.endMetrics('addGalleryItem', false);
     throw new Error('Failed to add gallery item');
   }
 };
 
 /**
- * Update existing gallery item
- * FIX: Validasi ID dan pastikan document reference benar
+ * OPTIMIZED: Update existing gallery item
  */
 export const updateGalleryItem = async (id: string, data: GalleryFormData): Promise<void> => {
+  const metricsId = performanceCache.startMetrics('updateGalleryItem');
+
   try {
-    // Validate ID
     if (!id || typeof id !== 'string' || id.trim() === '') {
       throw new Error('Invalid gallery item ID');
     }
 
-    console.log('Updating gallery item with ID:', id);
+    console.log(`✏️ [Gallery] Updating item: ${id}`);
+
+    // Warm up connection
+    await firebaseOptimization.warmupConnection();
 
     const docRef = doc(db, COLLECTION_NAME, id);
 
@@ -390,29 +451,37 @@ export const updateGalleryItem = async (id: string, data: GalleryFormData): Prom
       updateData.cloudinaryPublicId = uploadResult.publicId;
     }
 
-    console.log('Update data:', updateData);
-
     // Update document
     await updateDoc(docRef, updateData);
-    console.log('Gallery item updated successfully');
+
+    // Invalidate related cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_ITEMS);
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_BY_ID(id));
+
+    console.log(`✅ [Gallery] Updated: ${id}`);
+    performanceCache.endMetrics('updateGalleryItem', false);
   } catch (error) {
-    console.error('Error updating gallery item:', error);
+    console.error('❌ [Gallery] Update error:', error);
+    performanceCache.endMetrics('updateGalleryItem', false);
     throw new Error('Failed to update gallery item');
   }
 };
 
 /**
- * Delete gallery item - IMPROVED VERSION
- * FIX: Validasi ID dan pastikan document reference benar
+ * OPTIMIZED: Delete gallery item dengan proper cleanup
  */
 export const deleteGalleryItem = async (id: string): Promise<void> => {
-  console.log('Starting delete process for ID:', id);
+  const metricsId = performanceCache.startMetrics('deleteGalleryItem');
 
   try {
-    // Validate ID
     if (!id || typeof id !== 'string' || id.trim() === '') {
       throw new Error('Invalid gallery item ID');
     }
+
+    console.log(`🗑️ [Gallery] Deleting item: ${id}`);
+
+    // Warm up connection
+    await firebaseOptimization.warmupConnection();
 
     // Get document first to get cloudinary public ID
     const docRef = doc(db, COLLECTION_NAME, id);
@@ -425,31 +494,33 @@ export const deleteGalleryItem = async (id: string): Promise<void> => {
     const data = docSnap.data() as GalleryImageDoc & { cloudinaryPublicId?: string };
     const cloudinaryPublicId = data.cloudinaryPublicId;
 
-    console.log('Document data:', data);
-    console.log('Cloudinary Public ID:', cloudinaryPublicId);
-
     // Delete from Firestore first
     await deleteDoc(docRef);
-    console.log('Successfully deleted from Firestore');
+    console.log('✅ [Gallery] Deleted from Firestore');
 
     // Delete image from Cloudinary if exists
     if (cloudinaryPublicId) {
       try {
         await deleteFromCloudinary(cloudinaryPublicId);
-        console.log('Successfully deleted from Cloudinary');
+        console.log('✅ [Gallery] Deleted from Cloudinary');
       } catch (cloudinaryError) {
         console.error(
-          'Failed to delete from Cloudinary, but Firestore deletion succeeded:',
+          '⚠️ [Gallery] Cloudinary deletion failed (Firestore succeeded):',
           cloudinaryError
         );
-        // Don't throw here - Firestore deletion was successful
-        // You might want to log this for manual cleanup later
+        // Don't throw - Firestore deletion succeeded
       }
-    } else {
-      console.warn('No Cloudinary Public ID found, skipping Cloudinary deletion');
     }
+
+    // Invalidate related cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_ITEMS);
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_BY_ID(id));
+
+    console.log(`✅ [Gallery] Delete completed: ${id}`);
+    performanceCache.endMetrics('deleteGalleryItem', false);
   } catch (error) {
-    console.error('Error deleting gallery item:', error);
+    console.error('❌ [Gallery] Delete error:', error);
+    performanceCache.endMetrics('deleteGalleryItem', false);
     throw new Error(
       `Failed to delete gallery item: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
@@ -457,117 +528,174 @@ export const deleteGalleryItem = async (id: string): Promise<void> => {
 };
 
 /**
- * Add new category
+ * OPTIMIZED: Get available categories dengan caching
+ */
+export const getAvailableCategories = async (): Promise<string[]> => {
+  return performanceCache.cachedFetch(
+    CACHE_KEYS.GALLERY_CATEGORIES,
+    async () => {
+      console.log('📂 [Categories] Fetching from Firestore');
+
+      await firebaseOptimization.warmupConnection();
+
+      const querySnapshot = await getDocs(collection(db, CATEGORY_COLLECTION));
+      const categories: string[] = [];
+
+      querySnapshot.forEach(doc => {
+        categories.push(doc.data().name);
+      });
+
+      const result = categories.length > 0 ? categories.sort() : ['Activity', 'Event', 'Education'];
+      console.log(`✅ [Categories] Fetched: ${result.length} categories`);
+      return result;
+    },
+    CACHE_TTL.LONG
+  );
+};
+
+/**
+ * OPTIMIZED: Get available years dengan caching
+ */
+export const getAvailableYears = async (): Promise<string[]> => {
+  return performanceCache.cachedFetch(
+    CACHE_KEYS.GALLERY_YEARS,
+    async () => {
+      console.log('📅 [Years] Fetching from Firestore');
+
+      await firebaseOptimization.warmupConnection();
+
+      const querySnapshot = await getDocs(collection(db, YEAR_COLLECTION));
+      const years: string[] = [];
+
+      querySnapshot.forEach(doc => {
+        years.push(doc.data().name);
+      });
+
+      let result: string[];
+      if (years.length > 0) {
+        result = years.sort().reverse();
+      } else {
+        const currentYear = new Date().getFullYear();
+        result = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
+      }
+
+      console.log(`✅ [Years] Fetched: ${result.length} years`);
+      return result;
+    },
+    CACHE_TTL.LONG
+  );
+};
+
+/**
+ * OPTIMIZED: Add category dengan cache invalidation
  */
 export const addCategory = async (name: string): Promise<void> => {
   try {
+    await firebaseOptimization.warmupConnection();
+
     await addDoc(collection(db, CATEGORY_COLLECTION), {
       name,
       createdAt: serverTimestamp(),
     });
+
+    // Invalidate categories cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_CATEGORIES);
+    console.log(`✅ [Categories] Added: ${name}`);
   } catch (error) {
-    console.error('Error adding category:', error);
+    console.error('❌ [Categories] Add error:', error);
     throw new Error('Failed to add category');
   }
 };
 
 /**
- * Delete category from Firestore
+ * OPTIMIZED: Delete category dengan cache invalidation
  */
 export const deleteCategory = async (name: string): Promise<void> => {
   try {
+    await firebaseOptimization.warmupConnection();
+
     const q = query(collection(db, CATEGORY_COLLECTION), where('name', '==', name));
     const querySnapshot = await getDocs(q);
 
     const deletePromises = querySnapshot.docs.map(docSnap => deleteDoc(docSnap.ref));
     await Promise.all(deletePromises);
+
+    // Invalidate categories cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_CATEGORIES);
+    console.log(`✅ [Categories] Deleted: ${name}`);
   } catch (error) {
-    console.error('Error deleting category:', error);
+    console.error('❌ [Categories] Delete error:', error);
     throw new Error('Failed to delete category');
   }
 };
 
 /**
- * Get available categories from Firestore
- */
-export const getAvailableCategories = async (): Promise<string[]> => {
-  try {
-    const querySnapshot = await getDocs(collection(db, CATEGORY_COLLECTION));
-    const categories: string[] = [];
-
-    querySnapshot.forEach(doc => {
-      categories.push(doc.data().name);
-    });
-
-    return categories.length > 0 ? categories.sort() : ['Activity', 'Event', 'Education'];
-  } catch (error) {
-    console.error('Error getting categories:', error);
-    return ['Activity', 'Event', 'Education'];
-  }
-};
-
-/**
- * Add new year
+ * OPTIMIZED: Add year dengan cache invalidation
  */
 export const addYear = async (name: string): Promise<void> => {
   try {
+    await firebaseOptimization.warmupConnection();
+
     await addDoc(collection(db, YEAR_COLLECTION), {
       name,
       createdAt: serverTimestamp(),
     });
+
+    // Invalidate years cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_YEARS);
+    console.log(`✅ [Years] Added: ${name}`);
   } catch (error) {
-    console.error('Error adding year:', error);
+    console.error('❌ [Years] Add error:', error);
     throw new Error('Failed to add year');
   }
 };
 
 /**
- * Delete year from Firestore
+ * OPTIMIZED: Delete year dengan cache invalidation
  */
 export const deleteYear = async (name: string): Promise<void> => {
   try {
+    await firebaseOptimization.warmupConnection();
+
     const q = query(collection(db, YEAR_COLLECTION), where('name', '==', name));
     const querySnapshot = await getDocs(q);
 
     const deletePromises = querySnapshot.docs.map(docSnap => deleteDoc(docSnap.ref));
     await Promise.all(deletePromises);
+
+    // Invalidate years cache
+    performanceCache.invalidate(CACHE_KEYS.GALLERY_YEARS);
+    console.log(`✅ [Years] Deleted: ${name}`);
   } catch (error) {
-    console.error('Error deleting year:', error);
+    console.error('❌ [Years] Delete error:', error);
     throw new Error('Failed to delete year');
   }
 };
 
+// ===== HELPER FUNCTIONS =====
+
 /**
- * Get available years from Firestore
+ * Session management functions - exported for external use
  */
-export const getAvailableYears = async (): Promise<string[]> => {
+export const clearViewedImagesSession = (): void => {
   try {
-    const querySnapshot = await getDocs(collection(db, YEAR_COLLECTION));
-    const years: string[] = [];
-
-    querySnapshot.forEach(doc => {
-      years.push(doc.data().name);
-    });
-
-    if (years.length > 0) {
-      return years.sort().reverse();
-    } else {
-      // Return default years if no years in database
-      const currentYear = new Date().getFullYear();
-      return Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem(VIEWED_IMAGES_KEY);
+      console.log('🧹 [ViewCount] Session cleared');
     }
   } catch (error) {
-    console.error('Error getting years:', error);
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
+    console.error('❌ [ViewCount] Session clear error:', error);
   }
+};
+
+export const getViewedImagesCount = (): number => {
+  return getViewedImagesFromSession().length;
 };
 
 /**
  * Validate image file
  */
 export const validateImageFile = (file: File): { isValid: boolean; error?: string } => {
-  // Check file type
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
   if (!allowedTypes.includes(file.type)) {
     return {
@@ -576,8 +704,7 @@ export const validateImageFile = (file: File): { isValid: boolean; error?: strin
     };
   }
 
-  // Check file size (max 5MB)
-  const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+  const maxSize = 5 * 1024 * 1024; // 5MB
   if (file.size > maxSize) {
     return {
       isValid: false,
@@ -601,7 +728,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 };
 
 /**
- * Filter gallery items
+ * Filter gallery items - CLIENT SIDE UTILITY
  */
 export const filterGalleryItems = (
   items: GalleryImage[],
@@ -620,4 +747,32 @@ export const filterGalleryItems = (
 
     return matchesCategory && matchesYear && matchesSearch;
   });
+};
+
+// ===== UTILITY FUNCTIONS FOR DEBUGGING =====
+
+/**
+ * Get performance statistics
+ */
+export const getPerformanceStats = () => {
+  return {
+    cache: performanceCache.getStats(),
+    firebase: firebaseOptimization.getConnectionStatus(),
+  };
+};
+
+/**
+ * Force clear all cache (for development/debugging)
+ */
+export const clearAllCache = () => {
+  performanceCache.clear();
+  console.log('🧨 [Debug] All cache cleared');
+};
+
+/**
+ * Reset Firebase connection (for development/debugging)
+ */
+export const resetFirebaseConnection = () => {
+  firebaseOptimization.resetConnection();
+  console.log('🔄 [Debug] Firebase connection reset');
 };
