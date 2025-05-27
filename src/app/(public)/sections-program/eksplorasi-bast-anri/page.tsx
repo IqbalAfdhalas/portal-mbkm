@@ -125,7 +125,7 @@ const KunjunganKeDalamDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-0 pb-12">
       {/* Banner Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-500 via-blue-500 to-purple-400 text-white py-32 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-cyan-300 via-sky-400 to-cyan-500 text-white py-32 px-4">
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
@@ -190,23 +190,23 @@ const KunjunganKeDalamDetail = () => {
 
             {/* Judul dengan styling yang lebih menarik */}
             <div className="relative inline-block mb-6">
-              <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">
+              <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-cyan-200">
                 {program.title}
               </h1>
-              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-full opacity-70 blur-sm"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-cyan-400 to-sky-500 rounded-full opacity-70 blur-sm"></div>
             </div>
 
             {/* Subjudul dengan styling yang lebih menarik */}
             <div className="relative inline-block px-6 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-indigo-200 to-white bg-clip-text text-transparent font-medium">
+              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-cyan-200 to-white bg-clip-text text-transparent font-medium">
                 {program.subtitle}
               </p>
-              <div className="absolute -inset-px bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg opacity-20 blur-sm -z-10"></div>
+              <div className="absolute -inset-px bg-gradient-to-r from-cyan-500 to-sky-500 rounded-lg opacity-20 blur-sm -z-10"></div>
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 opacity-20 blur-md"></div>
-            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 opacity-20 blur-md"></div>
+            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 opacity-20 blur-md"></div>
+            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 opacity-20 blur-md"></div>
           </MotionDiv>
         </div>
       </section>
@@ -222,14 +222,14 @@ const KunjunganKeDalamDetail = () => {
               variants={fadeInUp}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
             >
-              <h2 className="text-2xl font-heading font-bold text-primary dark:text-indigo-400 mb-4">
+              <h2 className="text-2xl font-heading font-bold text-primary dark:text-cyan-400 mb-4">
                 Deskripsi Program
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                 {program.description}
               </p>
 
-              <div className="h-1 w-20 bg-indigo-500 rounded-full mb-6"></div>
+              <div className="h-1 w-20 bg-cyan-500 rounded-full mb-6"></div>
 
               <h3 className="text-xl font-heading font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Manfaat Program
@@ -239,9 +239,9 @@ const KunjunganKeDalamDetail = () => {
                 {program.benefits.map((benefit, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/30"
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-800/30"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center mt-0.5">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center mt-0.5">
                       <svg
                         className="w-4 h-4 text-indigo-600 dark:text-indigo-400"
                         fill="none"
@@ -273,11 +273,11 @@ const KunjunganKeDalamDetail = () => {
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
-              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-indigo-500 mb-8`}
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-cyan-500 mb-8`}
             >
               <div className="flex flex-col md:flex-row md:items-center mb-6">
                 <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                  <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center shadow-lg p-4">
+                  <div className="w-16 h-16 rounded-full bg-cyan-500/20 flex items-center justify-center shadow-lg p-4">
                     <svg
                       className="w-8 h-8 text-indigo-500"
                       xmlns="http://www.w3.org/2000/svg"
