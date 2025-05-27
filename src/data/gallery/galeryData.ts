@@ -8,6 +8,7 @@ export interface GalleryImage {
   category: string;
   year: string;
   date: string;
+  viewCount?: number; // Added view count field
 }
 
 // Helper functions for filtering and organizing data
@@ -50,4 +51,21 @@ export const getImagesByCategory = (images: GalleryImage[], category: string): G
 
 export const getImagesByYear = (images: GalleryImage[], year: string): GalleryImage[] => {
   return images.filter(image => image.year === year);
+};
+
+// New helper function to sort images by view count
+export const sortImagesByViews = (
+  images: GalleryImage[],
+  order: 'asc' | 'desc' = 'desc'
+): GalleryImage[] => {
+  return [...images].sort((a, b) => {
+    const viewsA = a.viewCount || 0;
+    const viewsB = b.viewCount || 0;
+    return order === 'desc' ? viewsB - viewsA : viewsA - viewsB;
+  });
+};
+
+// Helper function to get most viewed images
+export const getMostViewedImages = (images: GalleryImage[], limit: number = 5): GalleryImage[] => {
+  return sortImagesByViews(images, 'desc').slice(0, limit);
 };
