@@ -130,7 +130,7 @@ const DailyActivityDetail = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-0 pb-12">
       {/* Banner Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-700 text-white py-32 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-violet-300 via-violet-400 to-purple-400 text-white py-32 px-4">
         {/* Animated Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(15)].map((_, i) => (
@@ -195,22 +195,22 @@ const DailyActivityDetail = () => {
 
             {/* Judul dengan styling yang lebih menarik */}
             <div className="relative inline-block mb-6">
-              <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-200">
+              <h1 className="text-5xl md:text-6xl font-bold relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-violet-200">
                 {program.title}
               </h1>
-              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-purple-200 to-white bg-clip-text text-transparent font-medium">
+              <p className="text-xl md:text-2xl italic bg-gradient-to-r from-violet-200 to-white bg-clip-text text-transparent font-medium">
                 {program.subtitle}
               </p>
-              <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg opacity-20 blur-sm -z-10"></div>
-              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full opacity-70 blur-sm"></div>
+              <div className="absolute -inset-px bg-gradient-to-r from-violet-400 to-purple-400 rounded-lg opacity-20 blur-sm -z-10"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-violet-300 to-purple-400 rounded-full opacity-70 blur-sm"></div>
             </div>
 
             {/* Subjudul dengan styling yang lebih menarik */}
             <div className="relative inline-block px-6 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg"></div>
 
             {/* Decorative elements */}
-            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 opacity-20 blur-md"></div>
-            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 opacity-20 blur-md"></div>
+            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-violet-300 to-purple-400 opacity-20 blur-md"></div>
+            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-violet-300 to-purple-400 opacity-20 blur-md"></div>
           </MotionDiv>
         </div>
       </section>
@@ -226,15 +226,14 @@ const DailyActivityDetail = () => {
               variants={fadeInUp}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
             >
-              <h2 className="text-2xl font-heading font-bold text-primary dark:text-purple-400 mb-4">
+              <h2 className="text-2xl font-heading font-bold text-primary dark:text-violet-400 mb-4">
                 Deskripsi Program
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                 {program.description}
               </p>
 
-              <div className="h-1 w-20 bg-purple-500 rounded-full mb-6"></div>
-
+              <div className="h-1 w-20 bg-violet-400 rounded-full mb-6"></div>
               <h3 className="text-xl font-heading font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 Manfaat Program
               </h3>
@@ -243,9 +242,9 @@ const DailyActivityDetail = () => {
                 {program.benefits.map((benefit, index) => (
                   <div
                     key={index}
-                    className="flex items-start space-x-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800/30"
+                    className="flex items-start space-x-3 p-3 rounded-lg bg-violet-50 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800/30"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center mt-0.5">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-violet-400/20 flex items-center justify-center mt-0.5">
                       <svg
                         className="w-4 h-4 text-purple-600 dark:text-purple-400"
                         fill="none"
@@ -277,11 +276,11 @@ const DailyActivityDetail = () => {
               initial="hidden"
               animate={isLoaded ? 'visible' : 'hidden'}
               variants={fadeInUp}
-              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-purple-500 mb-8`}
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-t-4 border-violet-400 mb-8`}
             >
               <div className="flex flex-col md:flex-row md:items-center mb-6">
                 <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                  <div className="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center shadow-lg p-4">
+                  <div className="w-16 h-16 rounded-full bg-violet-400/20 flex items-center justify-center shadow-lg p-4">
                     <svg
                       className="w-8 h-8 text-purple-500"
                       xmlns="http://www.w3.org/2000/svg"
@@ -343,7 +342,7 @@ const DailyActivityDetail = () => {
                         className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
                         <div className="flex items-center">
-                          <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold mr-3">
+                          <div className="w-8 h-8 rounded-full bg-violet-400 flex items-center justify-center text-white font-bold mr-3">
                             {idx + 1}
                           </div>
                           <span className="font-medium text-gray-800 dark:text-gray-200">
@@ -433,11 +432,11 @@ const DailyActivityDetail = () => {
                     <Link
                       key={index}
                       href={`/sections-program/${otherProgram.slug}`}
-                      className={`flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-${otherProgram.color} hover:bg-${otherProgram.color}/5 transition-all duration-300 group`}
+                      className={`flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-violet-400 hover:bg-violet-400/5 transition-all duration-300 group`}
                     >
                       {/* Ikon sesuai dengan tema program */}
                       <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-${otherProgram.color}/20 flex items-center justify-center mr-3`}
+                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-violet-400/20 flex items-center justify-center mr-3`}
                       >
                         {index === 0 && (
                           <svg
@@ -583,7 +582,7 @@ const DailyActivityDetail = () => {
                         </h4>
                       </div>
                       <svg
-                        className={`w-5 h-5 text-gray-400 group-hover:text-${otherProgram.color} transform group-hover:translate-x-1 transition-all`}
+                        className={`w-5 h-5 text-gray-400 group-hover:text-violet-400 transform group-hover:translate-x-1 transition-all`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"

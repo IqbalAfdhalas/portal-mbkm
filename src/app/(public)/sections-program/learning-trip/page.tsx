@@ -43,12 +43,7 @@ const KunjunganLuarDetail = () => {
         description:
           ' Pusat edukasi ini dirancang tidak hanya sebagai tempat penyimpanan arsip atau data, tetapi juga sebagai ruang interaktif untuk belajar, berdiskusi, dan memahami lebih dalam tentang mitigasi bencana. Melalui berbagai instalasi, dokumentasi, dan program-program edukatif, pengunjung diajak untuk melihat kembali peristiwa besar yang pernah mengguncang Aceh, sekaligus merenungkan pentingnya kesiapsiagaan di masa depan. Harapannya, pusat ini bisa menjadi titik temu antara ilmu pengetahuan, sejarah, dan aksi nyata, agar tragedi serupa tak kembali terulang tanpa kesiapan.',
         icon: '/images/icons/collaboration.svg',
-        activities: [
-          '',
-          '',
-          '',
-          '',
-        ],
+        activities: ['', '', '', ''],
         image: '/images/program/kunjungan_ke_luar_bast_anri/foto25.jpg',
       },
     ],
@@ -234,10 +229,9 @@ const KunjunganLuarDetail = () => {
 
             {/* Decorative elements */}
 
-            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
-            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-red-400 to-red-600 opacity-20 blur-md"></div>
+            <div className="absolute top-1/4 -left-10 w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 opacity-20 blur-md"></div>
+            <div className="absolute bottom-1/3 -right-12 w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 opacity-20 blur-md"></div>
           </MotionDiv>
-
         </div>
       </section>
 
@@ -252,7 +246,7 @@ const KunjunganLuarDetail = () => {
               variants={fadeInUp}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8"
             >
-              <h2 className="text-2xl font-heading font-bold text-primary dark:text-green-400 mb-4">
+              <h2 className="text-2xl font-heading font-bold text-green-600 dark:text-green-400 mb-4">
                 Deskripsi Program
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
@@ -325,7 +319,7 @@ const KunjunganLuarDetail = () => {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-xl font-heading font-bold text-primary dark:text-white">
+                  <h3 className="text-xl font-heading font-bold text-green-600 dark:text-white">
                     Kunjungan ke Luar BAST ANRI
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 italic">
@@ -430,7 +424,7 @@ const KunjunganLuarDetail = () => {
                 variants={fadeInUp}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6"
               >
-                <h3 className="text-xl font-heading font-bold text-primary dark:text-white mb-4">
+                <h3 className="text-xl font-heading font-bold text-green-600 dark:text-white mb-4">
                   Program Lainnya
                 </h3>
                 <div className="space-y-4">
@@ -459,11 +453,11 @@ const KunjunganLuarDetail = () => {
                     <Link
                       key={index}
                       href={`/sections-program/${otherProgram.slug}`}
-                      className={`flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-${otherProgram.color} hover:bg-${otherProgram.color}/5 transition-all duration-300 group`}
+                      className={`flex items-center p-3 rounded-lg border border-gray-100 dark:border-gray-700 hover:border-green-400 hover:bg-green-400/5 transition-all duration-300 group`}
                     >
                       {/* Ikon sesuai dengan tema program */}
                       <div
-                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-${otherProgram.color}/20 flex items-center justify-center mr-3`}
+                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-green-400/20 flex items-center justify-center mr-3`}
                       >
                         {index === 0 && (
                           <svg
@@ -531,12 +525,12 @@ const KunjunganLuarDetail = () => {
                         )}
                       </div>
                       <div className="flex-grow">
-                        <h4 className="text-gray-800 dark:text-gray-200 font-medium group-hover:text-primary dark:group-hover:text-blue-400 transition-colors">
+                        <h4 className="text-gray-800 dark:text-gray-200 font-medium group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                           {otherProgram.title}
                         </h4>
                       </div>
                       <svg
-                        className={`w-5 h-5 text-gray-400 group-hover:text-${otherProgram.color} transform group-hover:translate-x-1 transition-all`}
+                        className={`w-5 h-5 text-gray-400 group-hover:text-green-400 transform group-hover:translate-x-1 transition-all`}
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -563,7 +557,7 @@ const KunjunganLuarDetail = () => {
           variants={fadeInUp}
           className="mt-12"
         >
-          <h2 className="text-2xl font-heading font-bold text-primary dark:text-white mb-6 text-center">
+          <h2 className="text-2xl font-heading font-bold text-green-600 dark:text-white mb-6 text-center">
             Galeri Kegiatan
           </h2>
           <div className="relative">
@@ -626,10 +620,8 @@ const KunjunganLuarDetail = () => {
               </div>
             </Swiper>
           </div>
-
-=======
+          =======
         </MotionDiv>
-
       </div>
       {/* Image Preview Modal */}
       {previewImage && (
