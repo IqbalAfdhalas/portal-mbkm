@@ -6,8 +6,9 @@ import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiGrid, FiList } fro
 import ProfileCard from '@/components/ui/ProfileCard';
 import ProfileListItem from '@/components/ui/ProfileListItem';
 import StatisticsCard from '@/components/ui/StatisticsCard';
-import { profileData } from '@/constants/profileData';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
+// Import Firebase functions
+import { getAllProfiles, type ProfileClient, generateAvatarUrl } from '@/lib/firebaseProfiles';
 
 // Types
 type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
@@ -27,13 +28,27 @@ type PaginationState = {
   [key: string]: number;
 };
 
+// Helper function to ensure foto is never null
+const ensureProfileWithPhoto = (profile: ProfileClient): ProfileClient & { foto: string } => {
+  return {
+    ...profile,
+    foto: profile.foto || generateAvatarUrl(profile.nama),
+  };
+};
+
 const KenaliKami = () => {
+  // State for Firebase data
+  const [profileData, setProfileData] = useState<ProfileClient[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Existing states
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProgram, setSelectedProgram] = useState<Program>('Semua');
   const [selectedBatch, setSelectedBatch] = useState<Batch>('Semua');
   const [selectedRole, setSelectedRole] = useState<Role>('Semua');
   const [selectedUnit, setSelectedUnit] = useState<Unit>('Semua');
-  const [filteredData, setFilteredData] = useState(profileData);
+  const [filteredData, setFilteredData] = useState<ProfileClient[]>([]);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Pagination
@@ -45,10 +60,30 @@ const KenaliKami = () => {
 
   const cardsPerPage = viewMode === 'grid' ? 8 : 10;
 
-  // Calculate statistics
+  // Fetch data from Firebase
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const profiles = await getAllProfiles();
+        setProfileData(profiles);
+        setFilteredData(profiles);
+      } catch (err) {
+        console.error('Error fetching profiles:', err);
+        setError('Gagal memuat data profil. Silakan coba lagi.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfiles();
+  }, []);
+
+  // Calculate statistics - now using Firebase data
   const stats = {
     totalMahasiswa: profileData.filter(p => p.peran === 'Mahasiswa').length,
-    totalProdi: [...new Set(profileData.map(p => p.prodi))].length,
+    totalProdi: [...new Set(profileData.map(p => p.prodi).filter(Boolean))].length,
     totalAngkatan: [...new Set(profileData.filter(p => p.angkatan).map(p => p.angkatan))].length,
     totalPembimbingMentor: profileData.filter(
       p => p.peran === 'Pembimbing Kampus' || p.peran === 'Mentor BAST ANRI'
@@ -57,6 +92,8 @@ const KenaliKami = () => {
 
   // Apply filters
   useEffect(() => {
+    if (profileData.length === 0) return;
+
     let result = [...profileData];
 
     // Search filter
@@ -97,7 +134,7 @@ const KenaliKami = () => {
       'Mentor BAST ANRI': 1,
       Mahasiswa: 1,
     }); // Reset to first page after filtering
-  }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit]);
+  }, [searchTerm, selectedProgram, selectedBatch, selectedRole, selectedUnit, profileData]);
 
   const sortedData = [...filteredData].sort((a, b) => {
     const aYear = parseInt(a.angkatan || '0');
@@ -165,7 +202,7 @@ const KenaliKami = () => {
   };
 
   // Pagination functions - now role-specific
-  const paginate = (data: typeof profileData, page: number) => {
+  const paginate = (data: ProfileClient[], page: number) => {
     const startIndex = (page - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
     return data.slice(startIndex, endIndex);
@@ -191,8 +228,8 @@ const KenaliKami = () => {
     }
   };
 
-  // Render paginated cards - now role-specific
-  const renderPaginatedProfiles = (data: typeof profileData, role: string) => {
+  // Render paginated cards - now role-specific with type fix
+  const renderPaginatedProfiles = (data: ProfileClient[], role: string) => {
     const currentPage = currentPages[role];
     const paginatedData = paginate(data, currentPage);
     const totalPages = Math.ceil(data.length / cardsPerPage);
@@ -203,7 +240,7 @@ const KenaliKami = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {paginatedData.map(profile => (
               <MotionDiv key={profile.id} variants={itemVariants}>
-                <ProfileCard profile={profile} />
+                <ProfileCard profile={ensureProfileWithPhoto(profile)} />
               </MotionDiv>
             ))}
           </div>
@@ -211,7 +248,7 @@ const KenaliKami = () => {
           <div className="flex flex-col gap-4">
             {paginatedData.map(profile => (
               <MotionDiv key={profile.id} variants={itemVariants}>
-                <ProfileListItem profile={profile} />
+                <ProfileListItem profile={ensureProfileWithPhoto(profile)} />
               </MotionDiv>
             ))}
           </div>
@@ -256,6 +293,53 @@ const KenaliKami = () => {
       </>
     );
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <section
+        id="kenali-kami"
+        className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
+      >
+        <div className="container mx-auto max-w-screen-xl px-4">
+          <div className="flex items-center justify-center py-20">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-light"></div>
+              <p className="text-gray-600 dark:text-gray-300">Memuat data profil...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section
+        id="kenali-kami"
+        className="py-20 min-h-[100vh] bg-gradient-to-b from-white via-gray-50 to-white dark:from-[#0f172a] dark:via-dark-surface dark:to-[#0f172a]"
+      >
+        <div className="container mx-auto max-w-screen-xl px-4">
+          <div className="flex items-center justify-center py-20">
+            <div className="text-center bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+              <div className="text-red-500 text-5xl mb-4">⚠️</div>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+                Terjadi Kesalahan
+              </h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-primary-light text-white rounded-lg hover:bg-primary transition-colors"
+              >
+                Muat Ulang
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -480,7 +564,7 @@ const KenaliKami = () => {
         )}
 
         {/* No Results */}
-        {filteredData.length === 0 && (
+        {filteredData.length === 0 && !loading && (
           <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -502,7 +586,9 @@ const KenaliKami = () => {
                 ></path>
               </svg>
               <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
-                Tidak ada data yang sesuai dengan filter yang dipilih.
+                {profileData.length === 0
+                  ? 'Belum ada data profil tersedia.'
+                  : 'Tidak ada data yang sesuai dengan filter yang dipilih.'}
               </p>
               <button
                 onClick={() => {

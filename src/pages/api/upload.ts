@@ -13,7 +13,6 @@ export const config = {
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log('=== UPLOAD API CALLED ===');
   console.log('Method:', req.method);
-  console.log('Headers:', req.headers);
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -35,6 +34,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   ) {
     console.error('Missing Cloudinary environment variables');
     return res.status(500).json({
+      success: false,
       error: 'Server configuration error - Missing Cloudinary credentials',
     });
   }
@@ -51,9 +51,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (err) {
       console.error('Form parse error:', err);
       return res.status(500).json({
+        success: false,
         error: 'Form parse error',
         details: err.message,
-        code: err.code,
       });
     }
 
@@ -63,8 +63,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const fileField = files.file;
     if (!fileField) {
       console.error('No file field found in upload');
-      console.log('Available file fields:', Object.keys(files));
       return res.status(400).json({
+        success: false,
         error: 'No file uploaded',
         availableFields: Object.keys(files),
       });
@@ -78,7 +78,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       size: file.size,
       mimetype: file.mimetype,
       filepath: file.filepath,
-      // Hapus lastModified karena tidak tersedia di formidable File type
     });
 
     // Cek apakah file benar-benar ada
@@ -88,6 +87,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
       if (!fileExists) {
         return res.status(400).json({
+          success: false,
           error: 'File not found on server',
         });
       }
@@ -100,6 +100,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     } catch (fsError) {
       console.error('File system error:', fsError);
       return res.status(500).json({
+        success: false,
         error: 'File system error',
         details: fsError instanceof Error ? fsError.message : 'Unknown error',
       });
@@ -109,6 +110,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!file.mimetype?.startsWith('image/')) {
       console.error('Invalid file type:', file.mimetype);
       return res.status(400).json({
+        success: false,
         error: 'Invalid file type. Only images are allowed.',
         receivedType: file.mimetype,
       });
@@ -118,6 +120,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (file.size > 10 * 1024 * 1024) {
       console.error('File too large:', file.size);
       return res.status(400).json({
+        success: false,
         error: 'File too large. Maximum size is 10MB.',
         fileSize: file.size,
         maxSize: 10 * 1024 * 1024,
@@ -126,14 +129,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     try {
       console.log('=== STARTING CLOUDINARY UPLOAD ===');
+
+      // Get folder from fields or use default
+      const folder = Array.isArray(fields.folder)
+        ? fields.folder[0]
+        : fields.folder || 'kenali-kami';
+
       console.log('Upload config:', {
-        folder: 'mbkm-journals',
+        folder: folder,
         resource_type: 'image',
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       });
 
       const result = await cloudinary.uploader.upload(file.filepath, {
-        folder: 'mbkm-journals',
+        folder: folder,
         resource_type: 'image',
         quality: 'auto',
         fetch_format: 'auto',
@@ -156,8 +165,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         console.warn('Failed to cleanup temp file:', cleanupError);
       }
 
+      // Return response that matches client expectations
       return res.status(200).json({
-        url: result.secure_url,
+        success: true,
+        secure_url: result.secure_url,
+        url: result.secure_url, // Also include 'url' for backward compatibility
         public_id: result.public_id,
         width: result.width,
         height: result.height,
@@ -173,16 +185,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         console.warn('Failed to cleanup temp file after error:', cleanupError);
       }
 
-      // Lebih detail error reporting
+      // Return error response that matches client expectations
       if (error instanceof Error) {
         return res.status(500).json({
+          success: false,
           error: 'Upload failed',
           details: error.message,
           stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
         });
       }
 
-      return res.status(500).json({ error: 'Upload failed - Unknown error' });
+      return res.status(500).json({
+        success: false,
+        error: 'Upload failed - Unknown error',
+      });
     }
   });
 }

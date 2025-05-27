@@ -1,158 +1,112 @@
-// src/components/ui/ProfilForm.tsx
+// src/components/ui/ProfileForm.tsx
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { X, Upload, User, Loader2 } from 'lucide-react';
-import { ProfileType } from '@/constants/profileData';
+import React, { useState, useEffect } from 'react';
+import { X, Save, Loader2 } from 'lucide-react';
+import { ProfileInput, ProfileClient } from '@/lib/firebaseProfiles';
+import ProfileImageUpload from './ProfileImageUpload';
 
-// Master data dummy
-const masterData = {
-  prodiList: [
-    'Manajemen Informatika',
-    'Ilmu Komunikasi',
-    'Sejarah',
-    'Bahasa Inggris',
-    'Tehnik Mesin',
-    'Biologi',
-  ],
-  angkatanList: ['2024', '2025'],
-  unitList: ['Tata Usaha', 'Preservasi', 'Akuisisi', 'Pengolahan', 'Pelayanan'],
-};
-
-interface ProfilFormProps {
-  profile?: ProfileType | null;
-  onSave: (profileData: ProfileType) => void;
-  onCancel: () => void;
-  isLoading?: boolean;
+interface ProfileFormProps {
+  mode: 'create' | 'edit';
+  profile?: ProfileClient;
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: ProfileInput) => Promise<void>;
 }
 
-export default function ProfilForm({
+const PERAN_OPTIONS = ['Pembimbing Kampus', 'Mentor BAST ANRI', 'Mahasiswa'] as const;
+
+const PRODI_OPTIONS = [
+  'Manajemen Informatika',
+  'Ilmu Komunikasi',
+  'Sejarah',
+  'Bahasa Inggris',
+  'Tehnik Mesin',
+  'Biologi',
+] as const;
+
+const ANGKATAN_OPTIONS = ['2024', '2025'] as const;
+
+export default function ProfileForm({
+  mode,
   profile,
-  onSave,
-  onCancel,
-  isLoading = false,
-}: ProfilFormProps) {
-  const [formData, setFormData] = useState<Partial<ProfileType>>({
+  isOpen,
+  onClose,
+  onSubmit,
+}: ProfileFormProps) {
+  const [formData, setFormData] = useState<ProfileInput>({
     nama: '',
     peran: 'Mahasiswa',
-    foto: '',
+    foto: null,
     asalInstitusi: '',
     prodi: undefined,
     angkatan: undefined,
     unit: '',
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [previewImage, setPreviewImage] = useState<string>('');
-  const [uploading, setUploading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Populate form data when editing
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Initialize form data
   useEffect(() => {
-    if (profile) {
-      setFormData(profile);
-      setPreviewImage(profile.foto || '');
+    if (mode === 'edit' && profile) {
+      setFormData({
+        nama: profile.nama,
+        peran: profile.peran,
+        foto: profile.foto,
+        asalInstitusi: profile.asalInstitusi || '',
+        prodi: profile.prodi,
+        angkatan: profile.angkatan,
+        unit: profile.unit || '',
+      });
     } else {
-      // Reset form for new profile
+      // Reset form for create mode
       setFormData({
         nama: '',
         peran: 'Mahasiswa',
-        foto: '',
+        foto: null,
         asalInstitusi: '',
         prodi: undefined,
         angkatan: undefined,
         unit: '',
       });
-      setPreviewImage('');
     }
     setErrors({});
-  }, [profile]);
-
-  // Auto-set institusi untuk mahasiswa dan pembimbing kampus
-  useEffect(() => {
-    if (formData.peran === 'Mahasiswa' || formData.peran === 'Pembimbing Kampus') {
-      setFormData(prev => ({ ...prev, asalInstitusi: 'Universitas Syiah Kuala' }));
-    }
-  }, [formData.peran]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setErrors(prev => ({ ...prev, foto: 'File harus berupa gambar' }));
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors(prev => ({ ...prev, foto: 'Ukuran file maksimal 5MB' }));
-      return;
-    }
-
-    try {
-      setUploading(true);
-      setErrors(prev => ({ ...prev, foto: '' }));
-
-      // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Create object URL for preview
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
-      setFormData(prev => ({ ...prev, foto: imageUrl }));
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      setErrors(prev => ({ ...prev, foto: 'Gagal mengupload gambar' }));
-    } finally {
-      setUploading(false);
-    }
-  };
+  }, [mode, profile, isOpen]);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Required fields validation
-    if (!formData.nama?.trim()) {
+    // Required fields
+    if (!formData.nama.trim()) {
       newErrors.nama = 'Nama wajib diisi';
     }
 
-    if (!formData.peran) {
-      newErrors.peran = 'Peran wajib dipilih';
-    }
-
-    // Conditional validation based on role
+    // Conditional validations based on peran
     if (formData.peran === 'Mahasiswa') {
       if (!formData.asalInstitusi?.trim()) {
         newErrors.asalInstitusi = 'Asal institusi wajib diisi untuk mahasiswa';
       }
-      if (!formData.prodi?.trim()) {
-        newErrors.prodi = 'Program studi wajib diisi untuk mahasiswa';
+      if (!formData.prodi) {
+        newErrors.prodi = 'Program studi wajib dipilih untuk mahasiswa';
       }
-      if (!formData.angkatan?.trim()) {
-        newErrors.angkatan = 'Angkatan wajib diisi untuk mahasiswa';
+      if (!formData.angkatan) {
+        newErrors.angkatan = 'Angkatan wajib dipilih untuk mahasiswa';
       }
-    } else if (formData.peran === 'Pembimbing Kampus') {
+    }
+
+    if (formData.peran === 'Pembimbing Kampus') {
       if (!formData.asalInstitusi?.trim()) {
-        newErrors.asalInstitusi = 'Asal institusi wajib diisi untuk pembimbing';
+        newErrors.asalInstitusi = 'Asal institusi wajib diisi untuk pembimbing kampus';
       }
-      if (!formData.prodi?.trim()) {
-        newErrors.prodi = 'Program studi wajib diisi untuk pembimbing';
+      if (!formData.prodi) {
+        newErrors.prodi = 'Program studi wajib dipilih untuk pembimbing kampus';
       }
-    } else if (formData.peran === 'Mentor BAST ANRI') {
+    }
+
+    if (formData.peran === 'Mentor BAST ANRI') {
       if (!formData.unit?.trim()) {
-        newErrors.unit = 'Unit kerja wajib diisi untuk mentor';
+        newErrors.unit = 'Unit kerja wajib diisi untuk mentor BAST ANRI';
       }
     }
 
@@ -165,344 +119,255 @@ export default function ProfilForm({
 
     if (!validateForm()) return;
 
+    setIsSubmitting(true);
     try {
-      setSaving(true);
-      setErrors(prev => ({ ...prev, general: '' }));
-
-      // Clean up form data based on role
-      const cleanedData = { ...formData };
-
-      if (formData.peran === 'Mentor BAST ANRI') {
-        delete cleanedData.asalInstitusi;
-        delete cleanedData.prodi;
-        delete cleanedData.angkatan;
-      } else if (formData.peran === 'Pembimbing Kampus') {
-        delete cleanedData.unit;
-        delete cleanedData.angkatan;
-      } else if (formData.peran === 'Mahasiswa') {
-        delete cleanedData.unit;
-      }
-
-      // Simulate saving delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      const savedProfile: ProfileType = {
-        id: profile?.id || `new_${Date.now()}`,
-        nama: cleanedData.nama || '',
-        peran: cleanedData.peran || 'Mahasiswa',
-        foto: cleanedData.foto || '',
-        asalInstitusi: cleanedData.asalInstitusi,
-        prodi: cleanedData.prodi,
-        angkatan: cleanedData.angkatan,
-        unit: cleanedData.unit,
+      // Clean up form data - remove empty strings and set undefined for optional fields
+      const cleanData: ProfileInput = {
+        nama: formData.nama.trim(),
+        peran: formData.peran,
+        foto: formData.foto,
       };
 
-      onSave(savedProfile);
+      // Add optional fields only if they have values
+      if (formData.asalInstitusi?.trim()) {
+        cleanData.asalInstitusi = formData.asalInstitusi.trim();
+      }
+
+      if (formData.prodi) {
+        cleanData.prodi = formData.prodi;
+      }
+
+      if (formData.angkatan) {
+        cleanData.angkatan = formData.angkatan;
+      }
+
+      if (formData.unit?.trim()) {
+        cleanData.unit = formData.unit.trim();
+      }
+
+      await onSubmit(cleanData);
+      onClose();
     } catch (error) {
-      console.error('Error saving profile:', error);
-      setErrors(prev => ({
-        ...prev,
-        general: error instanceof Error ? error.message : 'Gagal menyimpan profil',
-      }));
+      console.error('Form submission error:', error);
+      alert('Terjadi kesalahan. Silakan coba lagi.');
     } finally {
-      setSaving(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && !saving && !uploading) {
-      onCancel();
+  const handleInputChange = (field: keyof ProfileInput, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  const getRoleFields = () => {
-    switch (formData.peran) {
-      case 'Mahasiswa':
-        return (
-          <>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Asal Institusi *
-              </label>
-              <input
-                type="text"
-                name="asalInstitusi"
-                value="Universitas Syiah Kuala"
-                readOnly
-                className="w-full px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-500"
-              />
-            </div>
+  if (!isOpen) return null;
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Program Studi *
-              </label>
-              <select
-                name="prodi"
-                value={formData.prodi || ''}
-                onChange={handleInputChange}
-                disabled={saving || uploading}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                  errors.prodi ? 'border-red-500' : 'border-gray-300'
-                } ${saving || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <option value="">Pilih Program Studi</option>
-                {masterData.prodiList.map(prodi => (
-                  <option key={prodi} value={prodi}>
-                    {prodi}
-                  </option>
-                ))}
-              </select>
-              {errors.prodi && <p className="text-red-500 text-sm mt-1">{errors.prodi}</p>}
-            </div>
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            {mode === 'create' ? 'Tambah Profil' : 'Edit Profil'}
+          </h2>
+          <button
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Image Upload */}
+          <ProfileImageUpload
+            currentImage={formData.foto}
+            profileName={formData.nama}
+            onImageChange={imageUrl => handleInputChange('foto', imageUrl)}
+            disabled={isSubmitting}
+          />
+
+          {/* Nama */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Nama Lengkap *
+            </label>
+            <input
+              type="text"
+              value={formData.nama}
+              onChange={e => handleInputChange('nama', e.target.value)}
+              disabled={isSubmitting}
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 ${
+                errors.nama
+                  ? 'border-red-500 dark:border-red-400'
+                  : 'border-gray-300 dark:border-gray-600'
+              }`}
+              placeholder="Masukkan nama lengkap"
+            />
+            {errors.nama && (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.nama}</p>
+            )}
+          </div>
+
+          {/* Peran */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Peran *
+            </label>
+            <select
+              value={formData.peran}
+              onChange={e => handleInputChange('peran', e.target.value)}
+              disabled={isSubmitting}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50"
+            >
+              {PERAN_OPTIONS.map(peran => (
+                <option key={peran} value={peran}>
+                  {peran}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Conditional Fields based on Peran */}
+          {(formData.peran === 'Mahasiswa' || formData.peran === 'Pembimbing Kampus') && (
+            <>
+              {/* Asal Institusi */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Asal Institusi *
+                </label>
+                <input
+                  type="text"
+                  value={formData.asalInstitusi}
+                  onChange={e => handleInputChange('asalInstitusi', e.target.value)}
+                  disabled={isSubmitting}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 ${
+                    errors.asalInstitusi
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                  placeholder="Contoh: Universitas Indonesia"
+                />
+                {errors.asalInstitusi && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                    {errors.asalInstitusi}
+                  </p>
+                )}
+              </div>
+
+              {/* Program Studi */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Program Studi *
+                </label>
+                <select
+                  value={formData.prodi || ''}
+                  onChange={e => handleInputChange('prodi', e.target.value || undefined)}
+                  disabled={isSubmitting}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 ${
+                    errors.prodi
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                >
+                  <option value="">Pilih Program Studi</option>
+                  {PRODI_OPTIONS.map(prodi => (
+                    <option key={prodi} value={prodi}>
+                      {prodi}
+                    </option>
+                  ))}
+                </select>
+                {errors.prodi && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.prodi}</p>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Angkatan - only for Mahasiswa */}
+          {formData.peran === 'Mahasiswa' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Angkatan *
               </label>
               <select
-                name="angkatan"
                 value={formData.angkatan || ''}
-                onChange={handleInputChange}
-                disabled={saving || uploading}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                  errors.angkatan ? 'border-red-500' : 'border-gray-300'
-                } ${saving || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onChange={e => handleInputChange('angkatan', e.target.value || undefined)}
+                disabled={isSubmitting}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 ${
+                  errors.angkatan
+                    ? 'border-red-500 dark:border-red-400'
+                    : 'border-gray-300 dark:border-gray-600'
+                }`}
               >
                 <option value="">Pilih Angkatan</option>
-                {masterData.angkatanList.map(angkatan => (
+                {ANGKATAN_OPTIONS.map(angkatan => (
                   <option key={angkatan} value={angkatan}>
                     {angkatan}
                   </option>
                 ))}
               </select>
-              {errors.angkatan && <p className="text-red-500 text-sm mt-1">{errors.angkatan}</p>}
+              {errors.angkatan && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.angkatan}</p>
+              )}
             </div>
-          </>
-        );
+          )}
 
-      case 'Pembimbing Kampus':
-        return (
-          <>
+          {/* Unit - only for Mentor BAST ANRI */}
+          {formData.peran === 'Mentor BAST ANRI' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Asal Institusi *
+                Unit Kerja *
               </label>
               <input
                 type="text"
-                name="asalInstitusi"
-                value="Universitas Syiah Kuala"
-                readOnly
-                className="w-full px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-500"
+                value={formData.unit}
+                onChange={e => handleInputChange('unit', e.target.value)}
+                disabled={isSubmitting}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50 ${
+                  errors.unit
+                    ? 'border-red-500 dark:border-red-400'
+                    : 'border-gray-300 dark:border-gray-600'
+                }`}
+                placeholder="Contoh: Bidang Akuisisi dan Penyerahan Arsip"
               />
+              {errors.unit && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.unit}</p>
+              )}
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Program Studi *
-              </label>
-              <select
-                name="prodi"
-                value={formData.prodi || ''}
-                onChange={handleInputChange}
-                disabled={saving || uploading}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                  errors.prodi ? 'border-red-500' : 'border-gray-300'
-                } ${saving || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <option value="">Pilih Program Studi</option>
-                {masterData.prodiList.map(prodi => (
-                  <option key={prodi} value={prodi}>
-                    {prodi}
-                  </option>
-                ))}
-              </select>
-              {errors.prodi && <p className="text-red-500 text-sm mt-1">{errors.prodi}</p>}
-            </div>
-          </>
-        );
-
-      case 'Mentor BAST ANRI':
-        return (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Unit Kerja *
-            </label>
-            <select
-              name="unit"
-              value={formData.unit || ''}
-              onChange={handleInputChange}
-              disabled={saving || uploading}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                errors.unit ? 'border-red-500' : 'border-gray-300'
-              } ${saving || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            >
-              <option value="">Pilih Unit Kerja</option>
-              {masterData.unitList.map(unit => (
-                <option key={unit} value={unit}>
-                  {unit}
-                </option>
-              ))}
-            </select>
-            {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit}</p>}
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  const isFormDisabled = saving || uploading || isLoading;
-
-  return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-      onClick={handleBackdropClick}
-    >
-      <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-600">
-          <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-            {profile ? 'Edit Profil' : 'Tambah Profil Baru'}
-          </h2>
-          <button
-            onClick={onCancel}
-            disabled={isFormDisabled}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          </button>
-        </div>
-
-        {/* General Error */}
-        {errors.general && (
-          <div className="mx-6 mt-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
-            <p className="text-red-700 dark:text-red-300 text-sm">{errors.general}</p>
-          </div>
-        )}
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Photo Upload */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Foto Profil
-            </label>
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center overflow-hidden relative">
-                {uploading && (
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <Loader2 className="w-6 h-6 text-white animate-spin" />
-                  </div>
-                )}
-                {previewImage ? (
-                  <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
-                ) : (
-                  <User className="w-8 h-8 text-gray-400" />
-                )}
-              </div>
-              <div>
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploading || isFormDisabled}
-                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {uploading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Mengupload...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-4 h-4" />
-                      Upload Foto
-                    </>
-                  )}
-                </button>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Maksimal 5MB, format JPG, PNG, atau GIF
-                </p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  disabled={isFormDisabled}
-                  className="hidden"
-                />
-              </div>
-            </div>
-            {errors.foto && <p className="text-red-500 text-sm mt-1">{errors.foto}</p>}
-          </div>
-
-          {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Nama Lengkap *
-              </label>
-              <input
-                type="text"
-                name="nama"
-                value={formData.nama || ''}
-                onChange={handleInputChange}
-                disabled={isFormDisabled}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                  errors.nama ? 'border-red-500' : 'border-gray-300'
-                } ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                placeholder="Masukkan nama lengkap"
-              />
-              {errors.nama && <p className="text-red-500 text-sm mt-1">{errors.nama}</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Peran *
-              </label>
-              <select
-                name="peran"
-                value={formData.peran || 'Mahasiswa'}
-                onChange={handleInputChange}
-                disabled={isFormDisabled}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 ${
-                  errors.peran ? 'border-red-500' : 'border-gray-300'
-                } ${isFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <option value="Mahasiswa">Mahasiswa</option>
-                <option value="Pembimbing Kampus">Pembimbing Kampus</option>
-                <option value="Mentor BAST ANRI">Mentor BAST ANRI</option>
-              </select>
-              {errors.peran && <p className="text-red-500 text-sm mt-1">{errors.peran}</p>}
-            </div>
-          </div>
-
-          {/* Dynamic Fields Based on Role */}
-          <div className="space-y-6">{getRoleFields()}</div>
+          )}
 
           {/* Form Actions */}
-          <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-600">
+          <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-600">
             <button
               type="button"
-              onClick={onCancel}
-              disabled={isFormDisabled}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
             >
               Batal
             </button>
             <button
               type="submit"
-              disabled={isFormDisabled}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              disabled={isSubmitting}
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {saving ? (
+              {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Menyimpan...
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  {mode === 'create' ? 'Menyimpan...' : 'Memperbarui...'}
                 </>
               ) : (
-                <>{profile ? 'Update Profil' : 'Simpan Profil'}</>
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  {mode === 'create' ? 'Simpan' : 'Perbarui'}
+                </>
               )}
             </button>
           </div>
