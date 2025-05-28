@@ -20,7 +20,7 @@ const ProgramPreview = () => {
         'Unit Akuisisi Arsip',
         'Unit Pengolahan Arsip',
         'Unit Preservasi Arsip',
-        'Unit Pelayanan Arsip',
+        'Unit Layanan dan Pemanfaatan Arsip',
         'Unit Tata Usaha',
       ],
       gradient: 'from-yellow-300 to-amber-400',
@@ -78,7 +78,7 @@ const ProgramPreview = () => {
       particleColor: '#ddd6fe',
     },
     {
-      title: 'Pameran Arsip',
+      title: 'Kolaborasi Mahasiswa Dalam Arsip',
       icon: '/images/program/logo_program/pameran_arsip.png',
       description: 'Lihat arsip tampil beda lewat pameran tematik dan interaktif!',
       features: [

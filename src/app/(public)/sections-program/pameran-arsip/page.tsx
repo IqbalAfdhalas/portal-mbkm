@@ -26,10 +26,10 @@ const PameranArsipDetail = () => {
   }, []);
 
   const program = {
-    title: 'Pameran Arsip',
+    title: 'Kolaborasi Mahasiswa dalam Arsip',
     subtitle: 'Arsip Bukan Cuma Tumpukan Kertas!',
     description:
-      'Di sini, arsip tampil beda! Lewat program pameran arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
+      'Di sini, arsip tampil beda! Lewat program kolaborasi dalam arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
     icon: '/images/program/logo_program/pameran_arsip.png',
     color: 'orange-500',
     video: '/images/program/pameran_arsip/vidio1.mp4',
