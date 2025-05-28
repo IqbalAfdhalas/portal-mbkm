@@ -79,7 +79,7 @@ const AktivitasUnitDetail = () => {
         image: '/images/program/aktivitas_unit/preservasi.jpg',
       },
       {
-        name: 'Unit Pelayanan Arsip',
+        name: 'Unit Layanan dan Pemanfaatan Arsip',
         description:
           'Unit yang menjadi garda depan interaksi dengan pengguna. Di sini kamu akan belajar bagaimana melayani kebutuhan pengguna arsip, termasuk peneliti, akademisi, dan masyarakat umum.',
         icon: '/images/icons/service.svg',
