@@ -429,9 +429,9 @@ const KunjunganKeDalamDetail = () => {
                       slug: 'daily-activity',
                     },
                     {
-                      title: 'Pameran Arsip',
+                      title: 'Jejak Pameran Arsip',
                       color: 'orange-500',
-                      slug: 'pameran-arsip',
+                      slug: 'jejak-pameran-arsip',
                     },
                   ].map((otherProgram, index) => (
                     <Link

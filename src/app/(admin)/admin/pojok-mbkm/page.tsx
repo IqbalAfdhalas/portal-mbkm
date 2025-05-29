@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Search,
   Calendar,
@@ -12,6 +13,7 @@ import {
   Tag,
   User,
   ChevronDown,
+  ChevronUp,
   X,
   Filter,
   Eye,
@@ -21,12 +23,18 @@ import {
   FileText,
   MoreHorizontal,
   ExternalLink,
+  TrendingUp,
 } from 'lucide-react';
 import { Journal } from '@/components/sections/PojokMBKM';
 import { Author } from '@/lib/types/journal';
 import { JournalForm, DeleteConfirmDialog } from '@/components/ui/JournalForm';
 import { useJournalCRUD } from '@/hooks/useJournalCRUD';
-import { getAllJournals, getAllAuthors } from '@/lib/firebaseJournals';
+import {
+  getAllJournals,
+  getAllAuthors,
+  getPopularJournals,
+  clearAllJournalCaches,
+} from '@/lib/firebaseJournals';
 import AuthorCategoryManagement from '@/components/ui/AuthorCategoryManagement';
 
 interface JournalFilterOptions {
@@ -34,6 +42,8 @@ interface JournalFilterOptions {
   searchQuery?: string;
   authorId?: string;
   status?: 'draft' | 'published';
+  sortBy?: 'date' | 'views' | 'title';
+  sortOrder?: 'asc' | 'desc';
 }
 
 // Stats Component
@@ -42,6 +52,7 @@ const StatsCards = ({ journals }: { journals: Journal[] }) => {
   const publishedJournals = journals.filter(j => j.status === 'published').length;
   const draftJournals = journals.filter(j => j.status === 'draft').length;
   const uniqueAuthors = new Set(journals.map(j => j.authorId)).size;
+  const totalViews = journals.reduce((sum, journal) => sum + (journal.views || 0), 0);
 
   const stats = [
     {
@@ -69,9 +80,9 @@ const StatsCards = ({ journals }: { journals: Journal[] }) => {
       textColor: 'text-yellow-600 dark:text-yellow-400',
     },
     {
-      title: 'Penulis',
-      value: uniqueAuthors,
-      icon: <User size={20} />,
+      title: 'Total Views',
+      value: totalViews.toLocaleString(),
+      icon: <TrendingUp size={20} />,
       color: 'bg-purple-500',
       bgColor: 'bg-purple-50 dark:bg-purple-900/20',
       textColor: 'text-purple-600 dark:text-purple-400',
@@ -219,10 +230,16 @@ const JournalTable = ({
   journals,
   onEdit,
   onDelete,
+  sortBy,
+  sortOrder,
+  onSort,
 }: {
   journals: Journal[];
   onEdit: (journal: Journal) => void;
   onDelete: (journal: Journal) => void;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  onSort: (column: string) => void;
 }) => {
   const categoryColors = {
     'daily-activity': {
@@ -268,8 +285,15 @@ const JournalTable = ({
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Jurnal
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                onClick={() => onSort('title')}
+              >
+                <div className="flex items-center space-x-1">
+                  <span>Jurnal</span>
+                  {sortBy === 'title' &&
+                    (sortOrder === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />)}
+                </div>
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Kategori
@@ -280,8 +304,25 @@ const JournalTable = ({
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Tanggal
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                onClick={() => onSort('views')}
+              >
+                <div className="flex items-center space-x-1">
+                  <span>Views</span>
+                  {sortBy === 'views' &&
+                    (sortOrder === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />)}
+                </div>
+              </th>
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                onClick={() => onSort('date')}
+              >
+                <div className="flex items-center space-x-1">
+                  <span>Tanggal</span>
+                  {sortBy === 'date' &&
+                    (sortOrder === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />)}
+                </div>
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                 Aksi
@@ -305,9 +346,11 @@ const JournalTable = ({
                     <td className="px-6 py-4 max-w-xs break-words">
                       <div className="flex items-start space-x-3">
                         {journal.media && journal.media.length > 0 ? (
-                          <img
+                          <Image
                             src={journal.media[0].url}
                             alt={journal.title}
+                            width={48}
+                            height={48}
                             className="w-12 h-12 object-cover rounded-lg"
                           />
                         ) : (
@@ -336,9 +379,11 @@ const JournalTable = ({
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-2">
                         {journal.authorImage ? (
-                          <img
+                          <Image
                             src={journal.authorImage}
                             alt={journal.authorName}
+                            width={32}
+                            height={32}
                             className="w-8 h-8 rounded-full object-cover"
                           />
                         ) : (
@@ -353,6 +398,13 @@ const JournalTable = ({
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {getStatusBadge(journal.status)}
+                    </td>
+                    {/* ← TAMBAH TD VIEWS INI */}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center space-x-1">
+                        <Eye size={14} className="text-gray-400" />
+                        <span>{(journal.views || 0).toLocaleString()}</span>
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {(() => {
@@ -451,12 +503,17 @@ export default function AdminPojokMBKMPage() {
   const [authors, setAuthors] = useState<Author[]>([]);
   const handleSaveAuthors = async (updatedAuthors: Author[]) => {
     setAuthors(updatedAuthors);
+    // Auto refresh journals in case author info changed
+    await fetchJournals(true);
   };
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filteredJournals, setFilteredJournals] = useState<Journal[]>([]);
-  const [filterOptions, setFilterOptions] = useState<JournalFilterOptions>({});
+  const [filterOptions, setFilterOptions] = useState<JournalFilterOptions>({
+    sortBy: 'date',
+    sortOrder: 'desc',
+  });
 
   // Form state
   const [showForm, setShowForm] = useState(false);
@@ -468,13 +525,48 @@ export default function AdminPojokMBKMPage() {
   const [journalToDelete, setJournalToDelete] = useState<Journal | null>(null);
 
   // CRUD hook
+  // CRUD hook
   const { createJournal, updateJournal, deleteJournal, loading: crudLoading } = useJournalCRUD();
 
-  const fetchJournals = async () => {
+  // Handle sorting
+  const handleSort = (column: string) => {
+    setFilterOptions(prev => {
+      if (prev.sortBy === column) {
+        // Toggle sort order if same column
+        return {
+          ...prev,
+          sortOrder: prev.sortOrder === 'asc' ? 'desc' : 'asc',
+        };
+      } else {
+        // Set new column with default order
+        let defaultOrder: 'asc' | 'desc' = 'desc';
+        if (column === 'title') {
+          defaultOrder = 'asc'; // A-Z for title
+        }
+        return {
+          ...prev,
+          sortBy: column as any,
+          sortOrder: defaultOrder,
+        };
+      }
+    });
+  };
+
+  const fetchJournals = async (forceRefresh = false) => {
     setLoading(true);
+    setError(null); // Clear previous errors
     try {
+      // Clear cache jika force refresh
+      if (forceRefresh) {
+        clearAllJournalCaches();
+      }
+
       const result = await getAllJournals();
       setJournals(result);
+
+      if (forceRefresh) {
+        console.log('Force refresh journals completed:', result.length, 'journals loaded');
+      }
     } catch (err) {
       setError('Gagal mengambil data jurnal');
       console.error('Error fetching journals:', err);
@@ -483,10 +575,14 @@ export default function AdminPojokMBKMPage() {
     }
   };
 
-  const fetchAuthors = async () => {
+  const fetchAuthors = async (forceRefresh = false) => {
     try {
       const result = await getAllAuthors();
       setAuthors(result);
+
+      if (forceRefresh) {
+        console.log('Force refresh authors completed:', result.length, 'authors loaded');
+      }
     } catch (err) {
       console.error('Error fetching authors:', err);
       setError('Gagal mengambil data penulis');
@@ -494,8 +590,8 @@ export default function AdminPojokMBKMPage() {
   };
 
   useEffect(() => {
-    fetchJournals();
-    fetchAuthors();
+    fetchJournals(false);
+    fetchAuthors(false);
   }, []);
 
   // Filter journals based on filter options
@@ -529,11 +625,31 @@ export default function AdminPojokMBKMPage() {
       return true;
     });
 
-    // Sort by latest
+    // Apply sorting
     filtered.sort((a, b) => {
-      const dateA = new Date(b.updatedAt || b.publishDate).getTime();
-      const dateB = new Date(a.updatedAt || a.publishDate).getTime();
-      return dateA - dateB;
+      let compareValue = 0;
+
+      switch (filterOptions.sortBy) {
+        case 'views':
+          const viewsA = a.views || 0;
+          const viewsB = b.views || 0;
+          compareValue = viewsA - viewsB;
+          break;
+
+        case 'title':
+          compareValue = a.title.localeCompare(b.title, 'id', { numeric: true });
+          break;
+
+        case 'date':
+        default:
+          const dateA = new Date(a.updatedAt || a.publishDate).getTime();
+          const dateB = new Date(b.updatedAt || b.publishDate).getTime();
+          compareValue = dateA - dateB;
+          break;
+      }
+
+      // Apply sort order
+      return filterOptions.sortOrder === 'asc' ? compareValue : -compareValue;
     });
 
     setFilteredJournals(filtered);
@@ -548,7 +664,9 @@ export default function AdminPojokMBKMPage() {
         await updateJournal(editingJournal.id, data);
       }
 
-      await fetchJournals();
+      // Clear cache dan refresh data
+      clearAllJournalCaches();
+      await fetchJournals(true); // Force refresh
 
       // Close form
       setShowForm(false);
@@ -592,7 +710,10 @@ export default function AdminPojokMBKMPage() {
 
     try {
       await deleteJournal(journalToDelete.id);
-      await fetchJournals();
+
+      // Clear cache dan refresh data
+      clearAllJournalCaches();
+      await Promise.all([fetchJournals(true), fetchAuthors(true)]);
 
       setShowDeleteDialog(false);
       setJournalToDelete(null);
@@ -694,7 +815,14 @@ export default function AdminPojokMBKMPage() {
             <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
               Menampilkan {filteredJournals.length} dari {journals.length} jurnal
             </div>
-            <JournalTable journals={filteredJournals} onEdit={handleEdit} onDelete={handleDelete} />
+            <JournalTable
+              journals={filteredJournals}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              sortBy={filterOptions.sortBy}
+              sortOrder={filterOptions.sortOrder}
+              onSort={handleSort}
+            />
           </>
         ) : (
           <EmptyState hasFilters={hasFilters} onCreateNew={handleCreateNew} />

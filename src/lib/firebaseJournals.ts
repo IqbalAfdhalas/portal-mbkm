@@ -1,6 +1,16 @@
 import { db } from '@/lib/firebase';
-import { collection, getDocs, query, orderBy, doc, getDoc, Timestamp } from 'firebase/firestore';
-import { Journal, Author } from '@/lib/types/journal';
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+  increment,
+} from 'firebase/firestore';
+import { Journal, Author, PopularJournalsResult, ViewsOperationResult } from '@/lib/types/journal';
 import { performanceCache, CACHE_KEYS, CACHE_TTL } from './utils/performanceCache';
 import { firebaseOptimization } from './utils/firebaseOptimization';
 
@@ -28,8 +38,10 @@ export const getAllJournals = async (): Promise<Journal[]> => {
           id: doc.id,
           ...data,
           publishDate: toDateIfTimestamp(data.publishDate),
+          date: toDateIfTimestamp(data.date),
           createdAt: toDateIfTimestamp(data.createdAt),
           updatedAt: toDateIfTimestamp(data.updatedAt),
+          views: data.views || 0, // ← NEW: Default views to 0 if not exists
         };
       });
 
@@ -66,8 +78,10 @@ export const getJournalById = async (id: string): Promise<Journal | null> => {
         id: snapshot.id,
         ...data,
         publishDate: toDateIfTimestamp(data.publishDate),
+        date: toDateIfTimestamp(data.date),
         createdAt: toDateIfTimestamp(data.createdAt),
         updatedAt: toDateIfTimestamp(data.updatedAt),
+        views: data.views || 0, // ← NEW: Default views to 0 if not exists
       };
 
       console.log(`✅ [Journals] Journal fetched: ${journal.title}`);
@@ -76,6 +90,149 @@ export const getJournalById = async (id: string): Promise<Journal | null> => {
     CACHE_TTL.LONG
   );
 };
+
+// ===============================
+// NEW: VIEWS RELATED FUNCTIONS
+// ===============================
+
+/**
+ * Increment views count for a journal
+ */
+export const incrementJournalViews = async (journalId: string): Promise<ViewsOperationResult> => {
+  if (!journalId || typeof journalId !== 'string' || journalId.trim() === '') {
+    return {
+      success: false,
+      error: 'Invalid journal ID',
+    };
+  }
+
+  try {
+    console.log(`👁️ [Views] Incrementing views for journal: ${journalId}`);
+
+    const docRef = doc(db, 'journals', journalId);
+
+    // Use Firestore increment for atomic operation
+    await updateDoc(docRef, {
+      views: increment(1),
+      updatedAt: new Date(),
+    });
+
+    // Invalidate related caches
+    performanceCache.invalidate(CACHE_KEYS.JOURNAL_BY_ID(journalId));
+    performanceCache.invalidate(CACHE_KEYS.JOURNALS_ALL);
+    performanceCache.invalidate(CACHE_KEYS.POPULAR_JOURNALS);
+
+    // Get updated journal to return new views count
+    const updatedJournal = await getJournalById(journalId);
+    const newViewsCount = updatedJournal?.views || 0;
+
+    console.log(`✅ [Views] Views incremented for ${journalId}. New count: ${newViewsCount}`);
+
+    return {
+      success: true,
+      newViewsCount,
+    };
+  } catch (error) {
+    console.error('❌ [Views] Failed to increment views:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+};
+
+/**
+ * Get popular journals by views count
+ */
+export const getPopularJournals = async (limit: number = 10): Promise<PopularJournalsResult> => {
+  return performanceCache.cachedFetch(
+    CACHE_KEYS.POPULAR_JOURNALS,
+    async () => {
+      console.log(`🔥 [Popular] Fetching top ${limit} popular journals...`);
+
+      await firebaseOptimization.warmupConnection();
+
+      // Query journals ordered by views desc
+      const q = query(
+        journalsCollection,
+        orderBy('views', 'desc'),
+        orderBy('publishDate', 'desc') // Secondary sort for same views
+      );
+
+      const snapshot = await getDocs(q);
+
+      const allJournals = snapshot.docs.map(doc => {
+        const data = doc.data() as Omit<Journal, 'id'>;
+        return {
+          id: doc.id,
+          ...data,
+          publishDate: toDateIfTimestamp(data.publishDate),
+          date: toDateIfTimestamp(data.date),
+          createdAt: toDateIfTimestamp(data.createdAt),
+          updatedAt: toDateIfTimestamp(data.updatedAt),
+          views: data.views || 0,
+        };
+      });
+
+      // Filter only published journals and apply limit
+      const publishedJournals = allJournals
+        .filter(journal => journal.status === 'published')
+        .slice(0, limit);
+
+      // Calculate stats
+      const totalViews = publishedJournals.reduce((sum, journal) => sum + journal.views, 0);
+      const averageViews =
+        publishedJournals.length > 0 ? Math.round(totalViews / publishedJournals.length) : 0;
+
+      console.log(
+        `✅ [Popular] Found ${publishedJournals.length} popular journals. Total views: ${totalViews}`
+      );
+
+      return {
+        journals: publishedJournals,
+        totalViews,
+        averageViews,
+      };
+    },
+    CACHE_TTL.MEDIUM // Cache for 5 minutes
+  );
+};
+
+/**
+ * Get journals with highest views in specific category
+ */
+export const getPopularJournalsByCategory = async (
+  category: 'daily-activity' | 'weekly-reflection' | 'project-update',
+  limit: number = 5
+): Promise<Journal[]> => {
+  const cacheKey = `popular_journals_${category}_${limit}`;
+
+  return performanceCache.cachedFetch(
+    cacheKey,
+    async () => {
+      console.log(`🔥 [Popular] Fetching popular journals for category: ${category}`);
+
+      const allJournals = await getAllJournals();
+
+      const categoryJournals = allJournals
+        .filter(journal => journal.category === category && journal.status === 'published')
+        .sort((a, b) => {
+          // Sort by views desc, then by publishDate desc
+          if (b.views !== a.views) return b.views - a.views;
+          return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+        })
+        .slice(0, limit);
+
+      console.log(`✅ [Popular] Found ${categoryJournals.length} popular journals in ${category}`);
+      return categoryJournals;
+    },
+    CACHE_TTL.MEDIUM
+  );
+};
+
+// ===============================
+// EXISTING FUNCTIONS (Updated)
+// ===============================
 
 // Ambil author berdasarkan ID dengan caching
 export const getAuthorById = async (id: string): Promise<Author | null> => {
@@ -157,11 +314,18 @@ export const getRelatedJournals = async (
             id: doc.id,
             ...data,
             publishDate: toDateIfTimestamp(data.publishDate),
+            date: toDateIfTimestamp(data.date),
             createdAt: toDateIfTimestamp(data.createdAt),
             updatedAt: toDateIfTimestamp(data.updatedAt),
+            views: data.views || 0, // ← NEW: Handle views field
           };
         })
-        .filter(journal => journal.id !== currentId && journal.category === category)
+        .filter(
+          journal =>
+            journal.id !== currentId &&
+            journal.category === category &&
+            journal.status === 'published'
+        )
         .slice(0, limit);
 
       console.log(`✅ [Journals] Found ${related.length} related journals`);
@@ -196,7 +360,6 @@ export const getJournalWithAuthor = async (journalId: string) => {
 
 /**
  * Load multiple journals dengan authors secara parallel
- * Fixed: menggunakan authorId yang benar dari interface Journal
  */
 export const getJournalsWithAuthors = async (journalIds: string[]) => {
   if (!journalIds.length) return [];
@@ -213,7 +376,7 @@ export const getJournalsWithAuthors = async (journalIds: string[]) => {
   const journalResults = await firebaseOptimization.executeParallel(journalQueries);
   const journals = Object.values(journalResults).filter(Boolean) as Journal[];
 
-  // Collect unique author IDs (fixed: menggunakan authorId, bukan authorIds)
+  // Collect unique author IDs
   const authorIds = new Set<string>();
   journals.forEach(journal => {
     if (journal.authorId) {
@@ -261,6 +424,15 @@ export const loadJournalsDashboard = async (onDataReady?: (key: string, data: an
       onComplete: onDataReady,
     },
     {
+      key: 'popularJournals', // ← NEW: Add popular journals to dashboard
+      priority: 'high',
+      queryFn: async () => {
+        const result = await getPopularJournals(5);
+        return result.journals;
+      },
+      onComplete: onDataReady,
+    },
+    {
       key: 'allAuthors',
       priority: 'medium',
       queryFn: () => getAllAuthors(),
@@ -304,10 +476,10 @@ export const loadJournalDetailPage = async (
 
 /**
  * Invalidate related caches when data changes
- * Fixed: proper type checking untuk journal
  */
 export const invalidateJournalCaches = (journalId?: string) => {
   performanceCache.invalidate(CACHE_KEYS.JOURNALS_ALL);
+  performanceCache.invalidate(CACHE_KEYS.POPULAR_JOURNALS); // ← NEW: Invalidate popular journals cache
 
   if (journalId) {
     performanceCache.invalidate(CACHE_KEYS.JOURNAL_BY_ID(journalId));
@@ -316,10 +488,38 @@ export const invalidateJournalCaches = (journalId?: string) => {
     const cachedJournal = performanceCache.get<Journal>(CACHE_KEYS.JOURNAL_BY_ID(journalId));
     if (cachedJournal && cachedJournal.category) {
       performanceCache.invalidate(CACHE_KEYS.RELATED_JOURNALS(journalId, cachedJournal.category));
+      // ← NEW: Invalidate category-specific popular journals
+      performanceCache.invalidate(`popular_journals_${cachedJournal.category}_5`);
     }
   }
 
   console.log('🧹 [Journals] Cache invalidated');
+};
+
+/**
+ * Clear all journal-related caches - for force refresh
+ */
+export const clearAllJournalCaches = () => {
+  console.log('🧹 [Cache] Clearing all journal caches...');
+
+  // Clear all journal caches
+  performanceCache.invalidate(CACHE_KEYS.JOURNALS_ALL);
+  performanceCache.invalidate(CACHE_KEYS.AUTHORS_ALL);
+  performanceCache.invalidate(CACHE_KEYS.POPULAR_JOURNALS);
+
+  // Clear all cached individual journals
+  const cacheKeys = performanceCache.getAllKeys();
+  cacheKeys.forEach(key => {
+    if (
+      key.startsWith('journal_') ||
+      key.startsWith('author_') ||
+      key.startsWith('popular_journals_')
+    ) {
+      performanceCache.invalidate(key);
+    }
+  });
+
+  console.log('✅ [Cache] All caches cleared');
 };
 
 /**
@@ -328,7 +528,11 @@ export const invalidateJournalCaches = (journalId?: string) => {
 export const preloadCriticalData = async () => {
   try {
     // Preload dalam background tanpa await
-    Promise.all([getAllJournals(), getAllAuthors()]);
+    Promise.all([
+      getAllJournals(),
+      getAllAuthors(),
+      getPopularJournals(5), // ← NEW: Preload popular journals
+    ]);
 
     console.log('🚀 [Journals] Critical data preloading started');
   } catch (error) {

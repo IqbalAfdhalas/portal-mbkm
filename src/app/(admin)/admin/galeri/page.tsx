@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Plus,
   Search,
@@ -89,9 +90,11 @@ const GalleryItem: React.FC<GalleryItemProps> = ({ item, viewMode, onEdit, onDel
       >
         <div className="flex items-center p-4">
           {/* Image */}
-          <img
+          <Image
             src={item.src}
             alt={item.title}
+            width={64}
+            height={64}
             className="w-16 h-16 object-cover rounded-lg mr-4 cursor-pointer hover:opacity-75 transition-opacity"
             onClick={() => onView(item)}
           />
@@ -160,9 +163,11 @@ const GalleryItem: React.FC<GalleryItemProps> = ({ item, viewMode, onEdit, onDel
     >
       {/* Image */}
       <div className="relative overflow-hidden">
-        <img
+        <Image
           src={item.src}
           alt={item.title}
+          width={400}
+          height={192}
           className="w-full h-48 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
           onClick={() => onView(item)}
         />
@@ -236,12 +241,7 @@ interface ImagePreviewModalProps {
 }
 
 const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ item, isOpen, onClose }) => {
-  const { viewCount, incrementView, isLoading } = useViewCounter({
-    imageId: item?.id || '',
-    initialViewCount: item?.viewCount || 0,
-    autoIncrement: true, // Auto increment saat modal dibuka
-    delay: 1000, // 1 detik delay
-  });
+  const viewCount = item?.viewCount || 0;
 
   if (!item) return null;
   return (
@@ -271,9 +271,11 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ item, isOpen, onC
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             {/* Image */}
-            <img
+            <Image
               src={item.src}
               alt={item.title}
+              width={800}
+              height={600}
               className="w-full max-h-[60vh] object-contain bg-gray-100 dark:bg-gray-900"
             />
 
@@ -318,6 +320,7 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({ item, isOpen, onC
 export default function AdminGalleryPage() {
   const [items, setItems] = useState<GalleryImage[]>([]);
   const [filteredItems, setFilteredItems] = useState<GalleryImage[]>([]);
+  const [paginatedItems, setPaginatedItems] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
@@ -339,6 +342,8 @@ export default function AdminGalleryPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [availableYears, setAvailableYears] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
   // Load data
   const loadItems = async () => {
@@ -415,7 +420,17 @@ export default function AdminGalleryPage() {
     });
 
     setFilteredItems(filtered);
+
+    // Reset to first page when filters change
+    setCurrentPage(1);
   }, [items, selectedCategory, selectedYear, searchQuery, sortBy, sortOrder]);
+
+  // Pagination logic
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setPaginatedItems(filteredItems.slice(startIndex, endIndex));
+  }, [filteredItems, currentPage, itemsPerPage]);
 
   // Load data on mount
   useEffect(() => {
@@ -474,6 +489,7 @@ export default function AdminGalleryPage() {
     setSelectedYear('all');
     setSortBy('date');
     setSortOrder('desc');
+    setCurrentPage(1);
   };
 
   if (loading) {
@@ -494,7 +510,10 @@ export default function AdminGalleryPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Kelola Galeri</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Total: {filteredItems.length} dari {items.length} foto
+            Menampilkan {Math.min((currentPage - 1) * itemsPerPage + 1, filteredItems.length)}-
+            {Math.min(currentPage * itemsPerPage, filteredItems.length)} dari {filteredItems.length}{' '}
+            foto
+            {filteredItems.length !== items.length && ` (total: ${items.length} foto)`}
           </p>
         </div>
 
@@ -674,24 +693,145 @@ export default function AdminGalleryPage() {
           </button>
         </motion.div>
       ) : (
-        <div
-          className={
-            viewMode === 'grid'
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-              : 'space-y-4'
-          }
-        >
-          {filteredItems.map(item => (
-            <GalleryItem
-              key={item.id}
-              item={item}
-              viewMode={viewMode}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onView={handleView}
-            />
-          ))}
-        </div>
+        <>
+          <div
+            className={
+              viewMode === 'grid'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                : 'space-y-4'
+            }
+          >
+            {paginatedItems.map(item => (
+              <GalleryItem
+                key={item.id}
+                item={item}
+                viewMode={viewMode}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onView={handleView}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {filteredItems.length > itemsPerPage && (
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              {/* Items per page selector */}
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Tampilkan:</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={e => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                >
+                  <option value={6}>6</option>
+                  <option value={12}>12</option>
+                  <option value={24}>24</option>
+                  <option value={48}>48</option>
+                </select>
+                <span className="text-sm text-gray-600 dark:text-gray-400">per halaman</span>
+              </div>
+
+              {/* Pagination controls */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Sebelumnya
+                </button>
+
+                {/* Page numbers */}
+                <div className="flex items-center space-x-1">
+                  {(() => {
+                    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+                    const maxVisiblePages = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+                    if (endPage - startPage + 1 < maxVisiblePages) {
+                      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                    }
+
+                    const pages = [];
+
+                    if (startPage > 1) {
+                      pages.push(
+                        <button
+                          key={1}
+                          onClick={() => setCurrentPage(1)}
+                          className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        >
+                          1
+                        </button>
+                      );
+                      if (startPage > 2) {
+                        pages.push(
+                          <span key="dots1" className="px-2 text-gray-500">
+                            ...
+                          </span>
+                        );
+                      }
+                    }
+
+                    for (let i = startPage; i <= endPage; i++) {
+                      pages.push(
+                        <button
+                          key={i}
+                          onClick={() => setCurrentPage(i)}
+                          className={`px-3 py-2 text-sm border rounded transition-colors ${
+                            i === currentPage
+                              ? 'bg-blue-600 text-white border-blue-600'
+                              : 'border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          }`}
+                        >
+                          {i}
+                        </button>
+                      );
+                    }
+
+                    if (endPage < totalPages) {
+                      if (endPage < totalPages - 1) {
+                        pages.push(
+                          <span key="dots2" className="px-2 text-gray-500">
+                            ...
+                          </span>
+                        );
+                      }
+                      pages.push(
+                        <button
+                          key={totalPages}
+                          onClick={() => setCurrentPage(totalPages)}
+                          className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        >
+                          {totalPages}
+                        </button>
+                      );
+                    }
+
+                    return pages;
+                  })()}
+                </div>
+
+                <button
+                  onClick={() =>
+                    setCurrentPage(
+                      Math.min(Math.ceil(filteredItems.length / itemsPerPage), currentPage + 1)
+                    )
+                  }
+                  disabled={currentPage === Math.ceil(filteredItems.length / itemsPerPage)}
+                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Selanjutnya
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Modals */}

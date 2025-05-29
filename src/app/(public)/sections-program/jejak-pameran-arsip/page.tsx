@@ -1,4 +1,4 @@
-// src/app/(public)/sections-program/pameran-arsip/page.tsx
+// src/app/(public)/sections-program/jejak-pameran-arsip/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css/navigation';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 
-const PameranArsipDetail = () => {
+const JejakPameranArsipDetail = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [activeUnit, setActiveUnit] = useState<number | null>(0);
@@ -26,17 +26,17 @@ const PameranArsipDetail = () => {
   }, []);
 
   const program = {
-    title: 'Kolaborasi Mahasiswa dalam Arsip',
+    title: 'Jejak Pameran Arsip',
     subtitle: 'Arsip Bukan Cuma Tumpukan Kertas!',
     description:
-      'Di sini, arsip tampil beda! Lewat program kolaborasi dalam arsip, BAST ANRI memperkenalkan koleksi arsip penting ke masyarakat dalam bentuk yang menarik, interaktif, dan penuh cerita. Cocok buat kamu yang suka belajar sejarah lewat cara yang lebih visual dan hidup.',
+      'Di sini, arsip tampil beda! Mahasiswa ikut bawain kisahnya lewat pameran BAST ANRI yang interaktif dan penuh cerita. Belajar sejarah jadi seru, visual, dan dekat dengan generasi muda!',
     icon: '/images/program/logo_program/pameran_arsip.png',
     color: 'orange-500',
     video: '/images/program/pameran_arsip/vidio1.mp4',
     unitDescription:
-      'Pameran Balai Arsip Statis dan Tsunami yang diselenggarakan oleh BAST ANRI merupakan sebuah kegiatan yang bertujuan untuk memperkenalkan dan menyebarluaskan informasi mengenai arsip-arsip statis yang memiliki nilai sejarah, serta dokumentasi tentang bencana tsunami yang pernah terjadi di Indonesia. Pameran ini menjadi ajang penting untuk mempromosikan Balai Arsip Statis dan Tsunami (BAST) Arsip Nasional Republik Indonesia (ANRI) ',
+      'Mahasiswa terlibat langsung dalam Pameran Arsip BAST ANRI, mulai dari kurasi hingga jadi pemandu. Kehadiran mereka bikin arsip terasa lebih dekat dan hidup bagi pengunjung.',
     unitActivities:
-      'Ikut berpartisipasi pameran gini seru banget pengunjung banyak yang bertanya, bahkan ada yang baru tahu kalau dokumen-dokumen kayak gini bisa disimpan dan punya banyak nilai penting.',
+      'Di pameran arsip BAST ANRI, mahasiswa ikut ambil bagian dalam menyiapkan dan meramaikan acara. Mereka bantu menata arsip, bikin narasi pameran, sampai jadi pemandu buat pengunjung. Lewat kegiatan ini, mahasiswa nggak cuma belajar langsung soal arsip, tapi juga turut menjaga sejarah lewat cara yang seru dan bermakna.',
     allUnits: [
       {
         name: 'Pengenalan Arsip',
@@ -680,4 +680,4 @@ const PameranArsipDetail = () => {
   );
 };
 
-export default PameranArsipDetail;
+export default JejakPameranArsipDetail;

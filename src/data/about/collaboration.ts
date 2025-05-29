@@ -13,7 +13,7 @@ export interface CollaborationData {
     label: string;
   }[];
   accordionItems: AccordionItem[];
-  externalLink: {
+  externalLink?: {
     url: string;
     label: string;
   };
@@ -167,11 +167,6 @@ export const collaborationData: CollaborationData = {
       isOpen: false,
     },
   ],
-
-  externalLink: {
-    url: 'https://anri.go.id/kolaborasi-mbkm',
-    label: 'Daftar Program Kolaborasi',
-  },
 
   partners: [
     {

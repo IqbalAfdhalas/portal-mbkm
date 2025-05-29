@@ -78,7 +78,7 @@ const ProgramPreview = () => {
       particleColor: '#ddd6fe',
     },
     {
-      title: 'Kolaborasi Mahasiswa Dalam Arsip',
+      title: 'Jejak Pameran Arsip',
       icon: '/images/program/logo_program/pameran_arsip.png',
       description: 'Lihat arsip tampil beda lewat pameran tematik dan interaktif!',
       features: [

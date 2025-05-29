@@ -1,11 +1,11 @@
 // src/components/sections/Gallery.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Search, X, Calendar, ChevronLeft, ChevronRight, Download, Share2 } from 'lucide-react';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 import { AnimatePresence, motion } from 'framer-motion';
-import { getGalleryItems } from '@/lib/firebaseGallery';
+import { useInfiniteGallery } from '@/hooks/useInfiniteGallery';
 import type { GalleryImage } from '@/data/gallery/galeryData';
 import { GalleryViewCounter, DetailViewCounter } from '@/components/ui/ViewCounter';
 import { useAutoViewCounter } from '@/hooks/useViewCounter';
@@ -14,28 +14,44 @@ import { useAutoViewCounter } from '@/hooks/useViewCounter';
 interface GalleryItemProps {
   image: GalleryImage;
   onClick: (image: GalleryImage) => void;
+  index: number;
 }
 
-const GalleryItem = ({ image, onClick }: GalleryItemProps) => {
+const GalleryItem = ({ image, onClick, index }: GalleryItemProps) => {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{
-        duration: 0.4,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        layout: {
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: {
+          duration: 0.8,
+          delay: index * 0.05,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        },
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.8,
+        y: -20,
+        transition: {
           duration: 0.6,
           ease: [0.25, 0.46, 0.45, 0.94],
+        },
+      }}
+      transition={{
+        layout: {
+          duration: 1.2,
+          ease: 'easeInOut',
         },
       }}
       className="mb-4 break-inside-avoid cursor-pointer group"
       onClick={() => onClick(image)}
       whileHover={{
         scale: 1.05,
-        transition: { duration: 0.2 },
+        transition: { duration: 0.3, ease: 'easeOut' },
       }}
       whileTap={{ scale: 0.98 }}
     >
@@ -320,8 +336,16 @@ const Lightbox = ({
 
 // Main Gallery Component with sorting options
 const Gallery = () => {
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    items: images,
+    loading,
+    hasMore,
+    error,
+    loadMore,
+    refresh,
+    isInitialLoading,
+  } = useInfiniteGallery(12);
+
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -329,21 +353,10 @@ const Gallery = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'popular' | 'title'>('newest');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const galleryItems = await getGalleryItems();
-        setImages(galleryItems);
-      } catch (error) {
-        console.error('Error fetching gallery items:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  // Handle error with retry
+  const handleRetry = useCallback(() => {
+    refresh();
+  }, [refresh]);
 
   // Get categories and years from the data
   const categories = ['all', ...Array.from(new Set(images.map(item => item.category)))];
@@ -562,7 +575,7 @@ const Gallery = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {isLoading ? (
+            {isInitialLoading ? (
               <motion.div
                 className="flex flex-col items-center justify-center py-16 text-gray-500 dark:text-gray-400"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -589,6 +602,36 @@ const Gallery = () => {
                   ))}
                 </div>
               </motion.div>
+            ) : error ? (
+              <motion.div
+                className="flex flex-col items-center justify-center py-12 text-red-500 dark:text-red-400"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-16 w-16 mb-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <h3 className="text-lg font-medium mb-2">Gagal memuat galeri</h3>
+                <p className="text-sm opacity-75 mb-4">{error}</p>
+                <button
+                  onClick={handleRetry}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Coba Lagi
+                </button>
+              </motion.div>
             ) : filteredImages.length === 0 ? (
               <motion.div
                 className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400"
@@ -614,17 +657,101 @@ const Gallery = () => {
                 <p className="mt-1">Coba ubah filter atau kata kunci pencarian</p>
               </motion.div>
             ) : (
-              <motion.div
-                className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"
-                layout
-                transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-              >
-                <AnimatePresence mode="popLayout">
-                  {filteredImages.map((image, index) => (
-                    <GalleryItem key={image.id} image={image} onClick={handleImageClick} />
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+              <>
+                <motion.div
+                  className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"
+                  layout
+                  transition={{
+                    duration: 1.2,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                    layout: {
+                      duration: 1.5,
+                      ease: 'easeInOut',
+                    },
+                  }}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {filteredImages.map((image, index) => (
+                      <GalleryItem
+                        key={`${image.id}-${index}`}
+                        image={image}
+                        onClick={handleImageClick}
+                        index={index}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+
+                {/* Load More Button */}
+                <div className="w-full flex items-center justify-center mt-8 mb-4">
+                  {hasMore ? (
+                    <motion.button
+                      onClick={loadMore}
+                      disabled={loading}
+                      className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                        loading
+                          ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                      }`}
+                      whileHover={!loading ? { scale: 1.05 } : {}}
+                      whileTap={!loading ? { scale: 0.95 } : {}}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {loading ? (
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
+                          <span>Memuat...</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 4v16m8-8H4"
+                            />
+                          </svg>
+                          <span>Muat Foto Lainnya</span>
+                        </div>
+                      )}
+                    </motion.button>
+                  ) : (
+                    images.length > 0 && (
+                      <motion.div
+                        className="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-2"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span>Semua foto telah dimuat</span>
+                      </motion.div>
+                    )
+                  )}
+                </div>
+              </>
             )}
           </MotionDiv>
         </div>
