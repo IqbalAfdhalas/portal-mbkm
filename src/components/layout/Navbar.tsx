@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import { useScrollspy } from '@/hooks/useScrollspy';
 import { navigation } from '@/constants/navigation';
-import LoginButton from '@/components/ui/LoginButton';
 import { useAuth } from '@/hooks/useAuth';
 import { usePathname, useRouter } from 'next/navigation';
 import { scrollToId } from '@/lib/utils';
