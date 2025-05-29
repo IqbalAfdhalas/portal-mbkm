@@ -50,6 +50,7 @@ export class JournalService {
       authorImage: data.authorImage,
       media: data.media || [],
       status: data.status,
+      views: data.views || 0,
       createdAt: data.createdAt?.toDate() || new Date(),
       updatedAt: data.updatedAt?.toDate() || new Date(),
     };
