@@ -1,18 +1,44 @@
 /* src/styles/globals.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+  }
+
   html {
     @apply scroll-smooth;
   }
 
   body {
-    @apply bg-white text-gray-800 dark:bg-dark dark:text-gray-100;
+    @apply bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* Fix untuk form elements di dark mode */
+  input,
+  textarea,
+  select {
+    @apply dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply dark:ring-blue-500 dark:border-blue-500;
   }
 
   h1,
@@ -50,5 +76,4 @@
   .gradient-text {
     @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-light;
   }
-  
 }

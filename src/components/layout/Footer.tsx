@@ -23,8 +23,8 @@ const Footer = () => {
               />
             </Link>
             <p className="text-gray-300 text-sm mb-4 font-body">
-              Program Merdeka Belajar Kampus Merdeka (MBKM) Badan Arsip dan Standardisasi Nasional
-              Republik Indonesia.
+              Program Merdeka Belajar Kampus Merdeka (MBKM) Balai Arsip Statis dan Tsunami (BAST)
+              Arsip Nasional Republik Indonesia (ANRI).
             </p>
             <div className="flex space-x-4">
               {social.map(item => (

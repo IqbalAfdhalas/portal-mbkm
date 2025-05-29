@@ -3,12 +3,48 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getJournalById, getAuthorById, getRelatedJournals } from '@/lib/firebaseJournals';
-import { Author } from '@/lib/types/journal';
-import { Journal } from '@/components/sections/PojokMBKM';
+import { useAutoIncrementViews } from '@/hooks/useJournalViews';
+import { Journal, Author } from '@/lib/types/journal';
 import ReactMarkdown from 'react-markdown';
 import { motion } from 'framer-motion';
-import { FiCalendar, FiMapPin, FiClock, FiBookOpen, FiArrowLeft, FiUser } from 'react-icons/fi';
+import {
+  FiCalendar,
+  FiMapPin,
+  FiRefreshCw,
+  FiBookOpen,
+  FiArrowLeft,
+  FiUser,
+  FiEye,
+} from 'react-icons/fi';
+import { formatDateToIndonesian } from '@/lib/utils/dateUtils';
+
+const getSmartUpdateTime = (updatedAt: any, publishedAt: any): string => {
+  const targetDate = updatedAt || publishedAt;
+
+  if (!targetDate) return 'Tanggal tidak tersedia';
+
+  const now = new Date();
+  const targetDateObj = targetDate.toDate ? targetDate.toDate() : new Date(targetDate);
+  const diffTime = Math.abs(now.getTime() - targetDateObj.getTime());
+  const diffMinutes = Math.ceil(diffTime / (1000 * 60));
+  const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffMinutes < 1) return 'Baru saja';
+  if (diffMinutes < 60) return `${diffMinutes} menit lalu`;
+  if (diffHours < 24) return `${diffHours} jam lalu`;
+  if (diffDays === 1) return 'Kemarin';
+  if (diffDays < 7) return `${diffDays} hari lalu`;
+  if (diffDays < 30) return `${Math.ceil(diffDays / 7)} minggu lalu`;
+
+  try {
+    return formatDateToIndonesian(targetDateObj);
+  } catch (error) {
+    return 'Tanggal tidak tersedia';
+  }
+};
 
 // ===== JOURNAL MEDIA GALLERY COMPONENT =====
 const JournalMedia = ({ media }: { media: Journal['media'] }) => {
@@ -35,10 +71,13 @@ const JournalMedia = ({ media }: { media: Journal['media'] }) => {
             >
               &times;
             </button>
-            <img
+            <Image
               src={selectedImage}
               alt="Expanded view"
+              width={800}
+              height={600}
               className="max-w-full max-h-[80vh] object-contain rounded-lg"
+              priority
             />
           </div>
         </div>
@@ -56,10 +95,12 @@ const JournalMedia = ({ media }: { media: Journal['media'] }) => {
             onClick={() => setSelectedImage(item.url)}
           >
             <div className="relative w-full h-48">
-              <img
+              <Image
                 src={item.url}
                 alt={item.caption || 'Media jurnal'}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
                 <span className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
@@ -119,8 +160,14 @@ const AuthorInfo = ({ authorId }: { authorId: string }) => {
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
         {/* Author Avatar */}
         {author.image ? (
-          <div className="relative w-24 aspect-square rounded-full overflow-hidden border-2 border-white dark:border-gray-700 shadow-md">
-            <img src={author.image} alt={author.name} className="w-full h-full object-cover" />
+          <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-white dark:border-gray-700 shadow-md">
+            <Image
+              src={author.image}
+              alt={author.name}
+              fill
+              className="object-cover"
+              sizes="96px"
+            />
           </div>
         ) : (
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
@@ -179,11 +226,13 @@ const RelatedJournals = ({ journalId, category }: { journalId: string; category:
             key={journal.id}
             className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 group"
           >
-            <div className="relative overflow-hidden rounded-lg mb-4">
-              <img
+            <div className="relative overflow-hidden rounded-lg mb-4 h-40">
+              <Image
                 src={journal.media?.[0]?.url || '/api/placeholder/300/200'}
                 alt={journal.title}
-                className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
@@ -193,25 +242,34 @@ const RelatedJournals = ({ journalId, category }: { journalId: string; category:
             <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 mb-4 leading-relaxed">
               {journal.summary}
             </p>
-            <Link
-              href={`/pojok-mbkm/${journal.id}`}
-              className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm transition-colors"
-            >
-              Baca Selengkapnya
-              <svg
-                className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex items-center justify-between">
+              <Link
+                href={`/pojok-mbkm/${journal.id}`}
+                className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Link>
+                Baca Selengkapnya
+                <svg
+                  className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+              {/* Views display for related journals */}
+              {journal.views !== undefined && (
+                <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs">
+                  <FiEye className="w-3 h-3 mr-1" />
+                  <span>{journal.views.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
           </motion.div>
         ))}
       </div>
@@ -220,11 +278,28 @@ const RelatedJournals = ({ journalId, category }: { journalId: string; category:
 };
 
 // ===== JOURNAL BANNER COMPONENT =====
-const JournalBanner = ({ journal }: { journal: Journal }) => {
+const JournalBanner = ({
+  journal,
+  views,
+  isIncrementing,
+}: {
+  journal: Journal;
+  views: number;
+  isIncrementing: boolean;
+}) => {
   const categoryLabel = {
     'daily-activity': 'Daily Activity',
     'weekly-reflection': 'Weekly Reflection',
     'project-update': 'Project Update',
+  };
+
+  const formatViews = (viewCount: number): string => {
+    if (viewCount >= 1000000) {
+      return `${(viewCount / 1000000).toFixed(1)}M`;
+    } else if (viewCount >= 1000) {
+      return `${(viewCount / 1000).toFixed(1)}K`;
+    }
+    return viewCount.toLocaleString();
   };
 
   return (
@@ -241,7 +316,7 @@ const JournalBanner = ({ journal }: { journal: Journal }) => {
         {/* Category Badge */}
         <div className="inline-block mb-6">
           <span className="inline-flex items-center px-3 py-1.5 bg-blue-500 bg-opacity-30 border border-blue-400 text-blue-50 rounded-md font-medium text-sm backdrop-blur-sm">
-            {categoryLabel[journal.category]}
+            {categoryLabel[journal.category as keyof typeof categoryLabel]}
           </span>
         </div>
 
@@ -270,11 +345,47 @@ const JournalBanner = ({ journal }: { journal: Journal }) => {
           <div className="flex items-center">
             <FiCalendar className="mr-2" />
             <span>
-              {new Date(journal.date).toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}
+              {(() => {
+                try {
+                  console.log('Journal date raw:', journal.date);
+                  console.log('Journal date type:', typeof journal.date);
+
+                  let dateValue: Date;
+
+                  // Handle Firestore Timestamp
+                  if (
+                    journal.date &&
+                    typeof journal.date === 'object' &&
+                    'toDate' in journal.date
+                  ) {
+                    dateValue = (journal.date as any).toDate();
+                  }
+                  // Handle Date object
+                  else if (journal.date instanceof Date) {
+                    dateValue = journal.date;
+                  }
+                  // Handle string or number timestamp
+                  else if (journal.date) {
+                    dateValue = new Date(journal.date);
+                  }
+                  // Fallback to current date
+                  else {
+                    console.warn('No valid date found, using current date');
+                    dateValue = new Date();
+                  }
+
+                  // Check if date is valid
+                  if (isNaN(dateValue.getTime())) {
+                    console.error('Invalid date after conversion:', dateValue);
+                    return 'Tanggal tidak tersedia';
+                  }
+
+                  return formatDateToIndonesian(dateValue);
+                } catch (error) {
+                  console.error('Date formatting error:', error, journal.date);
+                  return 'Tanggal tidak tersedia';
+                }
+              })()}
             </span>
           </div>
 
@@ -286,9 +397,21 @@ const JournalBanner = ({ journal }: { journal: Journal }) => {
           )}
 
           <div className="flex items-center">
-            <FiClock className="mr-2" />
+            <FiRefreshCw className="mr-2" />
             <span>
-              {Math.ceil(journal.content.trim().split(/\s+/).length / 200) || 1} menit membaca
+              {journal.updatedAt && journal.updatedAt !== journal.date
+                ? `Diperbarui: ${getSmartUpdateTime(journal.updatedAt, journal.date)}`
+                : `Dipublikasi: ${getSmartUpdateTime(journal.date, journal.date)}`}
+            </span>
+          </div>
+
+          {/* Views Counter */}
+          <div className="flex items-center">
+            <FiEye className={`mr-2 ${isIncrementing ? 'animate-pulse' : ''}`} />
+            <span
+              className={`${isIncrementing ? 'text-blue-200' : ''} transition-colors duration-300`}
+            >
+              {formatViews(views)} kali dibaca
             </span>
           </div>
         </motion.div>
@@ -340,11 +463,19 @@ const FloatingActions = () => {
 };
 
 // ===== MAIN JOURNAL DETAIL COMPONENT =====
-const JournalDetail = ({ journal }: { journal: Journal }) => {
+const JournalDetail = ({
+  journal,
+  views,
+  isIncrementing,
+}: {
+  journal: Journal;
+  views: number;
+  isIncrementing: boolean;
+}) => {
   return (
     <div className="w-full">
-      {/* Hero Banner */}
-      <JournalBanner journal={journal} />
+      {/* Hero Banner with Views */}
+      <JournalBanner journal={journal} views={views} isIncrementing={isIncrementing} />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -359,10 +490,13 @@ const JournalDetail = ({ journal }: { journal: Journal }) => {
                 className="mb-8 rounded-xl overflow-hidden shadow-lg relative"
               >
                 <div className="relative aspect-[16/9] overflow-hidden">
-                  <img
+                  <Image
                     src={journal.media[0].url}
                     alt={journal.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 66vw"
                   />
                 </div>
                 {journal.media[0].caption && (
@@ -483,10 +617,22 @@ export default function JournalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  // Get journal ID from params
+  const journalId = Array.isArray(params?.id) ? params.id[0] : params?.id || '';
+
+  // Use views hook - auto increment with spam prevention
+  const {
+    views,
+    isIncrementing,
+    error: viewsError,
+  } = useAutoIncrementViews(journalId, journal?.views || 0, {
+    enableSpamPrevention: true,
+    delay: 1000, // Delay 1 second before incrementing
+  });
+
   useEffect(() => {
     const fetchJournal = async () => {
-      if (params?.id) {
-        const journalId = Array.isArray(params.id) ? params.id[0] : params.id;
+      if (journalId) {
         const foundJournal = await getJournalById(journalId);
 
         // Simulate loading delay
@@ -503,7 +649,14 @@ export default function JournalDetailPage() {
     };
 
     fetchJournal();
-  }, [params]);
+  }, [journalId]);
+
+  // Show views error as console warning (optional)
+  useEffect(() => {
+    if (viewsError) {
+      console.warn('Views increment error:', viewsError);
+    }
+  }, [viewsError]);
 
   // Render loading state
   if (loading) {
@@ -518,7 +671,7 @@ export default function JournalDetailPage() {
   // Render main content
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      <JournalDetail journal={journal} />
+      <JournalDetail journal={journal} views={views} isIncrementing={isIncrementing} />
     </div>
   );
 }

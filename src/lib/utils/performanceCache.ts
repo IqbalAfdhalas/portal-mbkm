@@ -86,6 +86,13 @@ class PerformanceCache {
   }
 
   /**
+   * Get all cache keys
+   */
+  getAllKeys(): string[] {
+    return Array.from(this.cache.keys());
+  }
+
+  /**
    * Clear expired cache entries
    */
   cleanup(): void {
@@ -189,9 +196,11 @@ export const CACHE_KEYS = {
   JOURNALS_ALL: 'journals_all',
   AUTHORS_ALL: 'authors_all',
   PROFILES_ALL: 'profiles_all',
+  POPULAR_JOURNALS: 'popular_journals',
   JOURNAL_BY_ID: (id: string) => `journal_${id}`,
   GALLERY_BY_ID: (id: string) => `gallery_${id}`,
   PROFILE_BY_ID: (id: string) => `profile_${id}`,
+  JOURNAL_VIEWS: (id: string) => `journal_views_${id}`,
   RELATED_JOURNALS: (id: string, category: string) => `related_${id}_${category}`,
 } as const;
 

@@ -13,8 +13,10 @@ import {
   ArrowRight,
   X,
   Filter,
+  Eye,
 } from 'lucide-react';
-import { getAllJournals } from '@/lib/firebaseJournals';
+import { getAllJournals, getPopularJournals } from '@/lib/firebaseJournals';
+import { usePopularJournals } from '@/hooks/useJournalViews';
 
 // TypeScript interfaces
 export interface Journal {
@@ -36,13 +38,14 @@ export interface Journal {
   status: 'draft' | 'published';
   createdAt: Date;
   updatedAt: Date;
+  views: number;
 }
 
 interface JournalFilterOptions {
   category?: 'daily-activity' | 'weekly-reflection' | 'project-update';
   searchQuery?: string;
   authorId?: string;
-  sortOrder?: 'newest' | 'oldest';
+  sortOrder?: 'newest' | 'oldest' | 'popular';
 }
 
 interface PaginationOptions {
@@ -125,31 +128,37 @@ const JournalCard = ({ journal, index }: { journal: Journal; index: number }) =>
           {journal.summary}
         </p>
 
-        <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center mt-auto">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              {journal.authorImage ? (
-                <img
-                  src={journal.authorImage}
-                  alt={journal.authorName}
-                  className="w-6 h-6 rounded-full object-cover border-2 border-white dark:border-gray-800"
-                />
-              ) : (
-                <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                  <User size={12} className="text-blue-600 dark:text-blue-300" />
-                </div>
-              )}
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-700 space-y-2 mt-auto">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="relative">
+                {journal.authorImage ? (
+                  <img
+                    src={journal.authorImage}
+                    alt={journal.authorName}
+                    className="w-6 h-6 rounded-full object-cover border-2 border-white dark:border-gray-800"
+                  />
+                ) : (
+                  <div className="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                    <User size={12} className="text-blue-600 dark:text-blue-300" />
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-medium text-gray-900 dark:text-white">
+                  {journal.authorName}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{formattedDate}</span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-gray-900 dark:text-white">
-                {journal.authorName}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">{formattedDate}</span>
+            <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+              <Eye size={12} />
+              <span>{journal.views}</span>
             </div>
           </div>
           <Link
             href={`/pojok-mbkm/${journal.id}`}
-            className="px-3 py-1 rounded-md text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+            className="block w-full px-3 py-1 rounded-md text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 text-center"
           >
             Baca
           </Link>
@@ -278,6 +287,7 @@ const FilterBar = ({
   const sortOptions = [
     { value: 'newest', label: 'Terbaru' },
     { value: 'oldest', label: 'Terlama' },
+    { value: 'popular', label: 'Paling Populer' },
   ];
 
   // Debounce search
@@ -636,7 +646,7 @@ const PojokMBKM = () => {
           className="text-center mb-8"
         >
           <span className="text-sm font-medium text-secondary uppercase tracking-wider">
-            Dokumentasi MBKM
+            Jurnal Kegiatan MBKM
           </span>
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
             Pojok MBKM
@@ -687,7 +697,12 @@ const PojokMBKM = () => {
                 .sort((a, b) => {
                   if (filterOptions.sortOrder === 'oldest') {
                     return new Date(a.publishDate).getTime() - new Date(b.publishDate).getTime();
+                  } else if (filterOptions.sortOrder === 'popular') {
+                    // Sort by views desc, then by publishDate desc for tie-breaking
+                    if (b.views !== a.views) return b.views - a.views;
+                    return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
                   }
+                  // Default: newest first
                   return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
                 })
                 .slice(

@@ -13,12 +13,30 @@ import {
   Timestamp,
   getDoc,
   increment,
+  limit,
+  startAfter,
+  getCountFromServer,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from './firebase';
 import type { GalleryImage } from '@/data/gallery/galeryData';
 import { performanceCache, CACHE_KEYS, CACHE_TTL } from './utils/performanceCache';
 import { firebaseOptimization } from './utils/firebaseOptimization';
+
+// Pagination interfaces
+interface PaginationOptions {
+  limit: number;
+  startAfter?: string; // document ID for cursor
+  orderBy?: 'createdAt' | 'viewCount' | 'title';
+  orderDirection?: 'asc' | 'desc';
+}
+
+interface PaginatedResult<T> {
+  items: T[];
+  hasMore: boolean;
+  nextCursor?: string;
+  totalCount?: number;
+}
 
 // Extended interface for Firestore document - WITH VIEWS
 export interface GalleryImageDoc extends Omit<GalleryImage, 'id'> {
@@ -149,6 +167,146 @@ const addImageToViewedSession = (imageId: string): void => {
     }
   } catch (error) {
     console.error('❌ [ViewCount] Session write error:', error);
+  }
+};
+
+/**
+ * PAGINATION: Get paginated gallery items for traditional pagination (admin)
+ */
+export const getGalleryItemsPaginated = async (
+  options: PaginationOptions
+): Promise<PaginatedResult<GalleryImage>> => {
+  const metricsId = performanceCache.startMetrics('getGalleryItemsPaginated');
+
+  try {
+    console.log('📖 [Pagination] Fetching page with options:', options);
+    await firebaseOptimization.warmupConnection();
+
+    // Build base query
+    let q = query(
+      collection(db, COLLECTION_NAME),
+      orderBy(options.orderBy || 'createdAt', options.orderDirection || 'desc'),
+      limit(options.limit)
+    );
+
+    // Add cursor if provided
+    if (options.startAfter) {
+      const startAfterDoc = await getDoc(doc(db, COLLECTION_NAME, options.startAfter));
+      if (startAfterDoc.exists()) {
+        q = query(
+          collection(db, COLLECTION_NAME),
+          orderBy(options.orderBy || 'createdAt', options.orderDirection || 'desc'),
+          startAfter(startAfterDoc),
+          limit(options.limit)
+        );
+      }
+    }
+
+    // Execute query
+    const querySnapshot = await getDocs(q);
+    const items: GalleryImage[] = [];
+
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data() as GalleryImageDoc;
+      items.push({
+        id: docSnap.id,
+        src: data.src,
+        title: data.title,
+        caption: data.caption,
+        category: data.category,
+        year: data.year,
+        date: data.date,
+        viewCount: data.viewCount || 0,
+      });
+    });
+
+    // Check if there are more items
+    const hasMore = items.length === options.limit;
+    const nextCursor = hasMore && items.length > 0 ? items[items.length - 1].id : undefined;
+
+    // Get total count for admin pagination
+    const countQuery = query(collection(db, COLLECTION_NAME));
+    const countSnapshot = await getCountFromServer(countQuery);
+    const totalCount = countSnapshot.data().count;
+
+    console.log(`✅ [Pagination] Fetched ${items.length} items, hasMore: ${hasMore}`);
+    performanceCache.endMetrics('getGalleryItemsPaginated', false);
+
+    return {
+      items,
+      hasMore,
+      nextCursor,
+      totalCount,
+    };
+  } catch (error) {
+    console.error('❌ [Pagination] Error:', error);
+    performanceCache.endMetrics('getGalleryItemsPaginated', false);
+    throw error;
+  }
+};
+
+/**
+ * PAGINATION: Get gallery items for infinite scroll (public)
+ */
+export const getGalleryItemsInfinite = async (
+  cursor?: string,
+  limitNum: number = 12
+): Promise<PaginatedResult<GalleryImage>> => {
+  const metricsId = performanceCache.startMetrics('getGalleryItemsInfinite');
+
+  try {
+    console.log(`🔄 [InfiniteScroll] Loading batch, cursor: ${cursor}, limit: ${limitNum}`);
+    await firebaseOptimization.warmupConnection();
+
+    // Build query
+    let q = query(collection(db, COLLECTION_NAME), orderBy('createdAt', 'desc'), limit(limitNum));
+
+    // Add cursor if provided
+    if (cursor) {
+      const startAfterDoc = await getDoc(doc(db, COLLECTION_NAME, cursor));
+      if (startAfterDoc.exists()) {
+        q = query(
+          collection(db, COLLECTION_NAME),
+          orderBy('createdAt', 'desc'),
+          startAfter(startAfterDoc),
+          limit(limitNum)
+        );
+      }
+    }
+
+    // Execute query
+    const querySnapshot = await getDocs(q);
+    const items: GalleryImage[] = [];
+
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data() as GalleryImageDoc;
+      items.push({
+        id: docSnap.id,
+        src: data.src,
+        title: data.title,
+        caption: data.caption,
+        category: data.category,
+        year: data.year,
+        date: data.date,
+        viewCount: data.viewCount || 0,
+      });
+    });
+
+    const hasMore = items.length === limitNum;
+    const nextCursor = hasMore && items.length > 0 ? items[items.length - 1].id : undefined;
+
+    console.log(`✅ [InfiniteScroll] Fetched ${items.length} items, hasMore: ${hasMore}`);
+    performanceCache.endMetrics('getGalleryItemsInfinite', false);
+
+    return {
+      items,
+      hasMore,
+      nextCursor,
+    };
+  } catch (error) {
+    console.error('❌ [InfiniteScroll] Error:', error);
+    performanceCache.endMetrics('getGalleryItemsInfinite', false);
+    throw error;
   }
 };
 
