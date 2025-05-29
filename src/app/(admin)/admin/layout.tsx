@@ -82,12 +82,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
 
           <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-700">
-            {/* Theme Toggle Section */}
-            <div className="flex items-center justify-between px-2 py-2 mb-2">
-              <span className="text-sm text-gray-700 dark:text-gray-300">Dark Mode</span>
-              <ThemeToggle />
-            </div>
-
             <button
               onClick={() => signOut()}
               className="flex items-center px-2 py-2 w-full text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
