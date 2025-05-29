@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiBookOpen, FiCalendar, FiBriefcase } from 'react-icons/fi';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
-import type { ProfileType } from '@/constants/profileData';
+import type { ProfileType } from '@/data/kenali-kami/profileData';
 
 interface ProfileCardProps {
   profile: ProfileType;
