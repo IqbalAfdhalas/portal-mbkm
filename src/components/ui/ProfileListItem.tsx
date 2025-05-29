@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiMapPin, FiBookOpen, FiCalendar, FiBriefcase } from 'react-icons/fi';
-import type { ProfileType } from '@/constants/profileData';
+import type { ProfileType } from '@/data/kenali-kami/profileData';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 
 interface ProfileListItemProps {
