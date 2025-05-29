@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // src/hooks/useFetch.ts
 import { useState, useCallback } from "react";
 import { useLoading } from "./useLoading";

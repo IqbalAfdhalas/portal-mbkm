@@ -8,7 +8,6 @@ import { useScrollspy } from '@/hooks/useScrollspy';
 import { navigation } from '@/constants/navigation';
 import LoginButton from '@/components/ui/LoginButton';
 import { useAuth } from '@/hooks/useAuth';
-import UserDropdown from '@/components/layout/UserDropdown';
 import { usePathname, useRouter } from 'next/navigation';
 import { scrollToId } from '@/lib/utils';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
