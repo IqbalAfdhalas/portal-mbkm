@@ -14,9 +14,9 @@ interface ThemeProviderProps {
 export function ThemeProvider({
   children,
   attribute = 'class',
-  defaultTheme = 'system',
+  defaultTheme = 'light', // Ubah dari 'system' ke 'light'
   enableSystem = true,
-  disableTransitionOnChange = false,
+  disableTransitionOnChange = true,
 }: ThemeProviderProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -24,9 +24,13 @@ export function ThemeProvider({
     setMounted(true);
   }, []);
 
+  // Render placeholder saat belum mounted untuk mencegah hydration mismatch
   if (!mounted) {
-    // Prevent flash of wrong theme
-    return <div className="min-h-screen bg-gray-50 dark:bg-gray-900">{children}</div>;
+    return (
+      <div className="min-h-screen bg-white">
+        <div suppressHydrationWarning>{children}</div>
+      </div>
+    );
   }
 
   return (
@@ -35,6 +39,7 @@ export function ThemeProvider({
       defaultTheme={defaultTheme}
       enableSystem={enableSystem}
       disableTransitionOnChange={disableTransitionOnChange}
+      storageKey="theme" // Pastikan menggunakan key yang sama dengan script inline
     >
       {children}
     </NextThemesProvider>

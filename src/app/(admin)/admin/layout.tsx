@@ -5,7 +5,8 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
-import { LogOut, Home, Image, BookOpen, FileText } from 'lucide-react';
+import { LogOut, Home, Image as ImageIcon, BookOpen, FileText } from 'lucide-react';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, signOut } = useAuth();
@@ -67,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               href="/admin/galeri"
               className="flex items-center px-2 py-2 mb-2 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Image className="w-5 h-5 mr-3" />
+              <ImageIcon className="w-5 h-5 mr-3" />
               <span>Galeri</span>
             </Link>
 
@@ -81,6 +82,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
 
           <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-700">
+            {/* Theme Toggle Section */}
+            <div className="flex items-center justify-between px-2 py-2 mb-2">
+              <span className="text-sm text-gray-700 dark:text-gray-300">Dark Mode</span>
+              <ThemeToggle />
+            </div>
+
             <button
               onClick={() => signOut()}
               className="flex items-center px-2 py-2 w-full text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -106,8 +113,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <header className="bg-white dark:bg-gray-800 shadow">
           <div className="px-6 py-4 flex justify-between items-center">
             <h1 className="text-xl font-semibold text-gray-800 dark:text-white">Admin Dashboard</h1>
-            <div className="flex items-center">
-              <span className="text-sm text-gray-600 dark:text-gray-300 mr-4">{user?.email}</span>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600 dark:text-gray-300">{user?.email}</span>
+              {/* Alternative placement: Theme toggle in header */}
+              <ThemeToggle />
             </div>
           </div>
         </header>
