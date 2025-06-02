@@ -38,6 +38,30 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
     }
   };
 
+  // Get correct program name
+  const getProgramName = (code: string) => {
+    switch (code) {
+      case 'MI':
+        return 'Manajemen Informatika';
+      case 'IK':
+        return 'Ilmu Komunikasi';
+      case 'Arsip':
+        return 'Arsip';
+      case 'Perpustakaan':
+        return 'Perpustakaan';
+      case 'Sejarah':
+        return 'Sejarah';
+      case 'Bahasa Inggris':
+        return 'Bahasa Inggris';
+      case 'Tehnik Mesin':
+        return 'Tehnik Mesin';
+      case 'Biologi':
+        return 'Biologi';
+      default:
+        return code;
+    }
+  };
+
   // Motion variants for hover effect
   const listItemVariants = {
     hover: {
@@ -54,66 +78,98 @@ const ProfileListItem: React.FC<ProfileListItemProps> = ({ profile }) => {
     <MotionDiv
       whileHover="hover"
       variants={listItemVariants}
-      className={`rounded-lg overflow-hidden shadow-md hover:shadow-lg bg-gradient-to-r ${getCardColor()} border-l-4`}
+      className={`
+        rounded-lg sm:rounded-xl overflow-hidden 
+        shadow-md hover:shadow-lg transition-all duration-300
+        bg-gradient-to-r ${getCardColor()} 
+        border-l-2 sm:border-l-4 
+        w-full
+      `}
     >
-      <div className="flex items-center p-4">
-        {/* Profile Image */}
-        <div className="w-16 h-16 mr-4 rounded-full overflow-hidden flex-shrink-0">
+      <div className="flex items-start sm:items-center p-2 xs:p-3 sm:p-4 md:p-5 lg:p-4 xl:p-5">
+        {/* Profile Image - Responsive sizing */}
+        <div className="w-10 h-10 xs:w-12 xs:h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-16 lg:h-16 mr-2 xs:mr-3 sm:mr-4 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-white/50 dark:ring-gray-700/50">
           <img
             src={profile.foto || '/api/placeholder/300/300'}
             alt={profile.nama}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
 
         {/* Profile Details */}
-        <div className="flex-grow">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <div>
-              <h4 className="text-lg font-semibold font-heading text-gray-800 dark:text-white line-clamp-1">
+        <div className="flex-grow min-w-0">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-4">
+            {/* Name and Role Section */}
+            <div className="min-w-0 flex-shrink">
+              <h4
+                className="
+                text-sm xs:text-base sm:text-lg md:text-xl lg:text-lg xl:text-base
+                font-semibold font-heading text-gray-800 dark:text-white 
+                line-clamp-1 sm:line-clamp-2 mb-1 sm:mb-2
+              "
+              >
                 {profile.nama}
               </h4>
               <span
-                className={`text-xs font-medium px-2 py-1 rounded-full inline-block mt-1 ${getBadgeColor()}`}
+                className={`
+                  text-[10px] xs:text-xs sm:text-sm 
+                  font-medium px-1.5 xs:px-2 py-0.5 sm:py-1 
+                  rounded-full inline-block 
+                  ${getBadgeColor()}
+                  whitespace-nowrap
+                `}
               >
                 {profile.peran}
               </span>
             </div>
 
-            {/* Additional Profile Info */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 md:mt-0">
+            {/* Additional Profile Info - Responsive layout */}
+            <div className="flex flex-col xs:flex-row xs:flex-wrap lg:flex-col xl:flex-row gap-1 xs:gap-2 sm:gap-3 lg:gap-1 xl:gap-2 mt-1 sm:mt-2 lg:mt-0 lg:flex-shrink-0">
               {profile.asalInstitusi && (
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                  <FiMapPin className="mr-1 text-primary-light flex-shrink-0" />
-                  <span className="line-clamp-1">{profile.asalInstitusi}</span>
+                <div className="flex items-center text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-sm text-gray-600 dark:text-gray-300 group">
+                  <FiMapPin
+                    className="mr-1 text-primary-light flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    size={12}
+                  />
+                  <span className="line-clamp-1 group-hover:font-medium transition-all duration-200 leading-tight">
+                    {profile.asalInstitusi}
+                  </span>
                 </div>
               )}
 
               {profile.prodi && (
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                  <FiBookOpen className="mr-1 text-primary-light flex-shrink-0" />
-                  <span>
-                    {profile.prodi === 'Manajemen Informatika' && 'Manajemen Informatika'}
-                    {profile.prodi === 'Ilmu Komunikasi' && 'Ilmu Komunikasi'}
-                    {profile.prodi === 'Sejarah' && 'Sejarah'}
-                    {profile.prodi === 'Bahasa Inggris' && 'Bahasa Inggris'}
-                    {profile.prodi === 'Tehnik Mesin' && 'Tehnik Mesin'}
-                    {profile.prodi === 'Biologi' && 'Biologi'}
+                <div className="flex items-center text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-sm text-gray-600 dark:text-gray-300 group">
+                  <FiBookOpen
+                    className="mr-1 text-primary-light flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    size={12}
+                  />
+                  <span className="group-hover:font-medium transition-all duration-200 line-clamp-1">
+                    {getProgramName(profile.prodi)}
                   </span>
                 </div>
               )}
 
               {profile.angkatan && (
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                  <FiCalendar className="mr-1 text-primary-light flex-shrink-0" />
-                  <span>Angkatan {profile.angkatan}</span>
+                <div className="flex items-center text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-sm text-gray-600 dark:text-gray-300 group">
+                  <FiCalendar
+                    className="mr-1 text-primary-light flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    size={12}
+                  />
+                  <span className="group-hover:font-medium transition-all duration-200 whitespace-nowrap">
+                    Angkatan {profile.angkatan}
+                  </span>
                 </div>
               )}
 
               {profile.unit && (
-                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                  <FiBriefcase className="mr-1 text-primary-light flex-shrink-0" />
-                  <span className="line-clamp-1">Unit: {profile.unit}</span>
+                <div className="flex items-center text-[10px] xs:text-xs sm:text-sm md:text-base lg:text-sm text-gray-600 dark:text-gray-300 group">
+                  <FiBriefcase
+                    className="mr-1 text-primary-light flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    size={12}
+                  />
+                  <span className="line-clamp-1 group-hover:font-medium transition-all duration-200 leading-tight">
+                    Unit: {profile.unit}
+                  </span>
                 </div>
               )}
             </div>

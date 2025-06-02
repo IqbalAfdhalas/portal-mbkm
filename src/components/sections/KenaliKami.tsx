@@ -1,7 +1,7 @@
 // src/components/sections/KenaliKami.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FiSearch, FiFilter, FiChevronLeft, FiChevronRight, FiGrid, FiList } from 'react-icons/fi';
 import ProfileCard from '@/components/ui/ProfileCard';
 import ProfileListItem from '@/components/ui/ProfileListItem';
@@ -15,13 +15,17 @@ type Role = 'Pembimbing Kampus' | 'Mentor BAST ANRI' | 'Mahasiswa' | 'Semua';
 type Program =
   | 'Manajemen Informatika'
   | 'Ilmu Komunikasi'
-  | 'Sejarah'
   | 'Bahasa Inggris'
   | 'Tehnik Mesin'
-  | 'Biologi'
   | 'Semua';
 type Batch = '2024' | '2025' | 'Semua';
-type Unit = 'Akuisisi' | 'Pengolahan' | 'Preservasi' | 'Pelayanan' | 'Tata Usaha' | 'Semua';
+type Unit =
+  | 'Akuisisi'
+  | 'Pengolahan'
+  | 'Preservasi'
+  | 'Layanan & Pemanfaatan Arsip'
+  | 'Tata Usaha'
+  | 'Semua';
 type ViewMode = 'grid' | 'list';
 
 type PaginationState = {
@@ -34,6 +38,25 @@ const ensureProfileWithPhoto = (profile: ProfileClient): ProfileClient & { foto:
     ...profile,
     foto: profile.foto || generateAvatarUrl(profile.nama),
   };
+};
+
+// Custom hook untuk detect screen size
+const useResponsive = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  return { isMobile, isTablet };
 };
 
 const KenaliKami = () => {
@@ -49,7 +72,15 @@ const KenaliKami = () => {
   const [selectedRole, setSelectedRole] = useState<Role>('Semua');
   const [selectedUnit, setSelectedUnit] = useState<Unit>('Semua');
   const [filteredData, setFilteredData] = useState<ProfileClient[]>([]);
+  const { isMobile, isTablet } = useResponsive();
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
+
+  // Auto set list mode di mobile
+  useEffect(() => {
+    if (isMobile) {
+      setViewMode('list');
+    }
+  }, [isMobile]);
 
   // Pagination
   const [currentPages, setCurrentPages] = useState<PaginationState>({
@@ -58,7 +89,14 @@ const KenaliKami = () => {
     Mahasiswa: 1,
   });
 
-  const cardsPerPage = viewMode === 'grid' ? 8 : 10;
+  const cardsPerPage = useMemo(() => {
+    if (viewMode === 'list') {
+      return isMobile ? 5 : isTablet ? 8 : 10;
+    } else {
+      // Grid mode - lebih sedikit di mobile biar ga panjang scroll
+      return isMobile ? 4 : isTablet ? 6 : 8;
+    }
+  }, [viewMode, isMobile, isTablet]);
 
   // Fetch data from Firebase
   useEffect(() => {
@@ -237,7 +275,11 @@ const KenaliKami = () => {
     return (
       <>
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            className={`grid gap-3 sm:gap-4 ${
+              isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-3' : 'grid-cols-4'
+            }`}
+          >
             {paginatedData.map(profile => (
               <MotionDiv key={profile.id} variants={itemVariants}>
                 <ProfileCard profile={ensureProfileWithPhoto(profile)} />
@@ -352,10 +394,10 @@ const KenaliKami = () => {
           <span className="text-sm font-medium text-secondary uppercase tracking-wider">
             PROFIL UNGGULAN
           </span>
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-primary dark:text-white mt-2 mb-4">
             Kenali Kami
           </h2>
-          <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-300">
+          <p className="max-w-3xl mx-auto text-sm sm:text-base text-gray-600 dark:text-gray-300 px-4">
             Profil lengkap seluruh anggota program MBKM BAST ANRI, termasuk mahasiswa, pembimbing
             kampus, dan mentor BAST ANRI dari berbagai program studi, angkatan, dan unit kerja.
           </p>
@@ -366,7 +408,9 @@ const KenaliKami = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+          className={`grid gap-3 sm:gap-4 mb-8 sm:mb-12 ${
+            isMobile ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'
+          }`}
         >
           <StatisticsCard
             title="Total Mahasiswa"
@@ -394,9 +438,9 @@ const KenaliKami = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-12 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
+          className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 shadow-lg mb-8 sm:mb-12 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80"
         >
-          <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
             {/* Search box */}
             <div className="relative flex-grow">
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -405,12 +449,12 @@ const KenaliKami = () => {
                 placeholder="Cari nama atau asal institusi..."
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+                className="w-full pl-10 pr-4 py-2.5 text-sm sm:text-base rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               />
             </div>
 
-            {/* View mode toggle */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+            {/* View mode toggle - sekarang di samping search */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1 shrink-0">
               <button
                 onClick={() => toggleViewMode('grid')}
                 className={`flex items-center justify-center p-2 rounded-md ${
@@ -436,20 +480,22 @@ const KenaliKami = () => {
             </div>
           </div>
 
-          {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          {/* Filters - lebih compact */}
+          <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <FiFilter className="text-gray-400" />
-              <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Filter:
-              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Filter:</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-grow">
+            <div
+              className={`grid gap-2 ${
+                isMobile ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+              }`}
+            >
               <select
                 value={selectedRole}
                 onChange={handleRoleChange}
-                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+                className="px-3 py-2 text-sm rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Peran</option>
                 <option value="Mahasiswa">Mahasiswa</option>
@@ -460,7 +506,7 @@ const KenaliKami = () => {
               <select
                 value={selectedProgram}
                 onChange={handleProgramChange}
-                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+                className="px-3 py-2 text-sm rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Prodi</option>
                 <option value="Manajemen Informatika">Manajemen Informatika</option>
@@ -474,7 +520,7 @@ const KenaliKami = () => {
               <select
                 value={selectedBatch}
                 onChange={handleBatchChange}
-                className="px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
+                className="px-3 py-2 text-sm rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-light dark:text-white"
               >
                 <option value="Semua">Semua Angkatan</option>
                 <option value="2025">2025</option>
@@ -497,7 +543,7 @@ const KenaliKami = () => {
                   <option value="Akuisisi">Akuisisi</option>
                   <option value="Pengolahan">Pengolahan</option>
                   <option value="Preservasi">Preservasi</option>
-                  <option value="Pelayanan">Pelayanan</option>
+                  <option value="Layanan & Pemanfaatan Arsip">Layanan & Pemanfaatan Arsip</option>
                   <option value="Tata Usaha">Tata Usaha</option>
                 </select>
               )}
@@ -513,8 +559,12 @@ const KenaliKami = () => {
             variants={containerVariants}
             className="mb-12"
           >
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
+            <div
+              className={`flex mb-6 ${
+                isMobile ? 'flex-col gap-2' : 'justify-between items-center'
+              }`}
+            >
+              <h3 className="text-xl sm:text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
                 PEMBIMBING KAMPUS
               </h3>
               <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
@@ -535,7 +585,7 @@ const KenaliKami = () => {
             className="mb-12"
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
+              <h3 className="text-xl sm:text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
                 MENTOR BAST ANRI
               </h3>
               <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
@@ -551,7 +601,7 @@ const KenaliKami = () => {
         {mahasiswa.length > 0 && (
           <MotionDiv initial="hidden" animate="visible" variants={containerVariants}>
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
+              <h3 className="text-xl sm:text-2xl font-bold text-primary-light dark:text-primary-light font-heading border-b pb-2 dark:border-gray-700">
                 MAHASISWA
               </h3>
               <span className="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">

@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBook } from 'react-icons/fa';
 import { useInView } from 'react-intersection-observer';
@@ -13,6 +12,13 @@ import { FaChevronDown } from 'react-icons/fa';
 import { scrollToId } from '@/lib/utils';
 import { MotionDiv } from '@/components/common/MotionClientOnly';
 
+const glowGradients = [
+  'radial-gradient(ellipse at center, #ec4899aa, #a855f7aa, transparent)', // pink-fuchsia
+  'radial-gradient(ellipse at center, #22d3eeaa, #3b82f6aa, transparent)', // cyan-blue
+  'radial-gradient(ellipse at center, #facc15aa, #f97316aa, transparent)', // amber-orange
+  'radial-gradient(ellipse at center, #a3e635aa, #34d399aa, transparent)', // lime-green
+  'radial-gradient(ellipse at center, #8b5cf6aa, #6366f1aa, transparent)', // purple-indigo
+];
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -85,7 +91,7 @@ const Hero = () => {
     },
   };
 
-  // Membuat particles
+  // Membuat particles - lebih sedikit untuk mobile
   const particles = Array.from({ length: 25 }, (_, i) => ({
     id: i,
     size: Math.random() * 3 + 1,
@@ -126,14 +132,6 @@ const Hero = () => {
 
   const glowSize = 'w-[180%] h-[75%]';
   const glowOpacity = 'opacity-100 dark:opacity-100';
-
-  const glowGradients = [
-    'radial-gradient(ellipse at center, #ec4899aa, #a855f7aa, transparent)', // pink-fuchsia
-    'radial-gradient(ellipse at center, #22d3eeaa, #3b82f6aa, transparent)', // cyan-blue
-    'radial-gradient(ellipse at center, #facc15aa, #f97316aa, transparent)', // amber-orange
-    'radial-gradient(ellipse at center, #a3e635aa, #34d399aa, transparent)', // lime-green
-    'radial-gradient(ellipse at center, #8b5cf6aa, #6366f1aa, transparent)', // purple-indigo
-  ];
 
   const [glowIndex, setGlowIndex] = useState(0);
   useEffect(() => {
@@ -183,12 +181,12 @@ const Hero = () => {
         />
       </div>
 
-      {/* Animated stars/particles */}
+      {/* Animated stars/particles - Hide on small screens */}
       {isMounted &&
         particles.map(particle => (
           <MotionDiv
             key={particle.id}
-            className="absolute rounded-full bg-gray-400 dark:bg-white drop-shadow-md dark:drop-shadow"
+            className="absolute rounded-full bg-gray-400 dark:bg-white drop-shadow-md dark:drop-shadow hidden sm:block"
             style={{
               width: particle.size,
               height: particle.size,
@@ -206,12 +204,12 @@ const Hero = () => {
       <div className="absolute inset-0 bg-[url('/images/pattern.svg')] bg-repeat opacity-10 dark:opacity-10" />
 
       {/* Main content container */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 flex flex-col lg:flex-row items-center justify-between gap-12 py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-12 md:py-20">
         {/* Text content */}
-        <div className="flex-1 text-gray-900 dark:text-white">
+        <div className="flex-1 text-gray-900 dark:text-white text-center lg:text-left">
           {/* Badge */}
           <MotionDiv
-            className="inline-flex items-center px-4 py-1.5 rounded-full 
+            className="inline-flex items-center px-3 sm:px-4 py-1.5 rounded-full 
              bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 
              text-white text-xs font-semibold tracking-wide 
              ring-1 ring-white/20 hover:ring-2 hover:ring-indigo-400 
@@ -227,7 +225,7 @@ const Hero = () => {
           </MotionDiv>
 
           <motion.h1
-            className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6"
             custom={1}
             variants={textVariants}
             initial="hidden"
@@ -246,7 +244,7 @@ const Hero = () => {
 
           {/* Subheading */}
           <motion.p
-            className="text-lg md:text-xl text-gray-700 dark:text-blue-100 mb-8 max-w-xl"
+            className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-blue-100 mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed"
             custom={2}
             variants={textVariants}
             initial="hidden"
@@ -260,31 +258,31 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <MotionDiv
-            className="flex flex-col sm:flex-row gap-4 md:gap-6"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center lg:justify-start"
             custom={3}
             variants={textVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.button
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-secondary to-secondary-light text-white font-medium text-lg transition-all shadow-lg"
+              className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-gradient-to-r from-secondary to-secondary-light text-white font-medium text-base sm:text-lg transition-all shadow-lg"
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
               onClick={() => handleScrollToSection('program')}
             >
-              <FaGraduationCap className="text-xl" />
+              <FaGraduationCap className="text-lg sm:text-xl" />
               <span>Jelajahi Program</span>
             </motion.button>
 
             <motion.button
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-gray-800 dark:bg-white/5 dark:text-white border border-gray-200 dark:border-white/20 font-medium text-lg transition-all shadow-lg hover:bg-gray-100 dark:hover:bg-white/20"
+              className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-white text-gray-800 dark:bg-white/5 dark:text-white border border-gray-200 dark:border-white/20 font-medium text-base sm:text-lg transition-all shadow-lg hover:bg-gray-100 dark:hover:bg-white/20"
               variants={buttonHoverVariants}
               whileHover="hover"
               whileTap="tap"
               onClick={() => handleScrollToSection('tentang')}
             >
-              <FaBook className="text-xl" />
+              <FaBook className="text-lg sm:text-xl" />
               <span>Tentang MBKM</span>
             </motion.button>
           </MotionDiv>
@@ -292,7 +290,7 @@ const Hero = () => {
           {/* Stats preview */}
           <MotionDiv
             ref={statsRef}
-            className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-12"
+            className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12 max-w-md mx-auto lg:max-w-none lg:mx-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -304,12 +302,12 @@ const Hero = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10"
+                className="text-center p-3 sm:p-4 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/10"
               >
-                <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {statsInView && <CountUp end={stat.value} duration={2.5} suffix="+" />}
                 </p>
-                <p className="text-sm text-blue-800 dark:text-blue-100">{stat.label}</p>
+                <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-100">{stat.label}</p>
               </div>
             ))}
           </MotionDiv>
@@ -317,7 +315,7 @@ const Hero = () => {
 
         {/* Image/illustration */}
         <MotionDiv
-          className="flex-1 w-full max-w-xl"
+          className="flex-1 w-full max-w-sm sm:max-w-md lg:max-w-xl order-first lg:order-last"
           style={{
             x: mousePosition.x * 20,
             y: mousePosition.y * 20,
@@ -327,11 +325,11 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           <div className="relative w-full aspect-square">
-            <div className="relative w-full max-w-sm mx-auto transform translate-y-16 -translate-x-4 transition-transform duration-500 hover:scale-105">
+            <div className="relative w-full max-w-xs sm:max-w-sm mx-auto transform translate-y-8 sm:translate-y-16 -translate-x-2 sm:-translate-x-4 transition-transform duration-500 hover:scale-105">
               {/* 💡 GLOW MASUK SINI */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
                 <MotionDiv
-                  className={`${glowSize} blur-[100px] opacity-100 brightness-150 saturate-200 mix-blend-screen`}
+                  className={`${glowSize} blur-[80px] sm:blur-[100px] opacity-100 brightness-150 saturate-200 mix-blend-screen`}
                   style={{
                     background: glowGradients[glowIndex],
                     transform: `translate(${mousePosition.x * 3}px, ${mousePosition.y * 3}px)`,
@@ -349,10 +347,10 @@ const Hero = () => {
               </div>
 
               {/* Shadow melayang */}
-              <div className="absolute inset-0 -bottom-4 blur-2xl bg-black/20 rounded-2xl z-0"></div>
+              <div className="absolute inset-0 -bottom-2 sm:-bottom-4 blur-xl sm:blur-2xl bg-black/20 rounded-2xl z-0"></div>
 
               {/* Gambar poster */}
-              <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
+              <div className="relative z-10 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-white/10 bg-white/5 backdrop-blur-md">
                 <Image
                   src="/images/Beranda/beranda_ilustrasi.png"
                   alt="MBKM BAST ANRI"
@@ -364,9 +362,9 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Decoration circles */}
+            {/* Decoration circles - Hide on small screens */}
             <MotionDiv
-              className="absolute top-10 right-10 w-20 h-20 rounded-full bg-gradient-to-r from-secondary to-secondary-light opacity-70 blur-md"
+              className="absolute top-6 sm:top-10 right-6 sm:right-10 w-12 sm:w-20 h-12 sm:h-20 rounded-full bg-gradient-to-r from-secondary to-secondary-light opacity-70 blur-md hidden sm:block"
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.7, 0.9, 0.7],
@@ -378,7 +376,7 @@ const Hero = () => {
               }}
             />
             <MotionDiv
-              className="absolute bottom-20 left-10 w-16 h-16 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 opacity-70 blur-md"
+              className="absolute bottom-12 sm:bottom-20 left-6 sm:left-10 w-10 sm:w-16 h-10 sm:h-16 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 opacity-70 blur-md hidden sm:block"
               animate={{
                 scale: [1, 1.3, 1],
                 opacity: [0.7, 0.9, 0.7],
@@ -396,7 +394,7 @@ const Hero = () => {
       {/* Wave decoration at bottom */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
         <svg
-          className="relative block w-full h-16 drop-shadow-[0_-3px_6px_rgba(0,0,0,0.1)]"
+          className="relative block w-full h-12 sm:h-16 drop-shadow-[0_-3px_6px_rgba(0,0,0,0.1)]"
           data-name="Layer 1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1200 120"
@@ -413,7 +411,7 @@ const Hero = () => {
       </div>
       {/* Scroll Down Arrows */}
       <MotionDiv
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-0 text-gray-600 dark:text-white z-20"
+        className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-0 text-gray-600 dark:text-white z-20"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
@@ -431,7 +429,7 @@ const Hero = () => {
               delay: i * 0.3, // ini bikin giliran nyala
             }}
           >
-            <FaChevronDown className="text-xl" />
+            <FaChevronDown className="text-lg sm:text-xl" />
           </MotionDiv>
         ))}
       </MotionDiv>
