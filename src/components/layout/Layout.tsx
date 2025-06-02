@@ -5,6 +5,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import BackToTopButton from '@/components/ui/BackToTopButton';
 import { useTheme } from 'next-themes';
 
 interface LayoutProps {
@@ -35,6 +36,9 @@ const Layout = ({ children }: LayoutProps) => {
       {!hideLayout && <Navbar />}
       <main className="flex-grow">{children}</main>
       {!hideLayout && <Footer />}
+
+      {/* Back to Top Button - hanya muncul di halaman yang ada layoutnya */}
+      {!hideLayout && <BackToTopButton />}
     </div>
   );
 };

@@ -16,7 +16,7 @@ const basePrograms = [
       'Unit Akuisisi Arsip',
       'Unit Pengolahan Arsip',
       'Unit Preservasi Arsip',
-      'Unit Pelayanan Arsip',
+      'Unit Layanan & Pemanfaatan Arsip',
       'Unit Tata Usaha',
     ],
     image: '/images/program-aktivitas.jpg',
@@ -109,7 +109,7 @@ const calculateStats = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-8 h-8"
+          className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
         >
           <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337 49.949 49.949 0 0 0-9.902 3.912l-.003.002-.34.18a.75.75 0 0 1-.707 0A50.009 50.009 0 0 0 7.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 0 1 4.653-2.52.75.75 0 0 0-.65-1.352 56.129 56.129 0 0 0-4.78 2.589 1.858 1.858 0 0 0-.859 1.228 49.803 49.803 0 0 0-4.634-1.527.75.75 0 0 1-.231-1.337A60.653 60.653 0 0 1 11.7 2.805Z" />
           <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 0 1-.46.71 47.878 47.878 0 0 0-8.105 4.342.75.75 0 0 1-.832 0 47.877 47.877 0 0 0-8.104-4.342.75.75 0 0 1-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 0 1 6 13.18v1.27a1.5 1.5 0 0 0-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 0 0 .551-1.608 1.5 1.5 0 0 0 .14-2.67v-.645a48.549 48.549 0 0 1 3.44 1.668 2.25 2.25 0 0 0 2.12 0Z" />
@@ -127,7 +127,7 @@ const calculateStats = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-8 h-8"
+          className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
         >
           <path
             fillRule="evenodd"
@@ -147,7 +147,7 @@ const calculateStats = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-8 h-8"
+          className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
         >
           <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
         </svg>
@@ -163,7 +163,7 @@ const calculateStats = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-8 h-8"
+          className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
         >
           <path
             fillRule="evenodd"
@@ -205,37 +205,40 @@ const Stats = () => {
   return (
     <section
       id="stats"
-      className="py-16 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-primary to-primary-light text-white relative overflow-hidden"
     >
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-white/5 -skew-y-3 transform origin-left"></div>
-      <div className="absolute bottom-0 right-0 w-full h-32 bg-white/5 skew-y-3 transform origin-right"></div>
+      {/* Decorative elements - responsive */}
+      <div className="absolute top-0 left-0 w-full h-16 sm:h-24 lg:h-32 bg-white/5 -skew-y-3 transform origin-left"></div>
+      <div className="absolute bottom-0 right-0 w-full h-16 sm:h-24 lg:h-32 bg-white/5 skew-y-3 transform origin-right"></div>
 
-      {/* Animated circles */}
-      <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-blue-400/10 animate-pulse blur-3xl"></div>
-      <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-indigo-400/10 animate-pulse blur-3xl"></div>
+      {/* Animated circles - responsive */}
+      <div className="absolute top-5 left-5 sm:top-10 sm:left-10 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 rounded-full bg-blue-400/10 animate-pulse blur-3xl"></div>
+      <div className="absolute bottom-5 right-5 sm:bottom-10 sm:right-10 w-36 h-36 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-full bg-indigo-400/10 animate-pulse blur-3xl"></div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <MotionDiv
-          className="text-center mb-14"
+          className="text-center mb-8 sm:mb-12 lg:mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-block mb-3 bg-blue-700/30 text-blue-200 px-4 py-1 rounded-full">
-            <span className="text-sm font-medium uppercase tracking-wider">Data Statistik</span>
+          <div className="inline-block mb-2 sm:mb-3 bg-blue-700/30 text-blue-200 px-3 py-1 sm:px-4 sm:py-1 rounded-full">
+            <span className="text-xs sm:text-sm font-medium uppercase tracking-wider">
+              Data Statistik
+            </span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-white">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-white">
             Program MBKM di BAST ANRI
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-blue-300 mx-auto my-4 rounded-full"></div>
-          <p className="text-blue-100 mt-2 max-w-2xl mx-auto">
+          <div className="w-16 sm:w-20 h-0.5 sm:h-1 bg-gradient-to-r from-blue-400 to-blue-300 mx-auto my-3 sm:my-4 rounded-full"></div>
+          <p className="text-blue-100 mt-2 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-4">
             Data program dan aktivitas MBKM yang tersedia di Balai Arsip Statis dan Tsunami ANRI
           </p>
         </MotionDiv>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Grid yang lebih responsive */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
           {statistics.map((stat, index) => (
             <MotionDiv
               key={index}
@@ -245,19 +248,19 @@ const Stats = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-900/20 group">
+              <div className="bg-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 backdrop-blur-sm border border-white/10 lg:hover:border-white/20 transition-all duration-300 lg:hover:-translate-y-1 lg:hover:shadow-lg lg:hover:shadow-blue-900/20 group h-full">
                 {/* Background gradient */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-20 rounded-xl -z-10`}
+                  className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-20 rounded-lg sm:rounded-xl -z-10`}
                 ></div>
 
-                {/* Icon */}
-                <div className="mb-4 flex justify-center">
+                {/* Icon - responsive size */}
+                <div className="mb-2 sm:mb-3 md:mb-4 flex justify-center">
                   <div
-                    className={`w-16 h-16 rounded-full bg-gradient-to-br ${stat.color} p-0.5 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full bg-gradient-to-br ${stat.color} p-0.5 flex items-center justify-center shadow-lg lg:group-hover:scale-110 transition-transform duration-300`}
                   >
                     <div className="bg-white/90 dark:bg-gray-800/90 w-full h-full rounded-full flex items-center justify-center">
-                      <div className="text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-500">
+                      <div className="text-blue-600 dark:text-blue-400 lg:group-hover:scale-110 transition-transform duration-500">
                         {stat.icon}
                       </div>
                     </div>
@@ -265,15 +268,21 @@ const Stats = () => {
                 </div>
 
                 <div className="text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2 flex items-center justify-center gap-1">
+                  {/* Number - responsive font size */}
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-1 sm:mb-2 flex items-center justify-center gap-0.5 sm:gap-1">
                     {inView && (
                       <>
                         <CountUp end={stat.value} duration={2.5} />
-                        <span className="text-blue-300">{stat.suffix}</span>
+                        <span className="text-blue-300 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
+                          {stat.suffix}
+                        </span>
                       </>
                     )}
                   </div>
-                  <p className="text-white/80 font-medium">{stat.label}</p>
+                  {/* Label - responsive font size and line height */}
+                  <p className="text-white/80 font-medium text-xs sm:text-sm md:text-base leading-tight">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             </MotionDiv>
